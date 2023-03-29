@@ -13,9 +13,10 @@ const createMainWindow = () => {
     webPreferences: {
       nodeIntegration: false
     },
-    icon: `file://${path.join(__dirname, './icon.ico')}`
+    icon: __dirname + './icon.ico'
   });
   const startURL = `file://${path.join(__dirname, './client/build/index.html')}`;
+  mainWindow.setMenu(null);
   mainWindow.loadURL(startURL);
 
   mainWindow.once('ready-to-show', () => mainWindow.show());
