@@ -3,17 +3,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-const ConfirmDialog = ({
+import { FormattedMessage } from 'react-intl';
+import messages from 'hocs/Locale/Messages/common/ConfirmDialog';
+
+function ConfirmDialog({
   title,
   content,
   handleConfirmCb,
   isOpen,
   onClose,
-}) => {
+}) {
   const handleConfirm = () => {
     handleConfirmCb();
     onClose();
-  }
+  };
   return (
     <Dialog
       maxWidth="xs"
@@ -33,12 +36,14 @@ const ConfirmDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} variant="contained">
-          取消
+          <FormattedMessage {...messages.cancelButton} />
         </Button>
-        <Button onClick={handleConfirm} variant="contained">确定</Button>
+        <Button onClick={handleConfirm} variant="contained">
+          <FormattedMessage {...messages.confirmButton} />
+        </Button>
       </DialogActions>
     </Dialog>
   );
-};
+}
 
 export default ConfirmDialog;

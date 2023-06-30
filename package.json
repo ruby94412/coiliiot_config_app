@@ -4,13 +4,13 @@
   "description": "configuration app for data transfer unit",
   "main": "main.js",
   "scripts": {
-    "start": "concurrently \"npm run start:electron\" \"wait-on http://localhost:3000 && npm run start:react\"",
-    "start:electron": "electron .",
+    "start": "concurrently \"npm run start:react\" \"wait-on http://localhost:3000 && npm run start:electron\"",
+    "start:electron": "nodemon --watch ./service/* --exec \"electron .\"",
     "start:react": "cd client && npm start",
     "build": "cd client && npm run build",
-    "build-mac": "electron-packager . --overwrite --platform=darwin --icon=./icon.icns --arch=arm64 --prune=true --out=build",
+    "build-mac": "electron-packager . --overwrite --platform=darwin --icon=./img/icon.icns --arch=arm64 --prune=true --out=build",
     "create-dmg": "electron-installer-dmg ./build/coiliiot_config_app-darwin-arm64/coiliiot_config_app.app coiliiot_config_app --overwrite",
-    "build-win": "electron-packager . --overwrite --platform=win32 --icon=./icon.ico --arch=x64 --prune=true --out=build",
+    "build-win": "electron-packager . --overwrite --platform=win32 --icon=./img/icon.ico --arch=x64 --prune=true --out=build",
     "create-installer": "node createWinInstaller.js"
   },
   "repository": {
@@ -31,6 +31,10 @@
     "electron-packager": "^17.1.1",
     "electron-winstaller": "^5.1.0",
     "electron-wix-msi": "^5.0.0",
+    "nodemon": "^2.0.22",
     "wait-on": "^7.0.1"
+  },
+  "dependencies": {
+    "electron-is-dev": "^2.0.0"
   }
 }

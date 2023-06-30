@@ -1,21 +1,28 @@
-const { app, BrowserWindow, screen: electronScreen } = require('electron');
-// const isDev = require('electron-is-dev');
+const { app, BrowserWindow, screen: electronScreen, ipcMain } = require('electron');
+const isDev = require('electron-is-dev');
 const path = require('path');
+const localDataHandler = require('./service/localDataHandler').localDataHandler;
 
+const testFilePath = path.resolve(__dirname, './data/config.json');
 const createMainWindow = () => {
   let mainWindow = new BrowserWindow({
-    // width: electronScreen.getPrimaryDisplay().workArea.width,
-    // height: electronScreen.getPrimaryDisplay().workArea.height,
-    width: 1000,
-    height: 800,
+    width: electronScreen.getPrimaryDisplay().workArea.width / 2,
+    height: electronScreen.getPrimaryDisplay().workArea.height / 2,
+    // width: 1000,
+    // height: 800,
     show: false,
     backgroundColor: 'white',
     webPreferences: {
-      nodeIntegration: false
+      preload: path.join(__dirname, './service/preload.js'),
+      worldSafeExecuteJavaScript: true,
+      contextIsolation: true,
     },
-    icon: __dirname + './icon.ico'
+    icon: path.join(__dirname, './img/icon.ico'),
   });
-  const startURL = `file://${path.join(__dirname, './client/build/index.html')}`;
+  const startURL = isDev
+    ? 'http://localhost:3000'
+    : `file://${path.join(__dirname, './client/build/index.html')}`;
+
   mainWindow.setMenu(null);
   mainWindow.loadURL(startURL);
 
@@ -25,24 +32,24 @@ const createMainWindow = () => {
     mainWindow = null;
   });
 
-  mainWindow.webContents.on('new-window', (event, url) => { 
-    event.preventDefault(); 
+  mainWindow.webContents.on('new-window', (event, url) => {
+    event.preventDefault();
     mainWindow.loadURL(url);
   });
 
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 };
-
 
 app.whenReady().then(() => {
   createMainWindow();
-
   app.on('activate', () => {
     if (!BrowserWindow.getAllWindows().length) {
       createMainWindow();
     }
   });
 });
+
+localDataHandler();
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -1,11 +1,9 @@
-import {configureStore} from '@reduxjs/toolkit';
-import loginReducer from './slice/login';
-import groupReducer from './slice/group';
+import { configureStore } from '@reduxjs/toolkit';
+import dataReducer from 'slice/data';
 
 const reducer = {
-  userInfo: loginReducer,
-  groupInfo: groupReducer,
-}
+  data: dataReducer,
+};
 export default configureStore({
   reducer,
   devTools: true,

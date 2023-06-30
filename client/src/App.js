@@ -1,43 +1,49 @@
-import {connect} from 'react-redux';
-// import ControlPanel from './ components/ControlPanel';
-import ConfigPanel from './components/ConfigPanel';
-import Login from './components/Login';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import { connect } from 'react-redux';
 import {
-  HashRouter,
+  BrowserRouter,
   Routes,
   Route,
-} from "react-router-dom";
-import './App.css';
-const theme = createTheme({
-  palette: {
-    mode: 'dark',
-    // primary: {
-    //   main: 'rgb(78 70 212)',
-    //   contrastText: 'white',
-    // }
-  }
-});
-const App = ({
+} from 'react-router-dom';
+import { useState } from 'react';
+import Connect from 'components/Connect';
+import Config from 'components/Config';
+import Navigation from 'components/Navigation';
+import withTheme from 'hocs/Theme';
+import withLocale from 'hocs/Locale';
+import 'App.css';
+
+function App({
   userInfo,
-}) => {
+  setThemeMode,
+  theme,
+  setLocale,
+  themeMode,
+  locale,
+}) {
+  const [pageIndex, setPageIndex] = useState(0);
+  const pages = [<Connect />, <Config />];
   return (
-    <ThemeProvider theme={theme}>
-      <div className="App">
-        <HashRouter>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/login" element={<Login />} />
-            {userInfo?.isLoggedIn && <Route path="/mainPanel" element={<ConfigPanel />} />}
-          </Routes>
-        </HashRouter>
-      </div>
-    </ThemeProvider>
+    <div className="App" style={{ backgroundColor: theme.palette.darker.main }}>
+      <Navigation
+        setThemeMode={setThemeMode}
+        setLocale={setLocale}
+        locale={locale}
+        themeMode={themeMode}
+        setPageIndex={setPageIndex}
+      />
+      {pages[pageIndex]}
+    </div>
   );
 }
 
-const mapStateToProps = state => {
-  const {userInfo} = state;
-  return {userInfo};
+const mapStateToProps = (state) => {
+  const { userInfo } = state;
+  return { userInfo };
 };
-export default connect(mapStateToProps, {})(App);
+
+export default connect(
+  mapStateToProps,
+  {},
+)(
+  withLocale(withTheme(App)),
+);

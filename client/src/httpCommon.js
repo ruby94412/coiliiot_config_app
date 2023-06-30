@@ -1,17 +1,5 @@
-import axios from "axios";
-// import https from "https";
-// import fs from "fs";
+import axios from 'axios';
 
-// const httpsAgent = new https.Agent({
-//   rejectUnauthorized: false,
-//   ca: fs.readFileSync("./certificate.cer"),
-// });
-
-// const httpsAgent = new https.Agent({
-//   rejectUnauthorized: false,
-  
-// })
 export default axios.create({
-  baseURL: "http://coiliiot.com.cn:8080",
-  // httpsAgent,
+  baseURL: 'https://coiliiot.com:8443',
 });
