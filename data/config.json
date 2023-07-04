@@ -1,2 +1,178 @@
 {
+  "basicConfigs": {
+      "config_version": 0,
+      "autoUpdateEnabled": "false",
+      "restartWhenInternetDisconnected": "false",
+      "restartSchedule": 3,
+      "networkProtectionEnabeld": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+      ]
+  },
+  "serialConfigs": [
+      {
+          "serialId": 0,
+          "enabled": true,
+          "baudrate": 9600,
+          "dataBit": 8,
+          "stopBit": 1,
+          "parityMode": 2
+      },
+      {
+          "serialId": 1,
+          "enabled": true,
+          "baudrate": 9600,
+          "dataBit": 8,
+          "stopBit": 1,
+          "parityMode": 2,
+          "autoPollEnabled": false
+      }
+  ],
+  "networkConfigs": [
+      {
+          "enabled": true,
+          "serialId": 0,
+          "type": 1,
+          "networkId": 2,
+          "conversionConfigs": [
+              {
+                  "conversions": [
+                      {
+                          "propertyName": "temperture",
+                          "address": 0,
+                          "dataType": 0,
+                          "ratio": 0.1,
+                          "deviation": 0,
+                          "order": 0,
+                          "id": "8c42c40a6d841a32"
+                      }
+                  ],
+                  "commandId": "d9d9a521feb875cb",
+                  "registerOffset": "0",
+                  "dec": [
+                      1,
+                      4,
+                      0,
+                      0,
+                      0,
+                      1,
+                      49,
+                      202
+                  ]
+              }
+          ],
+          "customizedJson": {
+              "propertyKey": "",
+              "id": "main",
+              "propertyType": 4,
+              "children": [
+                  {
+                      "propertyKey": "id",
+                      "propertyValue": "123",
+                      "propertyType": 1,
+                      "id": "9975cc6682b3548d"
+                  },
+                  {
+                      "propertyKey": "version",
+                      "propertyValue": "1.0",
+                      "propertyType": 0,
+                      "id": "d0b35fb18531310f"
+                  },
+                  {
+                      "propertyKey": "params",
+                      "propertyValue": "",
+                      "propertyType": 4,
+                      "id": "58d28e4fde127406",
+                      "children": [
+                          {
+                              "propertyKey": "temperture",
+                              "propertyValue": "",
+                              "propertyType": 4,
+                              "id": "2680ca44ba46ba7e",
+                              "children": [
+                                  {
+                                      "propertyKey": "value",
+                                      "propertyValue": "temperture_VALUE",
+                                      "propertyType": 3,
+                                      "id": "4e8d63cd8d499445",
+                                      "children": []
+                                  },
+                                  {
+                                      "propertyKey": "time",
+                                      "propertyValue": "DATE_VALUE",
+                                      "propertyType": 2,
+                                      "id": "e80daef4a5871f35"
+                                  }
+                              ]
+                          }
+                      ]
+                  },
+                  {
+                      "propertyKey": "method",
+                      "propertyValue": "thing.event.property.post",
+                      "propertyType": 0,
+                      "id": "f005de2f7826724e"
+                  }
+              ]
+          },
+          "regionId": "cn-shanghai",
+          "productKey": "hjy0Nxp9FEu",
+          "deviceSecret": "",
+          "productSecret": "2nASiB8yX9hC2xqY",
+          "registerType": "1",
+          "deviceName": "customDevice1",
+          "subscribeTopic": "/sys/hjy0Nxp9FEu/customDevice1/thing/model/down_raw",
+          "publishTopic": "/sys/hjy0Nxp9FEu/customDevice1/thing/model/up_raw",
+          "retain": 0,
+          "lwtMessage": "",
+          "qos": 0,
+          "cleanSession": true
+      }
+  ],
+  "autoPollConfigs": [
+      {
+          "enabled": true,
+          "delay": 1000,
+          "commands": [
+              {
+                  "dec": [
+                      1,
+                      4,
+                      0,
+                      0,
+                      0,
+                      1,
+                      49,
+                      202
+                  ],
+                  "rawDec": [
+                      1,
+                      4,
+                      "0",
+                      1,
+                      51761
+                  ],
+                  "id": "d9d9a521feb875cb"
+              }
+          ],
+          "serialId": 0,
+          "numberOfRetry": 3,
+          "timeout": 1000,
+          "period": 1200
+      }
+  ],
+  "networkSummary": {
+      "socket": [],
+      "aliyun": [
+          2
+      ],
+      "mqtt": []
+  },
+  "config_version": "Fri Jun 09 2023 14:40:34 GMT+0800 (China Standard Time)"
 }

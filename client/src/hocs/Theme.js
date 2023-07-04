@@ -8,6 +8,7 @@ const withTheme = (Child) => function withThemeHook(props) {
       mode: themeMode,
       primary: {
         main: themeMode === 'light' ? '#1d4998' : '#90caf9',
+        spanColor: themeMode === 'light' ? '#000000de' : '#fff',
       },
       secondary: {
         main: '#ececeb',

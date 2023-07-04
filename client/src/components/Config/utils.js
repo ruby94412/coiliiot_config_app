@@ -198,6 +198,7 @@ export const getInitialValues = (originalConfig) => {
     const typeArr = ['socket', 'aliyun', 'mqtt'];
     rst.networkConfigs[index][typeArr[type]] = other;
   });
+
   return rst;
 };
 

@@ -3,7 +3,6 @@ const isDev = require('electron-is-dev');
 const path = require('path');
 const localDataHandler = require('./service/localDataHandler').localDataHandler;
 
-const testFilePath = path.resolve(__dirname, './data/config.json');
 const createMainWindow = () => {
   let mainWindow = new BrowserWindow({
     width: electronScreen.getPrimaryDisplay().workArea.width / 2,
@@ -37,7 +36,9 @@ const createMainWindow = () => {
     mainWindow.loadURL(url);
   });
 
-  mainWindow.webContents.openDevTools();
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 app.whenReady().then(() => {

@@ -6,7 +6,8 @@ import { Grid, Collapse } from '@mui/material';
 import TabPanel from 'components/common/TabPanel';
 import { useIntl } from 'react-intl';
 import { Formik } from 'formik';
-import SwipeableViews from 'react-swipeable-views';
+// import SwipeableViews from 'react-swipeable-views';
+import TransitionPanel from 'components/common/TransitionPanel';
 import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/AutoPoll';
 import TableToolBar from 'components/common/TableToolBar';
 import NoRowsOverlay from 'components/common/NoRowsOverlay';
@@ -97,7 +98,7 @@ const AutoPoll = forwardRef(({
           })
         }
       </Grid>
-      <SwipeableViews index={serialId}>
+      <TransitionPanel index={serialId}>
         {
           initVals.map((serialConfig, index) => (
             <TabPanel key={index} index={index} value={serialId} sx={{ px: 0, py: 3 }}>
@@ -175,7 +176,7 @@ const AutoPoll = forwardRef(({
             </TabPanel>
           ))
         }
-      </SwipeableViews>
+      </TransitionPanel>
     </>
   );
 });

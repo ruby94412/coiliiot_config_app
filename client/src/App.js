@@ -1,10 +1,6 @@
 import { connect } from 'react-redux';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from 'react-router-dom';
 import { useState } from 'react';
+import { Collapse } from '@mui/material';
 import Connect from 'components/Connect';
 import Config from 'components/Config';
 import Navigation from 'components/Navigation';
@@ -13,17 +9,20 @@ import withLocale from 'hocs/Locale';
 import 'App.css';
 
 function App({
-  userInfo,
   setThemeMode,
   theme,
   setLocale,
   themeMode,
   locale,
 }) {
+  const contentStyle = {
+    backgroundColor: theme.palette.darker.main,
+    color: theme.palette.primary.spanColor,
+  };
   const [pageIndex, setPageIndex] = useState(0);
-  const pages = [<Connect />, <Config />];
+  // const pages = [<Connect />, <Config />];
   return (
-    <div className="App" style={{ backgroundColor: theme.palette.darker.main }}>
+    <div className="App" style={contentStyle}>
       <Navigation
         setThemeMode={setThemeMode}
         setLocale={setLocale}
@@ -31,7 +30,12 @@ function App({
         themeMode={themeMode}
         setPageIndex={setPageIndex}
       />
-      {pages[pageIndex]}
+      <Collapse in={pageIndex === 0}>
+        <Connect />
+      </Collapse>
+      <Collapse in={pageIndex === 1}>
+        <Config />
+      </Collapse>
     </div>
   );
 }

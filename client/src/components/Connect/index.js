@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { readLocalData, writeLocalData } from 'slice/data';
-import { Button } from '@mui/material';
+// import { Button } from '@mui/material';
 
 // const { ipcRenderer } = window.require('electron');
 function Connect({

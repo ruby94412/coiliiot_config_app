@@ -2,7 +2,7 @@ import {
   useState, Fragment, useRef, forwardRef, useImperativeHandle,
 } from 'react';
 import { Grid, Collapse } from '@mui/material';
-import SwipeableViews from 'react-swipeable-views';
+import TransitionPanel from 'components/common/TransitionPanel';
 import TabPanel from 'components/common/TabPanel';
 import { FormattedMessage } from 'react-intl';
 import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/Serial';
@@ -56,7 +56,7 @@ const Serial = forwardRef(({
           })
         }
       </Grid>
-      <SwipeableViews index={serialId}>
+      <TransitionPanel index={serialId}>
         {
           initVals.map((serialConfig, index) => (
             <TabPanel key={index} index={index} value={serialId} sx={{ px: 0, py: 1 }}>
@@ -106,7 +106,7 @@ const Serial = forwardRef(({
             </TabPanel>
           ))
         }
-      </SwipeableViews>
+      </TransitionPanel>
     </>
   );
 });

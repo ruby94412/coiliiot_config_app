@@ -5,7 +5,8 @@ import { Grid, Collapse } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/Platform';
-import SwipeableViews from 'react-swipeable-views';
+import TransitionPanel from 'components/common/TransitionPanel';
+// import SwipeableViews from 'react-swipeable-views';
 import TabPanel from 'components/common/TabPanel';
 import { renderFields } from './utils';
 import {
@@ -118,7 +119,7 @@ const Platform = forwardRef(({
           })}
         </Grid>
       </Grid>
-      <SwipeableViews index={networkId}>
+      <TransitionPanel index={networkId}>
         {
           initVals.map((networkConfig, index) => (
             <TabPanel key={index} index={index} value={networkId} sx={{ px: 0, py: 1 }}>
@@ -167,7 +168,7 @@ const Platform = forwardRef(({
             </TabPanel>
           ))
         }
-      </SwipeableViews>
+      </TransitionPanel>
     </>
   );
 });

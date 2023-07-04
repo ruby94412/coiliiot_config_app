@@ -1,14 +1,8 @@
-import { Dialog } from '@mui/material';
 import { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { readLocalData, writeLocalData } from 'slice/data';
-import DialogContent from './DialogContent';
+import ConfigContent from './ConfigContent';
 import { getInitialValues } from './utils';
-
-const dialogStyle = {
-  backgroundColor: 'secondary.main',
-  minWidth: '70%',
-};
 
 function Config({
   readLocalData,
@@ -18,37 +12,19 @@ function Config({
   const ref = useRef();
 
   useEffect(() => {
-    // if (groupRow) {
-    //   setInitialValues(getInitialValues(groupRow.config));
-    //   // setInitialFormValues(groupRow.config);
-    // }
     readLocalData({ fileName: 'config' }).then((res) => {
-      console.log(res, 'asdfasdfasdf');
-      setInitialValues(getInitialValues(res.payload));
+      console.log(res);
+      const temp = getInitialValues(JSON.parse(res.payload));
+      console.log(temp);
+      setInitialValues(temp);
     });
   }, []);
 
   return (
-    // <Dialog
-    //   maxWidth="xs"
-    //   open={!!groupRow}
-    //   onClose={() => { onClose(ref.current.dirty); }}
-    //   PaperProps={{ style: dialogStyle }}
-    // >
-    //   <DialogContent
-    //     ref={ref}
-    //     groupRow={groupRow}
-    //     updateConfig={updateConfig}
-    //     onClose={onClose}
-    //     initialValues={initialValues}
-    //   />
-    // </Dialog>
     initialValues ? (
-      <DialogContent
+      <ConfigContent
         ref={ref}
-        // groupRow={groupRow}
         updateConfig={writeLocalData}
-        // onClose={onClose}
         initialValues={initialValues}
       />
     ) : (<></>)

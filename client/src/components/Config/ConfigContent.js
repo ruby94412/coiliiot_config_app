@@ -1,8 +1,4 @@
 import {
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
   Snackbar,
   Alert,
   Tab,
@@ -15,8 +11,8 @@ import {
 } from 'react';
 import { FormattedMessage } from 'react-intl';
 import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/DialogContent';
-import SwipeableViews from 'react-swipeable-views';
 import TabPanel from 'components/common/TabPanel';
+import TransitionPanel from 'components/common/TransitionPanel';
 import { handleFormDataSubmit } from './utils';
 import Platform from './Platform';
 import Serial from './Serial';
@@ -31,15 +27,13 @@ const a11yProps = (index) => ({
 });
 
 const Content = forwardRef(({
-  // groupRow,
-  // onClose,
   updateConfig,
   initialValues,
 }, ref) => {
   const [saveLoading, setSaveLoading] = useState(false);
   const [snackbar, setSnackbar] = useState(null);
   const [tabIndex, setTabIndex] = useState(0);
-
+  const buttonStyle = { position: 'fixed', right: '5%', bottom: '5%' };
   const formRef = {
     basic: useRef(null),
     serial: useRef(null),
@@ -92,18 +86,18 @@ const Content = forwardRef(({
     return false;
   };
 
-  const resetForm = () => {
-    formRef.basic.current.form.current.resetForm();
-    for (let i = 0; i < formRef?.serial?.current?.form?.current?.length; i++) {
-      formRef.serial.current.form.current[i].resetForm();
-    }
-    for (let i = 0; i < formRef?.network?.current?.form?.current?.length; i++) {
-      formRef.network.current.form.current[i].resetForm();
-    }
-    for (let i = 0; i < formRef?.autoPoll?.current?.form?.current?.length; i++) {
-      formRef.autoPoll.current.form.current[i].resetForm();
-    }
-  };
+  // const resetForm = () => {
+  //   formRef.basic.current.form.current.resetForm();
+  //   for (let i = 0; i < formRef?.serial?.current?.form?.current?.length; i++) {
+  //     formRef.serial.current.form.current[i].resetForm();
+  //   }
+  //   for (let i = 0; i < formRef?.network?.current?.form?.current?.length; i++) {
+  //     formRef.network.current.form.current[i].resetForm();
+  //   }
+  //   for (let i = 0; i < formRef?.autoPoll?.current?.form?.current?.length; i++) {
+  //     formRef.autoPoll.current.form.current[i].resetForm();
+  //   }
+  // };
 
   useImperativeHandle(ref, () => ({
     dirty: isDirty(),
@@ -111,13 +105,11 @@ const Content = forwardRef(({
 
   const handleCloseSnackbar = () => {
     setSnackbar(null);
-    // onClose(false);
-    // resetForm();
   };
 
   return (
     <>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '90%' }}>
         <Tabs
           value={tabIndex}
           onChange={handleTabChange}
@@ -131,7 +123,7 @@ const Content = forwardRef(({
           <Tab label={<FormattedMessage {...messages.dataConvertLabel} />} {...a11yProps(4)} />
         </Tabs>
       </Box>
-      <SwipeableViews index={tabIndex}>
+      <TransitionPanel index={tabIndex} sx={{ p: 3 }}>
         <TabPanel value={tabIndex} index={0}>
           <Basic
             initVals={initialValues?.basicConfigs}
@@ -163,12 +155,8 @@ const Content = forwardRef(({
             initVals={initialValues?.conversionConfigs}
           />
         </TabPanel>
-      </SwipeableViews>
-
-      {/* <Button onClick={() => { onClose(isDirty()); }} variant="contained">
-          <FormattedMessage {...messages.cancelButton} />
-        </Button> */}
-      <LoadingButton onClick={handleSubmit} loading={saveLoading} variant="contained">
+      </TransitionPanel>
+      <LoadingButton onClick={handleSubmit} loading={saveLoading} variant="contained" style={buttonStyle}>
         <FormattedMessage {...messages.submitButton} />
       </LoadingButton>
       {!!snackbar && (
