@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/constants';
+import messages from 'hocs/Locale/Messages/Config/constants';
 import {
   DeleteForever as DeleteIcon,
   Edit as EditIcon,
@@ -49,6 +49,19 @@ export const basicFields = [
       { label: <FormattedMessage {...messages.enable} />, value: true },
       { label: <FormattedMessage {...messages.disable} />, value: false },
     ],
+    layout: { xs: 12, md: 6 },
+  },
+];
+
+export const credentialFields = [
+  {
+    label: 'SSID',
+    propertyName: 'ssid',
+    layout: { xs: 12, md: 6 },
+  },
+  {
+    label: <FormattedMessage {...messages.password} />,
+    propertyName: 'password',
     layout: { xs: 12, md: 6 },
   },
 ];

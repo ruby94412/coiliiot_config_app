@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-export const scope = 'coiliiot.app.configPanel.configDialog.dataConversion';
+export const scope = 'coiliiot.app.config.dataConversion';
 
 export default defineMessages({
   networkDisabledText: {

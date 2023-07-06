@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-export const scope = 'coiliiot.app.configPanel.configDialog.commandGenerator';
+export const scope = 'coiliiot.app.config.commandGenerator';
 
 export default defineMessages({
   title: {

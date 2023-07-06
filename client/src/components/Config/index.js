@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { readLocalData, writeLocalData } from 'slice/data';
 import ConfigContent from './ConfigContent';
@@ -9,13 +9,16 @@ function Config({
   writeLocalData,
 }) {
   const [initialValues, setInitialValues] = useState();
-  const ref = useRef();
 
   useEffect(() => {
-    readLocalData({ fileName: 'config' }).then((res) => {
-      console.log(res);
-      const temp = getInitialValues(JSON.parse(res.payload));
-      console.log(temp);
+    Promise.all([
+      readLocalData({ fileName: 'config' }),
+      readLocalData({ fileName: 'credential' }),
+    ]).then((values) => {
+      const temp = getInitialValues(
+        JSON.parse(values[0].payload),
+        JSON.parse(values[1].payload),
+      );
       setInitialValues(temp);
     });
   }, []);
@@ -23,8 +26,7 @@ function Config({
   return (
     initialValues ? (
       <ConfigContent
-        ref={ref}
-        updateConfig={writeLocalData}
+        update={writeLocalData}
         initialValues={initialValues}
       />
     ) : (<></>)

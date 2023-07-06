@@ -5,7 +5,7 @@ import { Grid, Collapse } from '@mui/material';
 import TransitionPanel from 'components/common/TransitionPanel';
 import TabPanel from 'components/common/TabPanel';
 import { FormattedMessage } from 'react-intl';
-import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/Serial';
+import messages from 'hocs/Locale/Messages/Config/Serial';
 import { Formik } from 'formik';
 import { serialFields } from './constants';
 import { renderFields } from './utils';

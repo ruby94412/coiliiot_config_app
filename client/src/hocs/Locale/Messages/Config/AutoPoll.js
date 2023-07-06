@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-export const scope = 'coiliiot.app.configPanel.configDialog.autoPoll';
+export const scope = 'coiliiot.app.config.autoPoll';
 
 export default defineMessages({
   serialIdLabel: {

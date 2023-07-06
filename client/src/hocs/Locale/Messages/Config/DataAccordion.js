@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-export const scope = 'coiliiot.app.configPanel.configDialog.dataAccordion';
+export const scope = 'coiliiot.app.config.dataAccordion';
 
 export default defineMessages({
   title: {

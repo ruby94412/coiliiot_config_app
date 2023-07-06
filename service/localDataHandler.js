@@ -10,7 +10,7 @@ const localDataHandler = () => {
 
   ipcMain.handle('write_data_to_local', (evt, args) => {
     const filePath = path.resolve(__dirname, `../data/${args.fileName}.json`);
-    return fs.writeFileSync(filePath, args.data);
+    return fs.writeFileSync(filePath, JSON.stringify(args.data));
   });
 };
 

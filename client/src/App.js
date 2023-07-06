@@ -20,7 +20,6 @@ function App({
     color: theme.palette.primary.spanColor,
   };
   const [pageIndex, setPageIndex] = useState(0);
-  // const pages = [<Connect />, <Config />];
   return (
     <div className="App" style={contentStyle}>
       <Navigation
@@ -30,10 +29,10 @@ function App({
         themeMode={themeMode}
         setPageIndex={setPageIndex}
       />
-      <Collapse in={pageIndex === 0}>
+      <Collapse in={pageIndex === 0} sx={{ width: '100%' }}>
         <Connect />
       </Collapse>
-      <Collapse in={pageIndex === 1}>
+      <Collapse in={pageIndex === 1} sx={{ width: '100%' }}>
         <Config />
       </Collapse>
     </div>

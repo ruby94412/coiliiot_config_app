@@ -98,7 +98,7 @@ export const renderFields = ({
   }
 };
 
-export const getInitialValues = (originalConfig) => {
+export const getInitialValues = (originalConfig, originalCredential) => {
   const rst = {
     basicConfigs: {}, serialConfigs: [], networkConfigs: [], autoPollConfigs: [],
   };
@@ -107,6 +107,7 @@ export const getInitialValues = (originalConfig) => {
     autoUpdateEnabled: true,
     restartWhenInternetDisconnected: true,
     restartSchedule: 3,
+    credential: { ssid: '44', password: '44' },
   };
   for (let i = 0; i < 3; i++) {
     rst.serialConfigs.push({
@@ -174,7 +175,7 @@ export const getInitialValues = (originalConfig) => {
   if (originalConfig?.basicConfigs) {
     const origin = originalConfig.basicConfigs;
     const defaultConfig = rst.basicConfigs;
-    rst.basicConfigs = { ...defaultConfig, ...origin };
+    rst.basicConfigs = { ...defaultConfig, ...origin, credential: { ...originalCredential } };
   }
   originalConfig?.serialConfigs?.forEach((origin) => {
     const index = origin.serialId;
@@ -361,7 +362,8 @@ export const handleFormDataSubmit = (values) => {
     autoPollConfigs: [],
     networkSummary: { socket: [], aliyun: [], mqtt: [] },
   };
-  config.basicConfigs = values.basicConfigs;
+  const { credential, ...otherBasics } = values.basicConfigs;
+  config.basicConfigs = otherBasics;
   values.serialConfigs.forEach((ele) => {
     if (ele.enabled) config.serialConfigs.push(ele);
   });
@@ -384,7 +386,7 @@ export const handleFormDataSubmit = (values) => {
     }
   });
   config.config_version = new Date().toString();
-  return config;
+  return { config, credential };
 };
 
 export const nodeToJson = (node) => {

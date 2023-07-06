@@ -1,5 +1,5 @@
 import { useIntl } from 'react-intl';
-import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/constants';
+import messages from 'hocs/Locale/Messages/Config/constants';
 import { styled } from '@mui/material/styles';
 
 const CommandDetailWithStyle = styled('pre')(({ theme }) => ({

@@ -35,8 +35,8 @@ import {
   Tooltip,
 } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/DataAccordion';
-import constMessages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/constants';
+import messages from 'hocs/Locale/Messages/Config/DataAccordion';
+import constMessages from 'hocs/Locale/Messages/Config/constants';
 import { customPropertyFields } from './constants';
 import { renderFields, getUid } from './utils';
 

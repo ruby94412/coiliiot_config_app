@@ -4,7 +4,7 @@ import {
 import { Grid, Collapse } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
-import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/Platform';
+import messages from 'hocs/Locale/Messages/Config/Platform';
 import TransitionPanel from 'components/common/TransitionPanel';
 // import SwipeableViews from 'react-swipeable-views';
 import TabPanel from 'components/common/TabPanel';

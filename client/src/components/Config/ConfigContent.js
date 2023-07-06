@@ -4,13 +4,15 @@ import {
   Tab,
   Tabs,
   Box,
+  Button,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import {
-  useState, forwardRef, useImperativeHandle, useRef,
+  useState, useRef,
 } from 'react';
 import { FormattedMessage } from 'react-intl';
-import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/DialogContent';
+import messages from 'hocs/Locale/Messages/Config/ConfigContent';
+import ConfirmDialog from 'components/common/ConfirmDialog';
 import TabPanel from 'components/common/TabPanel';
 import TransitionPanel from 'components/common/TransitionPanel';
 import { handleFormDataSubmit } from './utils';
@@ -26,11 +28,12 @@ const a11yProps = (index) => ({
   color: 'red',
 });
 
-const Content = forwardRef(({
-  updateConfig,
+function Content({
+  update,
   initialValues,
-}, ref) => {
+}) {
   const [saveLoading, setSaveLoading] = useState(false);
+  const [isConfigResetting, setIsConfigResetting] = useState(false);
   const [snackbar, setSnackbar] = useState(null);
   const [tabIndex, setTabIndex] = useState(0);
   const buttonStyle = { position: 'fixed', right: '5%', bottom: '5%' };
@@ -53,14 +56,13 @@ const Content = forwardRef(({
       .map((networkForm) => (networkForm.values));
     formValues.autoPollConfigs = formRef.autoPoll.current.form.current
       .map((autoPollForm) => (autoPollForm.values));
-    const config = handleFormDataSubmit(formValues);
+    const { config, credential } = handleFormDataSubmit(formValues);
     setSaveLoading(true);
     try {
-      await updateConfig({
-        // ...groupRow,
-        config,
-        fileName: 'config',
-      });
+      await Promise.all([
+        update({ data: { ...config }, fileName: 'config' }),
+        update({ data: { ...credential }, fileName: 'credential' }),
+      ]);
       setSnackbar({
         children: <FormattedMessage {...messages.snackBarSuccess} />, severity: 'success',
       });
@@ -86,27 +88,28 @@ const Content = forwardRef(({
     return false;
   };
 
-  // const resetForm = () => {
-  //   formRef.basic.current.form.current.resetForm();
-  //   for (let i = 0; i < formRef?.serial?.current?.form?.current?.length; i++) {
-  //     formRef.serial.current.form.current[i].resetForm();
-  //   }
-  //   for (let i = 0; i < formRef?.network?.current?.form?.current?.length; i++) {
-  //     formRef.network.current.form.current[i].resetForm();
-  //   }
-  //   for (let i = 0; i < formRef?.autoPoll?.current?.form?.current?.length; i++) {
-  //     formRef.autoPoll.current.form.current[i].resetForm();
-  //   }
-  // };
-
-  useImperativeHandle(ref, () => ({
-    dirty: isDirty(),
-  }));
+  const resetForm = () => {
+    formRef.basic.current.form.current.resetForm();
+    for (let i = 0; i < formRef?.serial?.current?.form?.current?.length; i++) {
+      formRef.serial.current.form.current[i].resetForm();
+    }
+    for (let i = 0; i < formRef?.network?.current?.form?.current?.length; i++) {
+      formRef.network.current.form.current[i].resetForm();
+    }
+    for (let i = 0; i < formRef?.autoPoll?.current?.form?.current?.length; i++) {
+      formRef.autoPoll.current.form.current[i].resetForm();
+    }
+  };
 
   const handleCloseSnackbar = () => {
     setSnackbar(null);
   };
 
+  const handleReset = () => {
+    if (isDirty()) {
+      setIsConfigResetting(true);
+    }
+  };
   return (
     <>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '90%' }}>
@@ -156,9 +159,23 @@ const Content = forwardRef(({
           />
         </TabPanel>
       </TransitionPanel>
-      <LoadingButton onClick={handleSubmit} loading={saveLoading} variant="contained" style={buttonStyle}>
-        <FormattedMessage {...messages.submitButton} />
-      </LoadingButton>
+      <Box style={buttonStyle}>
+        <Button onClick={handleReset} variant="contained" sx={{ mr: 2 }}>
+          <FormattedMessage {...messages.resetButton} />
+        </Button>
+        <LoadingButton onClick={handleSubmit} loading={saveLoading} variant="contained">
+          <FormattedMessage {...messages.submitButton} />
+        </LoadingButton>
+      </Box>
+      <ConfirmDialog
+        isOpen={isConfigResetting}
+        onClose={() => { setIsConfigResetting(false); }}
+        handleConfirmCb={() => {
+          setIsConfigResetting(false);
+          resetForm();
+        }}
+        content={<FormattedMessage {...messages.unsavedConfirm} />}
+      />
       {!!snackbar && (
         <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={2000}>
           <Alert {...snackbar} onClose={handleCloseSnackbar} />
@@ -166,6 +183,6 @@ const Content = forwardRef(({
       )}
     </>
   );
-});
+}
 
 export default Content;

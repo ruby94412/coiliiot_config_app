@@ -1,33 +1,18 @@
 // import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { readLocalData, writeLocalData } from 'slice/data';
-// import { Button } from '@mui/material';
+import { Button, Box, Grid } from '@mui/material';
+import ConnectOperation from './ConnectOperation';
+import SerialMonitor from './SerialMonitor';
 
-// const { ipcRenderer } = window.require('electron');
-function Connect({
-  readConfig,
-  writeConfig,
-  readLocalData,
-}) {
-  // const [data, setData] = useState();
-  // useEffect(() => {
-  //   // readConfig().then((res) => {
-  //   //   console.log(res);
-  //   // });
-  //   readLocalData({ fileName: 'config' }).then((res) => {
-  //     console.log(res, 'asdfasdf');
-  //   });
-  // }, []);
-
-  // const handleTest = () => {
-  //   writeConfig({ from: 'client' }).then((res) => {
-  //     console.log(res);
-  //   });
-  // };
+const testPorts = ['port1', 'port2'];
+const testContent = '';
+function Connect() {
   return (
-    <div>
-      TO DO
-    </div>
+    <Box sx={{ width: '100%' }}>
+      <ConnectOperation ports={testPorts} />
+      <SerialMonitor content={testContent} />
+    </Box>
   );
 }
 

@@ -5,8 +5,8 @@ import {
   Collapse,
 } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import platformMessages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/Platform';
-import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/DataConversion';
+import platformMessages from 'hocs/Locale/Messages/Config/Platform';
+import messages from 'hocs/Locale/Messages/Config/DataConversion';
 import { convertRawCommands, renderFields } from './utils';
 import DataAccordion from './DataAccordion';
 import CustomizeJson from './CustomizeJson';

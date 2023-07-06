@@ -1,11 +1,19 @@
 import { defineMessages } from 'react-intl';
 
-export const scope = 'coiliiot.app.configPanel.configDialog.serial';
+export const scope = 'coiliiot.app.config.platform';
 
 export default defineMessages({
+  networkIdLabel: {
+    id: `${scope}.networkIdLabel`,
+    defaultMessage: 'Network Channel ID',
+  },
   serialIdLabel: {
     id: `${scope}.serialIdLabel`,
     defaultMessage: 'Serial Channel ID',
+  },
+  platformTypeLabel: {
+    id: `${scope}.platformTypeLabel`,
+    defaultMessage: 'Platform Type',
   },
   statusLabel: {
     id: `${scope}.statusLabel`,

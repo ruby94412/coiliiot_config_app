@@ -17,7 +17,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/DataAccordion';
+import messages from 'hocs/Locale/Messages/Config/DataAccordion';
 import {
   ExpandMore as ExpandMoreIcon,
   Description as DescriptionIcon,

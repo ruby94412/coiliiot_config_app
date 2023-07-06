@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-export const scope = 'coiliiot.app.configPanel.configDialog.constants';
+export const scope = 'coiliiot.app.config.constants';
 
 export default defineMessages({
   aliyun: {

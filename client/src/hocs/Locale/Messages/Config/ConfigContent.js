@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-export const scope = 'coiliiot.app.configPanel.configDialog.dialogContent';
+export const scope = 'coiliiot.app.config.configContent';
 
 export default defineMessages({
   snackBarSuccess: {
@@ -10,6 +10,10 @@ export default defineMessages({
   snackBarError: {
     id: `${scope}.snackBarError`,
     defaultMessage: 'Update Error',
+  },
+  credentialTabLabel: {
+    id: `${scope}.credentialTabLabel`,
+    defaultMessage: 'Credential',
   },
   basicTabLabel: {
     id: `${scope}.basicTabLabel`,
@@ -35,8 +39,16 @@ export default defineMessages({
     id: `${scope}.cancelButton`,
     defaultMessage: 'Cancel',
   },
+  resetButton: {
+    id: `${scope}.resetButton`,
+    defaultMessage: 'Reset',
+  },
   submitButton: {
     id: `${scope}.submitButton`,
     defaultMessage: 'Submit',
+  },
+  unsavedConfirm: {
+    id: `${scope}.unsavedConfirm`,
+    defaultMessage: 'Confirguration Unsaved, Please Confirm To Close This Window',
   },
 });

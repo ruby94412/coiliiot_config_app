@@ -8,7 +8,7 @@ import { useIntl } from 'react-intl';
 import { Formik } from 'formik';
 // import SwipeableViews from 'react-swipeable-views';
 import TransitionPanel from 'components/common/TransitionPanel';
-import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/AutoPoll';
+import messages from 'hocs/Locale/Messages/Config/AutoPoll';
 import TableToolBar from 'components/common/TableToolBar';
 import NoRowsOverlay from 'components/common/NoRowsOverlay';
 import CommandGenerator from './CommandGenerator';

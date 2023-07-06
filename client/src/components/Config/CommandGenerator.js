@@ -8,7 +8,7 @@ import {
   Grid,
 } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import messages from 'hocs/Locale/Messages/ConfigPanel/ConfigDialog/CommandGenerator';
+import messages from 'hocs/Locale/Messages/Config/CommandGenerator';
 import CommandDetail from './CommandDetail';
 import { getCommandDetail, renderFields, getUid } from './utils';
 import { commandGeneratorFields } from './constants';
