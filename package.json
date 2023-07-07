@@ -8,10 +8,11 @@
     "start:electron": "nodemon --watch ./service/* --exec \"electron .\"",
     "start:react": "cd client && npm start",
     "build": "cd client && npm run build",
-    "build-mac": "electron-packager . --overwrite --platform=darwin --ignore=\"\/node_modules\" --icon=./img/blue_logo.icns --arch=arm64 --prune=true --out=build",
+    "build-mac": "electron-packager . --overwrite --platform=darwin --icon=./img/blue_logo.icns --arch=arm64 --prune=true --out=build",
     "create-dmg": "electron-installer-dmg ./build/coiliiot_config_app-darwin-arm64/coiliiot_config_app.app coiliiot_config_app --overwrite",
-    "build-win": "electron-packager . --overwrite --platform=win32 --icon=./img/icon.ico --arch=x64 --ignore=\"\/node_modules\"  --prune=true --out=build",
-    "create-installer": "node createWinInstaller.js"
+    "build-win": "electron-packager . --overwrite --platform=win32 --icon=./img/icon.ico --arch=x64 --ignore=\"/node_modules\"  --prune=true --out=build",
+    "create-installer": "node createWinInstaller.js",
+    "electron-build": "electron-builder"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "wait-on": "^7.0.1"
   },
   "dependencies": {
-    "electron-is-dev": "^2.0.0"
+    "electron-is-dev": "^2.0.0",
+    "serialport": "^11.0.0"
   }
 }

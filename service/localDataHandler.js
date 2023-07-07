@@ -2,8 +2,8 @@ const ipcMain = require('electron').ipcMain;
 const fs = require('fs');
 const path = require('path');
 
-const localDataHandler = () => {
-  ipcMain.handle('read_local_data', async (evt, args) => {
+const readAndWrite = () => {
+  ipcMain.handle('read_local_data', (evt, args) => {
     const filePath = path.resolve(__dirname, `../data/${args.fileName}.json`);
     return fs.readFileSync(filePath, 'utf8');
   });
@@ -14,4 +14,4 @@ const localDataHandler = () => {
   });
 };
 
-module.exports = { localDataHandler };
+module.exports = { readAndWrite };

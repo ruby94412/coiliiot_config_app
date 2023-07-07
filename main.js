@@ -1,7 +1,7 @@
 const { app, BrowserWindow, screen: electronScreen, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
-const localDataHandler = require('./service/localDataHandler').localDataHandler;
+const runHandlers = require('./service/handlers');
 
 const createMainWindow = () => {
   let mainWindow = new BrowserWindow({
@@ -39,6 +39,8 @@ const createMainWindow = () => {
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
+
+  runHandlers(mainWindow);
 };
 
 app.whenReady().then(() => {
@@ -50,7 +52,6 @@ app.whenReady().then(() => {
   });
 });
 
-localDataHandler();
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -14,7 +14,7 @@ import messages from 'hocs/Locale/Messages/Connect/ConnectOperation';
 function ConnectOperation({
   ports,
 }) {
-  const [port, setPort] = useState(null);
+  const [port, setPort] = useState('');
   const [disable, setDisable] = useState(true);
   useEffect(() => {
     setDisable(port === null);
@@ -32,7 +32,7 @@ function ConnectOperation({
               size="small"
               onChange={handlePortChange}
               value={port}
-              sx={{ minWidth: '200px' }}
+              sx={{ minWidth: '300px' }}
             >
               {
                 ports.map((option) => (

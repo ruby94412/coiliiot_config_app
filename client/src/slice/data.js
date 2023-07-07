@@ -19,6 +19,13 @@ export const writeLocalData = createAsyncThunk(
   },
 );
 
+export const serialPortsListener = createAsyncThunk(
+  'data/serialPortsListener',
+  (cb) => {
+    dataService.serialPortsListener(cb);
+  },
+);
+
 const dataSlice = createSlice({
   name: 'deviceInfo',
   initialState,
