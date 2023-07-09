@@ -4,6 +4,8 @@ contextBridge.exposeInMainWorld('api', {
   // Invoke Methods
   readLocalData: (args) => ipcRenderer.invoke('read_local_data', args),
   writeLocalData:  (args) => ipcRenderer.invoke('write_data_to_local', args),
+  connectPort: (args) => ipcRenderer.invoke('connect_serial_port', args),
+
   serialPortsListener: (cb) => ipcRenderer.on('serial-ports', (e, data) => cb(data)),
   // Send Methods
   testSend: (args) => ipcRenderer.send('test-send', args),

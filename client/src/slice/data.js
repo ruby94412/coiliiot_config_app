@@ -19,6 +19,14 @@ export const writeLocalData = createAsyncThunk(
   },
 );
 
+export const connectPort = createAsyncThunk(
+  'data/connectPort',
+  async (data) => {
+    const res = await dataService.connectPort(data);
+    return res;
+  },
+);
+
 export const serialPortsListener = createAsyncThunk(
   'data/serialPortsListener',
   (cb) => {

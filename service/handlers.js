@@ -3,10 +3,11 @@ const serialPortHandler = require('./serialPortHandler');
 
 const runHandlers = (mainWindow) => {
   localDataHandler.readAndWrite();
+
   setInterval(() => {
     serialPortHandler.sendSerialPorts(mainWindow);
   }, 2000);
-  serialPortHandler.test();
+  serialPortHandler.connectPortListener(mainWindow);
 }
 
 module.exports = runHandlers;

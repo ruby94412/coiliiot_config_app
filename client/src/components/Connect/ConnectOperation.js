@@ -13,15 +13,27 @@ import messages from 'hocs/Locale/Messages/Connect/ConnectOperation';
 
 function ConnectOperation({
   ports,
+  connectPort,
 }) {
-  const [port, setPort] = useState('');
+  const [portPath, setPortPath] = useState('');
   const [disable, setDisable] = useState(true);
+
   useEffect(() => {
-    setDisable(port === null);
-  }, [port]);
-  const handlePortChange = (e) => {
-    setPort(e.target.value);
+    setDisable(portPath === '');
+  }, [portPath]);
+
+  const handlePortPathChange = (e) => {
+    setPortPath(e.target.value);
   };
+
+  const handleConnect = () => {
+    console.log(connectPort);
+
+    connectPort({ path: portPath }).then((res) => {
+      console.log(res);
+    });
+  };
+
   return (
     <Grid container spacing={2} direction="row">
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
@@ -30,8 +42,8 @@ function ConnectOperation({
           <div style={{ display: 'flex' }}>
             <Select
               size="small"
-              onChange={handlePortChange}
-              value={port}
+              onChange={handlePortPathChange}
+              value={portPath}
               sx={{ minWidth: '300px' }}
             >
               {
@@ -46,7 +58,12 @@ function ConnectOperation({
               }
             </Select>
             <Divider orientation="vertical" flexItem sx={{ mx: 5 }} />
-            <Button variant="contained" sx={{ minWidth: '75px' }} disabled={disable}>
+            <Button
+              variant="contained"
+              sx={{ minWidth: '75px' }}
+              disabled={disable}
+              onClick={handleConnect}
+            >
               <FormattedMessage {...messages.connectButton} />
             </Button>
           </div>
