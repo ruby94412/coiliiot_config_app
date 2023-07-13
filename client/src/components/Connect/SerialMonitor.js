@@ -1,3 +1,5 @@
+import { useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
 import {
   Box,
   Button,
@@ -6,40 +8,205 @@ import {
   CardHeader,
   CardContent,
   Typography,
+  Snackbar,
+  Alert,
 } from '@mui/material';
+import {
+  serialDataListener,
+  sendMsgToPort,
+} from 'slice/data';
+import { LoadingButton } from '@mui/lab';
+import ErrorModal from 'components/common/ErrorModal';
 import { FormattedMessage } from 'react-intl';
 import messages from 'hocs/Locale/Messages/Connect/SerialMonitor';
+import otherMessages from 'hocs/Locale/Messages/Connect/ConnectOperation';
 
 function SerialMonitor({
-  content,
+  credential,
+  config,
+  connected,
+  serialDataListener,
+  sendMsgToPort,
 }) {
+  const [logs, setLogs] = useState('');
+  const logsEndRef = useRef(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [snackbar, setSnackbar] = useState(null);
+  const [loadings, setLoadings] = useState({ apply: false, reset: false, reboot: false });
+
+  const scrollToBottom = () => {
+    logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const monitorStyle = {
+    height: '300px', overflowY: 'scroll', py: 0, wordWrap: 'break-word',
+  };
+
+  useEffect(() => {
+    if (connected) {
+      serialDataListener((data) => {
+        setLogs((pre) => (`${pre}${pre ? '\n' : ''}${data}`));
+      });
+    }
+  }, [connected]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [logs]);
+
+  const handleClear = () => {
+    setLogs('');
+  };
+
+  const handleApply = () => {
+    setLoadings((pre) => ({ ...pre, apply: true }));
+    Promise.all([
+      sendMsgToPort({ type: 1, data: config }),
+      sendMsgToPort({ type: 3, data: credential }),
+    ]).then((res) => {
+      const err = res[0].error || res[1].error;
+      if (err) {
+        setErrorMsg(err.error.message);
+        setSnackbar({
+          children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
+        });
+      } else {
+        setSnackbar({
+          children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
+        });
+      }
+    }).finally(() => {
+      setTimeout(() => {
+        setLoadings((pre) => ({ ...pre, apply: false }));
+      }, 2000);
+    });
+  };
+
+  const handleReset = () => {
+    setLoadings((pre) => ({ ...pre, reset: true }));
+    Promise.all([
+      sendMsgToPort({ type: 2 }),
+      sendMsgToPort({ type: 4 }),
+    ]).then((res) => {
+      const err = res[0].error || res[1].error;
+      if (err) {
+        setErrorMsg(err.error.message);
+        setSnackbar({
+          children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
+        });
+      } else {
+        setSnackbar({
+          children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
+        });
+      }
+    }).finally(() => {
+      setTimeout(() => {
+        setLoadings((pre) => ({ ...pre, reset: false }));
+      }, 2000);
+    });
+  };
+
+  const handleReboot = () => {
+    setLoadings((pre) => ({ ...pre, reboot: true }));
+    sendMsgToPort({ type: 0 }).then((res) => {
+      if (res.error) {
+        setErrorMsg(res.error.message);
+        setSnackbar({
+          children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
+        });
+      } else {
+        setSnackbar({
+          children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
+        });
+      }
+    }).finally(() => {
+      setTimeout(() => {
+        setLoadings((pre) => ({ ...pre, reboot: false }));
+      }, 2000);
+    });
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar(null);
+  };
   return (
-    <Grid container spacing={2} direction="row">
-      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
-        <Card sx={{ width: '60%' }}>
-          <CardHeader subheader={<FormattedMessage {...messages.serialMonitorLabel} />} />
-          <CardContent sx={{ maxHeight: '300px', minHeight: '200px' }}>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-              {content || (<FormattedMessage {...messages.notConnectedHint} />)}
-            </Typography>
-          </CardContent>
-        </Card>
+    <>
+      <Grid container spacing={2} direction="row">
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+          <Card sx={{ width: '60%' }}>
+            <CardHeader
+              subheader={(
+                <Typography sx={{ fontSize: 16 }} color={`text.${connected ? 'primary' : 'secondary'}`}>
+                  <FormattedMessage {...messages.serialMonitorLabel} />
+                </Typography>
+              )}
+            />
+            <CardContent sx={monitorStyle}>
+              <Typography
+                sx={{ fontSize: 14, whiteSpace: 'pre-line' }}
+                color={`text.${connected ? 'primary' : 'secondary'}`}
+              >
+                {logs || <FormattedMessage {...messages.noLogsHint} />}
+              </Typography>
+              <div ref={logsEndRef} />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ width: '60%' }}>
+            <LoadingButton
+              variant="contained"
+              sx={{ mr: 2 }}
+              disabled={!connected || (loadings.apply || loadings.reboot || loadings.reset)}
+              onClick={handleApply}
+              loading={loadings.apply}
+            >
+              <FormattedMessage {...messages.applyConfigButton} />
+            </LoadingButton>
+            <LoadingButton
+              variant="contained"
+              sx={{ mr: 2 }}
+              disabled={!connected || (loadings.apply || loadings.reboot || loadings.reset)}
+              onClick={handleReset}
+              loading={loadings.reset}
+            >
+              <FormattedMessage {...messages.resetConfigButton} />
+            </LoadingButton>
+            <LoadingButton
+              variant="contained"
+              sx={{ mr: 2 }}
+              disabled={!connected || (loadings.apply || loadings.reboot || loadings.reset)}
+              onClick={handleReboot}
+              loading={loadings.reboot}
+            >
+              <FormattedMessage {...messages.restartConsoleButton} />
+            </LoadingButton>
+            <Button variant="contained" onClick={handleClear}>
+              <FormattedMessage {...messages.clearLogsButton} />
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Box sx={{ width: '60%' }}>
-          <Button variant="contained" sx={{ mr: 2 }}>
-            <FormattedMessage {...messages.applyConfigButton} />
-          </Button>
-          <Button variant="contained" sx={{ mr: 2 }}>
-            <FormattedMessage {...messages.resetConfigButton} />
-          </Button>
-          <Button variant="contained">
-            <FormattedMessage {...messages.restartConsoleButton} />
-          </Button>
-        </Box>
-      </Grid>
-    </Grid>
+      <ErrorModal
+        errorMessage={errorMsg}
+        onClose={() => { setErrorMsg(null); }}
+        isErrorModalOpen={!!errorMsg}
+      />
+      {!!snackbar && (
+        <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={2000}>
+          <Alert {...snackbar} onClose={handleCloseSnackbar} />
+        </Snackbar>
+      )}
+    </>
   );
 }
 
-export default SerialMonitor;
+const mapStateToProps = (state) => {
+  const { credential, ...other } = state.credentialAndConfig;
+  return { credential, config: other };
+};
+
+export default connect(mapStateToProps, {
+  serialDataListener,
+  sendMsgToPort,
+})(SerialMonitor);

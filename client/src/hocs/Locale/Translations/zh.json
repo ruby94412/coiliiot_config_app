@@ -36,7 +36,7 @@
   "coiliiot.app.config.configContent.autoPollLabel": "主动轮训",
   "coiliiot.app.config.configContent.dataConvertLabel": "数据格式转换",
   "coiliiot.app.config.configContent.cancelButton": "取消",
-  "coiliiot.app.config.configContent.submitButton": "提交配置",
+  "coiliiot.app.config.configContent.submitButton": "保存配置",
   "coiliiot.app.config.configContent.resetButton": "重置配置",
   "coiliiot.app.config.configContent.unsavedConfirm": "有未保存的设置,确认重置配置吗?",
 
@@ -136,11 +136,15 @@
 
   "coiliiot.app.connect.connectOperation.portSelectLabel": "端口",
   "coiliiot.app.connect.connectOperation.connectButton": "连接",
+  "coiliiot.app.connect.connectOperation.disconnectButton": "断开",
+  "coiliiot.app.connect.connectOperation.snackBarSuccess": "操作成功",
+  "coiliiot.app.connect.connectOperation.snackBarError": "操作失败",
 
 
   "coiliiot.app.connect.serialMonitor.serialMonitorLabel": "端口监视器",
   "coiliiot.app.connect.serialMonitor.applyConfigButton": "应用配置",
   "coiliiot.app.connect.serialMonitor.resetConfigButton": "重置配置",
   "coiliiot.app.connect.serialMonitor.restartConsoleButton": "重启设备",
-  "coiliiot.app.connect.serialMonitor.notConnectedHint": "设备尚未连接，没有日志"
+  "coiliiot.app.connect.serialMonitor.clearLogsButton": "清空日志",
+  "coiliiot.app.connect.serialMonitor.noLogsHint": "没有日志"
 }

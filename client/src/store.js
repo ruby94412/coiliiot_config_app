@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import dataReducer from 'slice/data';
 
 const reducer = {
-  data: dataReducer,
+  credentialAndConfig: dataReducer,
 };
 export default configureStore({
   reducer,

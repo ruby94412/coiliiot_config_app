@@ -11,4 +11,16 @@ export default defineMessages({
     id: `${scope}.connectButton`,
     defaultMessage: 'Connect',
   },
+  disconnectButton: {
+    id: `${scope}.disconnectButton`,
+    defaultMessage: 'Disconnect',
+  },
+  snackBarSuccess: {
+    id: `${scope}.snackBarSuccess`,
+    defaultMessage: 'Operation Success',
+  },
+  snackBarError: {
+    id: `${scope}.snackBarError`,
+    defaultMessage: 'Operation Error',
+  },
 });

@@ -1,47 +1,93 @@
 const ipcMain = require('electron').ipcMain;
 const { SerialPort, ReadlineParser } = require('serialport');
 
-const sendSerialPorts = async (mainWindow) => {
-  try {
-    const ports = await SerialPort.list();
-    mainWindow.webContents.send('serial-ports', ports);
-  } catch (err) {
-    console.log(err);
-  }
-}
+let portsForwardingInterval;
+let activePort;
+const getPortsForwardingInterval = (mainWindow) => (
+  setInterval(async () => {
+    if (!mainWindow) return;
+    try {
+      const ports = await SerialPort.list();
+      mainWindow?.webContents.send('serial-ports', ports);
+    } catch (error) {
+      throw error;
+    }
+  }, 2000));
 
-const connectPortListener = (mainWindow) => {
+const portConnectionHandlers = (mainWindow) => {
   ipcMain.handle('connect_serial_port', async (evt, args) => {
     try {
       const { path } = args;
       const baudRate = 115200;
-  
-      // Wrap the callback function in a Promise
-      const result = await new Promise((resolve, reject) => {
-        const port = new SerialPort({ path, baudRate }, (err) => {
-          if (err) {
-            reject(err); // Reject the promise if there is an error
-          } else {
-            resolve(port); // Resolve the promise with the value of port.isOpen
+      const connectedPort = await new Promise((res, rej) => {
+        const port = new SerialPort(
+          { path, baudRate },
+          (err) => {
+            if (err) rej(err);
+            else res(port);
           }
+        );
+        port.on('open', () => {
+          port.write('restart');
         });
       });
       const parser = new ReadlineParser();
-      result.pipe(parser);
+      connectedPort.pipe(parser);
       parser.on('data', (data) => {
         mainWindow.webContents.send('serial-data', data);
       });
-      console.log(result.isOpen); // Log the result after the async operations complete
-      return result.isOpen; // Return the result to the caller
+      activePort = connectedPort;
+      return {
+        isOpen: connectedPort.isOpen
+      };
     } catch (error) {
-      console.error('An error occurred:', error);
-      throw error; // Rethrow the error to the caller or handle it appropriately
+      throw error;
     }
   });
+
+  ipcMain.handle('disconnect_serial_port', async (evt, args) => {
+    try {
+      await new Promise((res, rej) => {
+        activePort.close((err) => {
+          if (err) rej(err);
+          else res('disconnect Complete');
+        });
+      });
+      return { isDisconnected: true };
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('send_msg_to_port', async (evt, args) => {
+    try {
+      await new Promise((res, rej) => {
+        activePort.write(JSON.stringify(args), (err) => {
+          if (err) rej(err);
+          else res('Command Sent');
+        });
+      });
+      return { success: true };
+    } catch (error) {
+      throw error;
+    }
+  });
+  return activePort;
 };
 
+const runHandlers = (mainWindow) => {
+  portsForwardingInterval = getPortsForwardingInterval(mainWindow);
+  portConnectionHandlers(mainWindow);
+};
+
+const destroyHandlers = () => {
+  if (activePort?.isOpen) activePort.close();
+  const channels = ['connect_serial_port', 'disconnect_serial_port', 'send_msg_to_port'];
+  channels.forEach((channel) => { ipcMain.removeHandler(channel);});
+  clearInterval(portsForwardingInterval);
+};
 
 module.exports = {
-  sendSerialPorts,
-  connectPortListener,
+  runHandlers,
+  destroyHandlers,
 };

@@ -29,6 +29,7 @@ const a11yProps = (index) => ({
 });
 
 function Content({
+  loadData,
   update,
   initialValues,
 }) {
@@ -63,6 +64,7 @@ function Content({
         update({ data: { ...config }, fileName: 'config' }),
         update({ data: { ...credential }, fileName: 'credential' }),
       ]);
+      loadData();
       setSnackbar({
         children: <FormattedMessage {...messages.snackBarSuccess} />, severity: 'success',
       });

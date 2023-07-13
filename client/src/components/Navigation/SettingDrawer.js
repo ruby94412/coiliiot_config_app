@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Drawer,
   Box,
@@ -7,15 +8,18 @@ import {
   ButtonGroup,
   Button,
 } from '@mui/material';
+import { connect } from 'react-redux';
 import {
   HighlightOff,
   LightMode,
   DarkMode,
 } from '@mui/icons-material';
+import { writeLocalData } from 'slice/data';
 import { FormattedMessage } from 'react-intl';
 import messages from '../../hocs/Locale/Messages/Navigation/SettingDrawer';
 
 function SettingDrawer({
+  writeLocalData,
   toggleDrawer,
   isDrawerOpen,
   setThemeMode,
@@ -24,13 +28,17 @@ function SettingDrawer({
   themeMode,
   anchor,
 }) {
+  const [appSetting, setAppSetting] = useState({});
+  useEffect(() => {
+    setAppSetting({ locale, mode: themeMode });
+  }, [locale, themeMode]);
   const handleModeChange = (mode) => () => {
     setThemeMode(mode);
-    localStorage.setItem('mode', mode);
+    writeLocalData({ data: { ...appSetting, mode }, fileName: 'appSetting' });
   };
   const handleLocaleChange = (locale) => () => {
     setLocale(locale);
-    localStorage.setItem('locale', locale);
+    writeLocalData({ data: { ...appSetting, locale }, fileName: 'appSetting' });
   };
   const boxStyle = anchor === 'right' ? { width: 300 } : {};
   return (
@@ -98,4 +106,8 @@ function SettingDrawer({
   );
 }
 
-export default SettingDrawer;
+const mapStateToProps = () => ({});
+
+export default connect(mapStateToProps, {
+  writeLocalData,
+})(SettingDrawer);

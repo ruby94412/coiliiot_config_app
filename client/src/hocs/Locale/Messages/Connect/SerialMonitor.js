@@ -19,8 +19,12 @@ export default defineMessages({
     id: `${scope}.restartConsoleButton`,
     defaultMessage: 'Restart Console',
   },
-  notConnectedHint: {
-    id: `${scope}.notConnectedHint`,
+  clearLogsButton: {
+    id: `${scope}.clearLogsButton`,
+    defaultMessage: 'Clear Logs',
+  },
+  noLogsHint: {
+    id: `${scope}.noLogsHint`,
     defaultMessage: 'No Device Connected Yet, No logs',
   },
 });

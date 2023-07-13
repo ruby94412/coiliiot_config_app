@@ -14,4 +14,13 @@ const readAndWrite = () => {
   });
 };
 
-module.exports = { readAndWrite };
+const runHandlers = () => {
+  readAndWrite();
+};
+
+const destroyHandlers = () => {
+  ipcMain.removeHandler('read_local_data');
+  ipcMain.removeHandler('write_data_to_local');
+};
+
+module.exports = { runHandlers, destroyHandlers };

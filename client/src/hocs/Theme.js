@@ -1,8 +1,16 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
+import dataService from 'services/dataService';
 
 const withTheme = (Child) => function withThemeHook(props) {
-  const [themeMode, setThemeMode] = useState(localStorage.getItem('mode') || 'light');
+  const [themeMode, setThemeMode] = useState('dark');
+  useEffect(() => {
+    dataService?.readLocalData({ fileName: 'appSetting' })
+      ?.then((res) => {
+        const setting = JSON.parse(res);
+        setThemeMode(setting?.mode || 'light');
+      });
+  }, []);
   const getTheme = () => createTheme({
     palette: {
       mode: themeMode,

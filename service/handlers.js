@@ -2,12 +2,16 @@ const localDataHandler = require('./localDataHandler');
 const serialPortHandler = require('./serialPortHandler');
 
 const runHandlers = (mainWindow) => {
-  localDataHandler.readAndWrite();
-
-  setInterval(() => {
-    serialPortHandler.sendSerialPorts(mainWindow);
-  }, 2000);
-  serialPortHandler.connectPortListener(mainWindow);
+  localDataHandler.runHandlers();
+  serialPortHandler.runHandlers(mainWindow);
 }
 
-module.exports = runHandlers;
+const distroyHandlers = () => {
+  localDataHandler.destroyHandlers();
+  serialPortHandler.destroyHandlers();
+};
+
+module.exports = {
+  runHandlers,
+  distroyHandlers,
+};

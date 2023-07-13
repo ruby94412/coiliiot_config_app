@@ -1,14 +1,12 @@
-const { app, BrowserWindow, screen: electronScreen, ipcMain } = require('electron');
+const { app, BrowserWindow, screen: electronScreen } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
-const runHandlers = require('./service/handlers');
+const { runHandlers, distroyHandlers } = require('./service/handlers');
 
 const createMainWindow = () => {
   let mainWindow = new BrowserWindow({
-    width: electronScreen.getPrimaryDisplay().workArea.width / 2,
-    height: electronScreen.getPrimaryDisplay().workArea.height / 2,
-    // width: 1000,
-    // height: 800,
+    width: Math.max(electronScreen.getPrimaryDisplay().workArea.width / 2, 1000),
+    height: Math.max(electronScreen.getPrimaryDisplay().workArea.height / 2, 800),
     show: false,
     backgroundColor: 'white',
     webPreferences: {
@@ -16,6 +14,7 @@ const createMainWindow = () => {
       worldSafeExecuteJavaScript: true,
       contextIsolation: true,
     },
+    title: 'Coiliiot Config',
     icon: path.join(__dirname, './img/icon.ico'),
   });
   const startURL = isDev
@@ -27,7 +26,9 @@ const createMainWindow = () => {
 
   mainWindow.once('ready-to-show', () => mainWindow.show());
 
-  mainWindow.on('closed', () => {
+  mainWindow.on('closed', (e) => {
+    // e.preventDefault();
+    distroyHandlers();
     mainWindow = null;
   });
 
@@ -39,7 +40,6 @@ const createMainWindow = () => {
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
-
   runHandlers(mainWindow);
 };
 

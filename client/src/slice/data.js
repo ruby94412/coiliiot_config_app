@@ -27,6 +27,22 @@ export const connectPort = createAsyncThunk(
   },
 );
 
+export const disconnectPort = createAsyncThunk(
+  'data/disconnectPort',
+  async (data) => {
+    const res = await dataService.disconnectPort(data);
+    return res;
+  },
+);
+
+export const sendMsgToPort = createAsyncThunk(
+  'data/sendMsgToPort',
+  async (data) => {
+    const res = await dataService.sendMsgToPort(data);
+    return res;
+  },
+);
+
 export const serialPortsListener = createAsyncThunk(
   'data/serialPortsListener',
   (cb) => {
@@ -34,12 +50,26 @@ export const serialPortsListener = createAsyncThunk(
   },
 );
 
+export const serialDataListener = createAsyncThunk(
+  'data/serialDataListener',
+  (cb) => {
+    dataService.serialDataListener(cb);
+  },
+);
+
 const dataSlice = createSlice({
-  name: 'deviceInfo',
+  name: 'credentialAndConfig',
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(writeLocalData.fulfilled, (state, action) => ({ ...action.payload }));
+      .addCase(
+        readLocalData.fulfilled,
+        (state, action) => {
+          const { fileName } = action.meta.arg;
+          if (fileName === 'credential') return ({ ...state, credential: JSON.parse(action.payload) });
+          return ({ ...state, ...JSON.parse(action.payload) });
+        },
+      );
   },
 });
 

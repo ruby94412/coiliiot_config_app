@@ -34,7 +34,7 @@
   "coiliiot.app.config.configContent.serialTabLabel": "Serial",
   "coiliiot.app.config.configContent.networkTabLabel": "Network",
   "coiliiot.app.config.configContent.cancelButton": "Cancel",
-  "coiliiot.app.config.configContent.submitButton": "Submit",
+  "coiliiot.app.config.configContent.submitButton": "Save",
   "coiliiot.app.config.configContent.resetButton": "Reset",
   "coiliiot.app.config.configContent.autoPollLabel": "Data Auto Polling",
   "coiliiot.app.config.configContent.dataConvertLabel": "Converting Data",
@@ -135,11 +135,15 @@
   
   "coiliiot.app.connect.connectOperation.portSelectLabel": "Port",
   "coiliiot.app.connect.connectOperation.connectButton": "Connect",
+  "coiliiot.app.connect.connectOperation.disconnectButton": "Disconnect",
+  "coiliiot.app.connect.connectOperation.snackBarSuccess": "Operation Success",
+  "coiliiot.app.connect.connectOperation.snackBarError": "Operation Error",
 
   "coiliiot.app.connect.serialMonitor.serialMonitorLabel": "Serial Monitor",
   "coiliiot.app.connect.serialMonitor.applyConfigButton": "Apply Config",
   "coiliiot.app.connect.serialMonitor.resetConfigButton": "Reset Config",
   "coiliiot.app.connect.serialMonitor.restartConsoleButton": "Restart Console",
-  "coiliiot.app.connect.serialMonitor.notConnectedHint": "No Device Connected Yet, No logs"
+  "coiliiot.app.connect.serialMonitor.clearLogsButton": "Clear Logs",
+  "coiliiot.app.connect.serialMonitor.noLogsHint": "No logs"
 }
 
