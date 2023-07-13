@@ -8,7 +8,7 @@
     "start:react": "cd client && npm start",
     "build": "cd client && npm run build",
     "build-mac": "electron-packager . --overwrite \"Coiliiot Config\" --platform=darwin --icon=./img/blue_logo.icns --arch=arm64 --prune=true --out=build",
-    "create-dmg": "electron-installer-dmg \"./build/Coiliiot Config-darwin-arm64/Coiliiot Config.app\" \"Coiliiot Config\" --overwrite",
+    "create-dmg": "electron-installer-dmg \"./build/Coiliiot Config-darwin-arm64/Coiliiot Config.app\" \"Coiliiot Config\" --icon=./img/blue_logo.icns  --overwrite",
     "build-win": "electron-packager . --overwrite --platform=win32 --icon=./img/icon.ico --arch=x64  --prune=true --out=build",
     "create-installer": "node createWinInstaller.js",
     "electron-build": "electron-builder"

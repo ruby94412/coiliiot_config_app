@@ -60,50 +60,46 @@ function SerialMonitor({
 
   const handleApply = () => {
     setLoadings((pre) => ({ ...pre, apply: true }));
-    Promise.all([
-      sendMsgToPort({ type: 1, data: config }),
-      sendMsgToPort({ type: 3, data: credential }),
-    ]).then((res) => {
-      const err = res[0].error || res[1].error;
-      if (err) {
-        setErrorMsg(err.error.message);
-        setSnackbar({
-          children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
-        });
-      } else {
-        setSnackbar({
-          children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
-        });
-      }
-    }).finally(() => {
-      setTimeout(() => {
-        setLoadings((pre) => ({ ...pre, apply: false }));
-      }, 2000);
-    });
+    sendMsgToPort({ type: 1, data: { config, credential } })
+      .then((res) => {
+        const err = res.error;
+        if (err) {
+          setErrorMsg(err.error.message);
+          setSnackbar({
+            children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
+          });
+        } else {
+          setSnackbar({
+            children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
+          });
+        }
+      }).finally(() => {
+        setTimeout(() => {
+          setLoadings((pre) => ({ ...pre, apply: false }));
+        }, 2000);
+      });
   };
 
   const handleReset = () => {
     setLoadings((pre) => ({ ...pre, reset: true }));
-    Promise.all([
-      sendMsgToPort({ type: 2 }),
-      sendMsgToPort({ type: 4 }),
-    ]).then((res) => {
-      const err = res[0].error || res[1].error;
-      if (err) {
-        setErrorMsg(err.error.message);
-        setSnackbar({
-          children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
-        });
-      } else {
-        setSnackbar({
-          children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
-        });
-      }
-    }).finally(() => {
-      setTimeout(() => {
-        setLoadings((pre) => ({ ...pre, reset: false }));
-      }, 2000);
-    });
+    sendMsgToPort({ type: 2 })
+      .then((res) => {
+        const err = res.error;
+        if (err) {
+          setErrorMsg(err.error.message);
+          setSnackbar({
+            children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
+          });
+        } else {
+          setSnackbar({
+            children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
+          });
+        }
+      }).finally(() => {
+        setTimeout(() => {
+          setLoadings((pre) => ({ ...pre, reset: false }));
+        }, 2000);
+      });
   };
 
   const handleReboot = () => {
