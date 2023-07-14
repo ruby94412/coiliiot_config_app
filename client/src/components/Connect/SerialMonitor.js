@@ -43,12 +43,10 @@ function SerialMonitor({
   };
 
   useEffect(() => {
-    if (connected) {
-      serialDataListener((data) => {
-        setLogs((pre) => (`${pre}${pre ? '\n' : ''}${data}`));
-      });
-    }
-  }, [connected]);
+    serialDataListener((data) => {
+      setLogs((pre) => (`${pre}${pre ? '\n' : ''}${data}`));
+    });
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
