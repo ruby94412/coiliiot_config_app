@@ -11,7 +11,8 @@
    "no-plusplus": "off",
    "no-bitwise": "off",
    "import/no-extraneous-dependencies": "off",
-   "react/jsx-no-useless-fragment": "off"
+   "react/jsx-no-useless-fragment": "off",
+   "linebreak-style": 0
   },
   "env": {
     "node": true,
