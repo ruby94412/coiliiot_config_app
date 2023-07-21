@@ -125,7 +125,6 @@ function Content({
           <Tab label={<FormattedMessage {...messages.serialTabLabel} />} {...a11yProps(1)} />
           <Tab label={<FormattedMessage {...messages.networkTabLabel} />} {...a11yProps(2)} />
           <Tab label={<FormattedMessage {...messages.autoPollLabel} />} {...a11yProps(3)} />
-          <Tab label={<FormattedMessage {...messages.dataConvertLabel} />} {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TransitionPanel index={tabIndex} sx={{ p: 3 }}>
@@ -151,13 +150,6 @@ function Content({
           <AutoPoll
             initVals={initialValues?.autoPollConfigs}
             ref={(el) => { formRef.autoPoll.current = el; }}
-          />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={4}>
-          <DataConversion
-            networkForm={formRef.network.current}
-            autoPollForm={formRef.autoPoll.current}
-            initVals={initialValues?.conversionConfigs}
           />
         </TabPanel>
       </TransitionPanel>

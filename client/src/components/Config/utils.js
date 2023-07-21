@@ -191,10 +191,10 @@ export const getInitialValues = (originalConfig, originalCredential) => {
     const index = origin.networkId;
     const defaultConfig = rst.networkConfigs[index];
     const {
-      networkId, type, serialId, conversionConfigs, customizedJson, ...other
+      networkId, type, serialId, ...other
     } = origin;
     rst.networkConfigs[index] = {
-      ...defaultConfig, networkId, type, serialId, enabled: true, conversionConfigs, customizedJson,
+      ...defaultConfig, networkId, type, serialId, enabled: true,
     };
     const typeArr = ['socket', 'aliyun', 'mqtt'];
     rst.networkConfigs[index][typeArr[type]] = other;
@@ -373,13 +373,13 @@ export const handleFormDataSubmit = (values) => {
   values.networkConfigs.forEach((ele) => {
     if (ele.enabled) {
       const {
-        enabled, serialId, type, networkId, conversionConfigs, customizedJson,
+        enabled, serialId, type, networkId,
       } = ele;
       const typeArr = ['socket', 'aliyun', 'mqtt'];
       const detail = ele[typeArr[type]];
       config.networkSummary[typeArr[type]].push(networkId);
       const temp = {
-        enabled, serialId, type, networkId, conversionConfigs, customizedJson, ...detail,
+        enabled, serialId, type, networkId, ...detail,
       };
       Object.keys(temp).forEach((key) => temp[key] === undefined && delete temp[key]);
       config.networkConfigs.push(temp);
