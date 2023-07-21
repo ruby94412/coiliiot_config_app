@@ -15,6 +15,20 @@
     "dmg": {
       "title": "Coiliiot Config",
       "icon": "./img/blue_logo.icns"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "./img/icon.ico"
+    },
+    "nsis": {
+      "installerIcon": "./img/icon.ico",
+      "uninstallerIcon": "./img/icon.ico",
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "license": "./build/license_zh.txt",
+      "installerLanguages": ["zh_CN"],
+      "language": "0x0804",
+      "include": "./build/installer.nsh"
     }
   },
   "scripts": {
