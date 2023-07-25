@@ -7,9 +7,12 @@ contextBridge.exposeInMainWorld('api', {
   connectPort: (args) => ipcRenderer.invoke('connect_serial_port', args),
   disconnectPort: () => ipcRenderer.invoke('disconnect_serial_port'),
   sendMsgToPort: (args) => ipcRenderer.invoke('send_msg_to_port', args),
+  enableUpdate: () => ipcRenderer.invoke('enable_update'),
+  downloadUpdate: () => ipcRenderer.invoke('download_update'),
 
   serialPortsListener: (cb) => ipcRenderer.on('serial-ports', (e, data) => cb(data)),
   serialDataListener: (cb) => ipcRenderer.on('serial-data', (e, data) => cb(data)),
+  updateListener: (cb) => ipcRenderer.on('auto-update', (e, data) => cb(data)),
   // Send Methods
   testSend: (args) => ipcRenderer.send('test-send', args),
   // Receive Methods

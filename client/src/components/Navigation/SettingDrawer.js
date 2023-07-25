@@ -7,15 +7,17 @@ import {
   IconButton,
   ButtonGroup,
   Button,
+  LinearProgress,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { connect } from 'react-redux';
 import {
   HighlightOff,
   LightMode,
   DarkMode,
 } from '@mui/icons-material';
-import { writeLocalData } from 'slice/data';
-import { FormattedMessage } from 'react-intl';
+import { writeLocalData, downloadUpdate } from 'slice/data';
+import { FormattedMessage, useIntl } from 'react-intl';
 import messages from '../../hocs/Locale/Messages/Navigation/SettingDrawer';
 
 function SettingDrawer({
@@ -27,8 +29,17 @@ function SettingDrawer({
   locale,
   themeMode,
   anchor,
+  updateInfo,
+  downloadUpdate,
 }) {
   const [appSetting, setAppSetting] = useState({});
+  const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [version, setVersion] = useState('');
+  const [latest, setLatest] = useState('');
+  const [downloading, setDownloading] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [downloaded, setDownloaded] = useState(false);
+  const intl = useIntl();
   useEffect(() => {
     setAppSetting({ locale, mode: themeMode });
   }, [locale, themeMode]);
@@ -41,6 +52,58 @@ function SettingDrawer({
     writeLocalData({ data: { ...appSetting, locale }, fileName: 'appSetting' });
   };
   const boxStyle = anchor === 'right' ? { width: 300 } : {};
+
+  useEffect(() => {
+    if (updateInfo?.type === 'progress') {
+      setDownloadProgress(updateInfo.percent);
+    }
+    if (updateInfo?.type === 'info') {
+      setLatest((prev) => (updateInfo?.version || prev));
+      setVersion(updateInfo?.currentVersion?.version);
+      setUpdateAvailable(updateInfo?.updateAvailable);
+    }
+    if (updateInfo?.type === 'dowloaded') {
+      setTimeout(() => {
+        setDownloaded(true);
+      }, 2000);
+    }
+  }, [updateInfo]);
+
+  const handleDownload = () => {
+    setDownloading(true);
+    downloadUpdate().finally(() => {
+      setTimeout(() => {
+        setDownloading(false);
+        setDownloadProgress(0);
+      }, 2000);
+    });
+  };
+
+  const renderDownload = () => (
+    <>
+      <LoadingButton
+        loading={downloading}
+        onClick={handleDownload}
+        variant="contained"
+        style={{ width: '100%' }}
+      >
+        <FormattedMessage {...messages.downloadUpdate} />
+      </LoadingButton>
+      {downloading && (
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ width: '100%', mr: 1 }}>
+          <LinearProgress variant="determinate" value={downloadProgress} color="primary" />
+        </Box>
+        <Box sx={{ minWidth: 35 }}>
+          <Typography variant="caption">
+            {`${Math.round(downloadProgress)}%`}
+          </Typography>
+        </Box>
+      </Box>
+      )}
+    </>
+  );
+
   return (
     <Drawer
       anchor={anchor}
@@ -100,8 +163,41 @@ function SettingDrawer({
             </Button>
           </ButtonGroup>
         </Box>
+        <Box sx={{ p: 2 }}>
+          <Typography
+            variant="caption"
+            display="block"
+            gutterBottom
+          >
+            <FormattedMessage {...messages.versionTitle} />
+            {`  v${version}`}
+          </Typography>
+          <Typography
+            color={updateAvailable && 'error'}
+            variant="caption"
+            display="block"
+            gutterBottom
+          >
+            {
+              updateAvailable
+                ? `${intl.formatMessage(messages.updateReminderText)} (v${latest}${downloaded ? ` ${intl.formatMessage(messages.downloaded)}` : ''})`
+                : intl.formatMessage(messages.upToDateText)
+            }
+          </Typography>
+          {
+            updateAvailable && !downloaded && renderDownload()
+          }
+          { downloaded && (
+            <Typography
+              variant="caption"
+              display="block"
+              gutterBottom
+            >
+              <FormattedMessage {...messages.updateConfirmedText} />
+            </Typography>
+          )}
+        </Box>
       </Box>
-
     </Drawer>
   );
 }
@@ -110,4 +206,5 @@ const mapStateToProps = () => ({});
 
 export default connect(mapStateToProps, {
   writeLocalData,
+  downloadUpdate,
 })(SettingDrawer);

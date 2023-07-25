@@ -1,7 +1,7 @@
 {
   "name": "coiliiot_config",
   "author": "Coiliiot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "configuration app for data transfer unit",
   "main": "main.js",
   "build": {
@@ -9,7 +9,10 @@
     "productName": "Coiliiot Config",
     "copyright": "Copyright © year Coiliiot",
     "mac": {
-      "target": ["dmg"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "icon": "./img/blue_logo.icns"
     },
     "dmg": {
@@ -44,6 +47,10 @@
     "type": "git",
     "url": "git+https://github.com/ruby94412/coiliiot_config_app.git"
   },
+  "publish": {
+    "provider": "github",
+    "url": "https://github.com/ruby94412/coiliiot_config_app"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ruby94412/coiliiot_config_app/issues"
@@ -62,6 +69,7 @@
   },
   "dependencies": {
     "electron-is-dev": "^2.0.0",
+    "electron-updater": "^6.1.1",
     "serialport": "^11.0.0"
   }
 }

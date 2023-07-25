@@ -1,23 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   AppBar,
   Box,
+  Badge,
   Toolbar,
   IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
-  // Container,
-  // Avatar,
-  // Button,
-  // Tooltip,
-  // Drawer,
 } from '@mui/material';
 import {
   Settings as SettingsIcon,
 } from '@mui/icons-material';
+import { updateListener } from 'slice/data';
 import { FormattedMessage } from 'react-intl';
 import Logo from 'components/common/Logo';
 import messages from 'hocs/Locale/Messages/Navigation';
@@ -29,10 +26,18 @@ function Navigation({
   locale,
   themeMode,
   setPageIndex,
+  updateListener,
 }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [anchorElDrawer, setAnchorElDrawer] = useState('right');
+  const [updateInfo, setUpdateInfo] = useState();
 
+  useEffect(() => {
+    updateListener((info) => {
+      console.log(info);
+      setUpdateInfo(info);
+    });
+  }, []);
   const toggleDrawer = (open, anchor = '') => (event) => {
     if (anchor) setAnchorElDrawer(anchor);
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -69,7 +74,9 @@ function Navigation({
               color="inherit"
               onClick={toggleDrawer(true, 'right')}
             >
-              <SettingsIcon />
+              <Badge color="error" variant="dot" invisible={!updateInfo?.updateAvailable}>
+                <SettingsIcon />
+              </Badge>
             </IconButton>
           </Box>
           <SettingDrawer
@@ -80,6 +87,7 @@ function Navigation({
             setLocale={setLocale}
             locale={locale}
             themeMode={themeMode}
+            updateInfo={updateInfo}
           />
         </Toolbar>
       </AppBar>
@@ -88,4 +96,6 @@ function Navigation({
 }
 
 const mapStateToProps = () => ({});
-export default connect(mapStateToProps, {})(Navigation);
+export default connect(mapStateToProps, {
+  updateListener,
+})(Navigation);

@@ -8,6 +8,13 @@
   "coiliiot.app.navigation.settingDrawer.modeLight": "亮屏",
   "coiliiot.app.navigation.settingDrawer.modeDark": "暗屏",
   "coiliiot.app.navigation.settingDrawer.languageTitle": "语言",
+  "coiliiot.app.navigation.settingDrawer.versionTitle": "版本",
+  "coiliiot.app.navigation.settingDrawer.enableUpdate": "重启后更新",
+  "coiliiot.app.navigation.settingDrawer.upToDateText": "当前是最新版本",
+  "coiliiot.app.navigation.settingDrawer.updateReminderText": "有版本更新",
+  "coiliiot.app.navigation.settingDrawer.updateConfirmedText": "将在下次启动程序前应用更新",
+  "coiliiot.app.navigation.settingDrawer.downloadUpdate": "下载更新",
+  "coiliiot.app.navigation.settingDrawer.downloaded": "已下载",
 
   "coiliiot.app.common.confirmDialog.cancelButton": "取消",
   "coiliiot.app.common.confirmDialog.confirmButton": "确认",
@@ -30,6 +37,7 @@
 
   "coiliiot.app.config.configContent.snackBarSuccess": "数据已更新",
   "coiliiot.app.config.configContent.snackBarError": "更新失败",
+  "coiliiot.app.config.configContent.productTabLabel": "选择型号",
   "coiliiot.app.config.configContent.basicTabLabel": "基本参数",
   "coiliiot.app.config.configContent.serialTabLabel": "串口配置",
   "coiliiot.app.config.configContent.networkTabLabel": "网络配置",
@@ -133,6 +141,9 @@
   "coiliiot.app.config.dataAccordion.commandDetail": "命令信息",
   "coiliiot.app.config.dataAccordion.customizeJsonTitle": "自定义数据格式",
   "coiliiot.app.config.dataAccordion.addPropertyButton": "添加属性",
+
+  "coiliiot.app.config.productType.espDTUTitle": "WIFI/以太网 DTU",
+  "coiliiot.app.config.productType.espIOTitle": "IO控制器",
 
   "coiliiot.app.connect.connectOperation.portSelectLabel": "端口",
   "coiliiot.app.connect.connectOperation.connectButton": "连接",

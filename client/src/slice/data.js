@@ -43,6 +43,22 @@ export const sendMsgToPort = createAsyncThunk(
   },
 );
 
+export const enableUpdate = createAsyncThunk(
+  'data/enableUpdate',
+  async () => {
+    const res = await dataService.enableUpdate();
+    return res;
+  },
+);
+
+export const downloadUpdate = createAsyncThunk(
+  'data/downloadUpdate',
+  async () => {
+    const res = await dataService.downloadUpdate();
+    return res;
+  },
+);
+
 export const serialPortsListener = createAsyncThunk(
   'data/serialPortsListener',
   (cb) => {
@@ -57,6 +73,13 @@ export const serialDataListener = createAsyncThunk(
   },
 );
 
+export const updateListener = createAsyncThunk(
+  'data/updateListener',
+  (cb) => {
+    dataService.updateListener(cb);
+  },
+);
+
 const dataSlice = createSlice({
   name: 'credentialAndConfig',
   initialState,
@@ -66,8 +89,30 @@ const dataSlice = createSlice({
         readLocalData.fulfilled,
         (state, action) => {
           const { fileName } = action.meta.arg;
-          if (fileName === 'credential') return ({ ...state, credential: JSON.parse(action.payload) });
-          return ({ ...state, ...JSON.parse(action.payload) });
+          switch (fileName) {
+            case 'appSetting':
+              return ({ ...state, appSetting: JSON.parse(action.payload) });
+            case 'credential':
+              return ({ ...state, credential: JSON.parse(action.payload) });
+            case 'config':
+            default:
+              return ({ ...state, ...JSON.parse(action.payload) });
+          }
+        },
+      )
+      .addCase(
+        writeLocalData.fulfilled,
+        (state, action) => {
+          const { fileName, data } = action.meta.arg;
+          switch (fileName) {
+            case 'appSetting':
+              return ({ ...state, appSetting: data });
+            case 'credential':
+              return ({ ...state, credential: data });
+            case 'config':
+            default:
+              return ({ ...state, ...data });
+          }
         },
       );
   },

@@ -3,6 +3,14 @@ const isDev = require('electron-is-dev');
 const path = require('path');
 const { runHandlers, distroyHandlers } = require('./service/handlers');
 
+if (isDev) {
+  Object.defineProperty(app, 'isPackaged', {
+    get() {
+      return true;
+    }
+  });
+}
+
 const createMainWindow = () => {
   let mainWindow = new BrowserWindow({
     width: Math.max(electronScreen.getPrimaryDisplay().workArea.width / 2, 1000),
@@ -40,6 +48,7 @@ const createMainWindow = () => {
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
+  mainWindow.webContents.openDevTools();
   runHandlers(mainWindow);
 };
 

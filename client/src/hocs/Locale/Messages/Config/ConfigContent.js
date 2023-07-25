@@ -15,6 +15,10 @@ export default defineMessages({
     id: `${scope}.credentialTabLabel`,
     defaultMessage: 'Credential',
   },
+  productTabLabel: {
+    id: `${scope}.productTabLabel`,
+    defaultMessage: 'Product',
+  },
   basicTabLabel: {
     id: `${scope}.basicTabLabel`,
     defaultMessage: 'Basic',

@@ -20,7 +20,7 @@ import Platform from './Platform';
 import Serial from './Serial';
 import Basic from './Basic';
 import AutoPoll from './AutoPoll';
-import DataConversion from './DataConversion';
+import ProductType from './ProductType';
 
 const a11yProps = (index) => ({
   id: `simple-tab-${index}`,
@@ -121,32 +121,36 @@ function Content({
           aria-label="basic tabs"
           variant="scrollable"
         >
-          <Tab label={<FormattedMessage {...messages.basicTabLabel} />} {...a11yProps(0)} />
-          <Tab label={<FormattedMessage {...messages.serialTabLabel} />} {...a11yProps(1)} />
-          <Tab label={<FormattedMessage {...messages.networkTabLabel} />} {...a11yProps(2)} />
-          <Tab label={<FormattedMessage {...messages.autoPollLabel} />} {...a11yProps(3)} />
+          <Tab label={<FormattedMessage {...messages.productTabLabel} />} {...a11yProps(0)} />
+          <Tab label={<FormattedMessage {...messages.basicTabLabel} />} {...a11yProps(1)} />
+          <Tab label={<FormattedMessage {...messages.serialTabLabel} />} {...a11yProps(2)} />
+          <Tab label={<FormattedMessage {...messages.networkTabLabel} />} {...a11yProps(3)} />
+          <Tab label={<FormattedMessage {...messages.autoPollLabel} />} {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TransitionPanel index={tabIndex} sx={{ p: 3 }}>
         <TabPanel value={tabIndex} index={0}>
+          <ProductType />
+        </TabPanel>
+        <TabPanel value={tabIndex} index={1}>
           <Basic
             initVals={initialValues?.basicConfigs}
             ref={(el) => { formRef.basic.current = el; }}
           />
         </TabPanel>
-        <TabPanel value={tabIndex} index={1}>
+        <TabPanel value={tabIndex} index={2}>
           <Serial
             initVals={initialValues?.serialConfigs}
             ref={(el) => { formRef.serial.current = el; }}
           />
         </TabPanel>
-        <TabPanel value={tabIndex} index={2}>
+        <TabPanel value={tabIndex} index={3}>
           <Platform
             initVals={initialValues?.networkConfigs}
             ref={(el) => { formRef.network.current = el; }}
           />
         </TabPanel>
-        <TabPanel value={tabIndex} index={3}>
+        <TabPanel value={tabIndex} index={4}>
           <AutoPoll
             initVals={initialValues?.autoPollConfigs}
             ref={(el) => { formRef.autoPoll.current = el; }}
