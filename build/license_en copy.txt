@@ -1,0 +1,50 @@
+This Software License Agreement (the "Agreement") is entered into Coiliiot.
+
+WHEREAS, Licensor is the owner of certain proprietary software known as Coiliiot Config(the "Software");
+
+WHEREAS, Licensee desires to obtain a license to use the Software, and Licensor is willing to grant such a license, subject to the terms and conditions set forth herein;
+
+NOW, THEREFORE, in consideration of the mutual promises and covenants contained herein, the parties agree as follows:
+
+LICENSE GRANT
+Licensor hereby grants Licensee a non-exclusive, non-transferable license to use the Software for Coiliiot's internal business purposes in accordance with the terms and conditions set forth in this Agreement.
+
+LICENSE RESTRICTIONS
+2.1 Licensee shall not copy, modify, reverse engineer, decompile, disassemble, or create derivative works of the Software, except as expressly permitted by applicable law.
+
+2.2 Licensee shall not sublicense, lease, lend, or otherwise distribute the Software to any third party without the prior written consent of Licensor.
+
+2.3 Licensee shall not remove, alter, or obscure any copyright notices, trademarks, or other proprietary rights notices of Licensor on or within the Software.
+
+OWNERSHIP
+3.1 Licensor retains all right, title, and interest in and to the Software, including all intellectual property rights therein.
+
+3.2 Licensee acknowledges that this Agreement does not transfer any ownership rights to the Software and that Licensee's use of the Software is solely limited to the license rights granted herein.
+
+SUPPORT AND MAINTENANCE
+Licensor may, at its sole discretion, provide support and maintenance services for the Software, subject to separate terms and fees.
+
+CONFIDENTIALITY
+Licensee agrees to maintain the confidentiality of any proprietary or confidential information disclosed by Licensor related to the Software and not to disclose such information to any third party without the prior written consent of Licensor.
+
+WARRANTY DISCLAIMER
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. LICENSOR DOES NOT WARRANT THAT THE SOFTWARE WILL MEET LICENSEE'S REQUIREMENTS OR THAT ITS OPERATION WILL BE UNINTERRUPTED OR ERROR-FREE.
+
+LIMITATION OF LIABILITY
+IN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. LICENSOR'S TOTAL AGGREGATE LIABILITY FOR ANY CLAIMS RELATED TO THIS AGREEMENT SHALL NOT EXCEED THE AMOUNT OF FEES PAID BY LICENSEE FOR THE SOFTWARE.
+
+TERM AND TERMINATION
+8.1 This Agreement shall commence on the effective date and shall continue until terminated as provided herein.
+
+8.2 Either party may terminate this Agreement upon written notice if the other party materially breaches any provision of this Agreement and fails to cure such breach within thirty (30) days of receiving written notice of the breach.
+
+8.3 Upon termination of this Agreement, Licensee shall immediately cease all use of the Software and destroy all copies of the Software in its possession or control.
+
+GENERAL
+9.1 This Agreement constitutes the entire agreement between the parties regarding the subject matter hereof and supersedes all prior or contemporaneous agreements, understandings, and proposals, whether oral or written.
+
+9.2 This Agreement shall be governed by and construed in accordance with the laws of [Jurisdiction]. Any disputes arising under or in connection with this Agreement shall be subject to the exclusive jurisdiction of the courts located within [Jurisdiction].
+
+9.3 Any waiver, modification, or amendment of any provision of this Agreement shall be effective only if in writing and signed by both parties.
+
+IN WITNESS WHEREOF, the parties have executed this Software License Agreement as of the effective date.

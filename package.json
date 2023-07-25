@@ -8,17 +8,6 @@
     "appId": "com.example.coiliiotConfig",
     "productName": "Coiliiot Config",
     "copyright": "Copyright © year Coiliiot",
-    "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ],
-      "icon": "./img/blue_logo.icns"
-    },
-    "dmg": {
-      "title": "Coiliiot Config",
-      "icon": "./img/blue_logo.icns"
-    },
     "win": {
       "target": ["nsis"],
       "icon": "./img/icon.ico"
@@ -28,9 +17,8 @@
       "uninstallerIcon": "./img/icon.ico",
       "allowToChangeInstallationDirectory": true,
       "oneClick": false,
-      "license": "./build/license_zh.txt",
-      "installerLanguages": ["zh_CN"],
-      "language": "0x0804",
+      "license": "./build/license_en.txt",
+      "installerLanguages": ["en_US"],
       "include": "./build/installer.nsh"
     }
   },

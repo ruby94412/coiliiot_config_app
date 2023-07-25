@@ -18,6 +18,7 @@ import {
 } from '@mui/icons-material';
 import { writeLocalData, downloadUpdate } from 'slice/data';
 import { FormattedMessage, useIntl } from 'react-intl';
+import ErrorModal from 'components/common/ErrorModal';
 import messages from '../../hocs/Locale/Messages/Navigation/SettingDrawer';
 
 function SettingDrawer({
@@ -39,6 +40,7 @@ function SettingDrawer({
   const [downloading, setDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [downloaded, setDownloaded] = useState(false);
+  const [errMsg, setErrMsg] = useState(null);
   const intl = useIntl();
   useEffect(() => {
     setAppSetting({ locale, mode: themeMode });
@@ -62,21 +64,27 @@ function SettingDrawer({
       setVersion(updateInfo?.currentVersion?.version);
       setUpdateAvailable(updateInfo?.updateAvailable);
     }
-    if (updateInfo?.type === 'dowloaded') {
+    if (updateInfo?.type === 'downloaded') {
       setTimeout(() => {
         setDownloaded(true);
+        setDownloading(false);
+        setDownloadProgress(0);
       }, 2000);
     }
   }, [updateInfo]);
 
   const handleDownload = () => {
     setDownloading(true);
-    downloadUpdate().finally(() => {
-      setTimeout(() => {
-        setDownloading(false);
-        setDownloadProgress(0);
-      }, 2000);
-    });
+    downloadUpdate()
+      .catch((err) => {
+        setErrMsg(JSON.stringify(err));
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setDownloading(false);
+          setDownloadProgress(0);
+        }, 2000);
+      });
   };
 
   const renderDownload = () => (
@@ -198,6 +206,11 @@ function SettingDrawer({
           )}
         </Box>
       </Box>
+      <ErrorModal
+        errorMessage={errMsg}
+        isErrorModalOpen={!!errMsg}
+        onClose={() => { setErrMsg(null); }}
+      />
     </Drawer>
   );
 }

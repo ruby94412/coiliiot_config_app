@@ -4,7 +4,7 @@ const isDev = require('electron-is-dev');
 
 const runHandlers = (mainWindow) => {
   autoUpdater.autoDownload = false;
-  autoUpdater.autoInstallOnAppQuit = false;
+  autoUpdater.autoInstallOnAppQuit = true;
 
   if (isDev) {
     autoUpdater.setFeedURL({
@@ -46,10 +46,13 @@ const runHandlers = (mainWindow) => {
     });
   });
 
-  ipcMain.handle('download_update', () => {
-    autoUpdater.autoDownload = true;
-    autoUpdater.autoInstallOnAppQuit = true;
-    return autoUpdater.checkForUpdates();
+  ipcMain.handle('download_update', async () => {
+    try {
+      const res = autoUpdater.downloadUpdate();
+      return res;
+    } catch (err) {
+      return err;
+    }
   });
 
   
