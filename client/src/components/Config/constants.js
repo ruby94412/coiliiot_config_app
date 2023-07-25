@@ -12,8 +12,9 @@ export const networkIds = [0, 1, 2, 3, 4, 5, 6, 7];
 
 export const networkOptions = [
   { label: 'Socket', value: 0 },
-  { label: <FormattedMessage {...messages.aliyun} />, value: 1 },
   { label: 'MQTT', value: 2 },
+  { label: 'HTTP', value: 3 },
+  { label: <FormattedMessage {...messages.aliyun} />, value: 1 },
 ];
 
 export const basicFields = [
@@ -39,6 +40,7 @@ export const basicFields = [
     propertyName: 'restartSchedule',
     datatype: 'number',
     layout: { xs: 12, md: 6 },
+    endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.minute} /></InputAdornment>,
   },
   {
     label: <FormattedMessage {...messages.restartWhenInternetDisconnected} />,
@@ -78,7 +80,6 @@ export const socketFields = [
   { label: <FormattedMessage {...messages.pulseFrequency} />, propertyName: 'pulseFrequency', datatype: 'number' },
   { label: <FormattedMessage {...messages.host} />, propertyName: 'host', datatype: 'text' },
   { label: <FormattedMessage {...messages.port} />, propertyName: 'port', datatype: 'number' },
-  { label: <FormattedMessage {...messages.autoPollInterval} />, propertyName: 'autoPollInterval', datatype: 'number' },
 ];
 
 export const aliyunFields = [
@@ -159,6 +160,43 @@ export const mqttFields = [
     ],
   },
   { label: <FormattedMessage {...messages.lwtMessage} />, propertyName: 'lwtMessage', datatype: 'text' },
+];
+
+export const httpFields = [
+  {
+    label: <FormattedMessage {...messages.method} />,
+    propertyName: 'method',
+    fieldType: 'radioGroup',
+    radioOptions: ['get', 'post'],
+  },
+  {
+    label: <FormattedMessage {...messages.url} />,
+    propertyName: 'url',
+  },
+  {
+    label: <FormattedMessage {...messages.requestType} />,
+    propertyName: 'requestType',
+    fieldType: 'radioGroup',
+    radioOptions: ['body', 'param'],
+  },
+  {
+    label: <FormattedMessage {...messages.bodyType} />,
+    propertyName: 'bodyType',
+    fieldType: 'radioGroup',
+    radioOptions: ['urlencode', 'json', 'stream'],
+  },
+  {
+    label: <FormattedMessage {...messages.header} />,
+    propertyName: 'header',
+  },
+  {
+    label: <FormattedMessage {...messages.basicUser} />,
+    propertyName: 'basicUser',
+  },
+  {
+    label: <FormattedMessage {...messages.basicPass} />,
+    propertyName: 'basicPass',
+  },
 ];
 
 export const serialFields = [

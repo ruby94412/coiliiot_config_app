@@ -22,7 +22,7 @@ export const renderFields = ({
 }) => {
   const layout = other.layout || { xs: 12, md: 4 };
   const style = other.style || { width: '80%' };
-  const { radioOptions, selectOptions } = other;
+  const { radioOptions, selectOptions, ...rest } = other;
   switch (fieldType) {
     case 'radioGroup':
       return (
@@ -60,6 +60,7 @@ export const renderFields = ({
               value={value}
               name={name}
               onChange={handleChange}
+              {...rest}
             >
               {
                 selectOptions.map((option) => (
@@ -90,7 +91,7 @@ export const renderFields = ({
               name={name}
               onChange={handleChange}
               type={datatype}
-              {...other}
+              {...rest}
             />
           </FormControl>
         </Grid>
@@ -106,8 +107,8 @@ export const getInitialValues = (originalConfig, originalCredential) => {
     config_version: 0,
     autoUpdateEnabled: true,
     restartWhenInternetDisconnected: true,
-    restartSchedule: 3,
-    credential: { ssid: '44', password: '44' },
+    restartSchedule: 720,
+    credential: { ssid: '', password: '' },
   };
   for (let i = 0; i < 3; i++) {
     rst.serialConfigs.push({
@@ -140,7 +141,6 @@ export const getInitialValues = (originalConfig, originalCredential) => {
         host: '',
         port: 8080,
         socketType: 0,
-        autoPollInterval: 1000,
       },
       aliyun: {
         regionId: 'cn-shanghai',
@@ -168,6 +168,15 @@ export const getInitialValues = (originalConfig, originalCredential) => {
         lwtMessage: '',
         qos: 0,
         cleanSession: true,
+      },
+      http: {
+        method: 'get',
+        url: '',
+        requestType: 'body',
+        bodyType: 'urlencode',
+        header: '',
+        basicUser: '',
+        basicPass: '',
       },
       serialId: 0,
     });
@@ -360,7 +369,9 @@ export const handleFormDataSubmit = (values) => {
     serialConfigs: [],
     networkConfigs: [],
     autoPollConfigs: [],
-    networkSummary: { socket: [], aliyun: [], mqtt: [] },
+    networkSummary: {
+      socket: [], aliyun: [], mqtt: [], http: [],
+    },
   };
   const { credential, ...otherBasics } = values.basicConfigs;
   config.basicConfigs = otherBasics;
@@ -375,7 +386,7 @@ export const handleFormDataSubmit = (values) => {
       const {
         enabled, serialId, type, networkId,
       } = ele;
-      const typeArr = ['socket', 'aliyun', 'mqtt'];
+      const typeArr = ['socket', 'aliyun', 'mqtt', 'http'];
       const detail = ele[typeArr[type]];
       config.networkSummary[typeArr[type]].push(networkId);
       const temp = {

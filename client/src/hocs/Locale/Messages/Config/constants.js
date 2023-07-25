@@ -267,4 +267,36 @@ export default defineMessages({
     id: `${scope}.millisecond`,
     defaultMessage: 'millisecond',
   },
+  minute: {
+    id: `${scope}.minute`,
+    defaultMessage: 'minute',
+  },
+  method: {
+    id: `${scope}.method`,
+    defaultMessage: 'Method',
+  },
+  url: {
+    id: `${scope}.url`,
+    defaultMessage: 'URL',
+  },
+  requestType: {
+    id: `${scope}.requestType`,
+    defaultMessage: 'Request Type',
+  },
+  bodyType: {
+    id: `${scope}.bodyType`,
+    defaultMessage: 'Body Type',
+  },
+  header: {
+    id: `${scope}.header`,
+    defaultMessage: 'Header',
+  },
+  basicUser: {
+    id: `${scope}.basicUser`,
+    defaultMessage: 'Basic Auth Username',
+  },
+  basicPass: {
+    id: `${scope}.basicPass`,
+    defaultMessage: 'Basic Auth Password',
+  },
 });

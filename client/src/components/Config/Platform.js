@@ -10,7 +10,7 @@ import TransitionPanel from 'components/common/TransitionPanel';
 import TabPanel from 'components/common/TabPanel';
 import { renderFields } from './utils';
 import {
-  networkIds, networkOptions, aliyunFields, mqttFields, socketFields,
+  networkIds, networkOptions, aliyunFields, mqttFields, socketFields, httpFields,
 } from './constants';
 
 const Platform = forwardRef(({
@@ -33,9 +33,13 @@ const Platform = forwardRef(({
 
   const renderNetwork = (formikProps) => {
     const { type, aliyun } = formikProps.values;
-    let fields; let
-      typeName;
+    let fields;
+    let typeName;
     switch (type) {
+      case 3:
+        fields = httpFields;
+        typeName = 'http';
+        break;
       case 1:
         fields = aliyunFields;
         typeName = 'aliyun';
