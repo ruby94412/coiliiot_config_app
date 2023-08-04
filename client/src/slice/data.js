@@ -91,12 +91,12 @@ const dataSlice = createSlice({
           const { fileName } = action.meta.arg;
           switch (fileName) {
             case 'appSetting':
-              return ({ ...state, appSetting: JSON.parse(action.payload) });
+              return ({ ...state, appSetting: action?.payload || null });
             case 'credential':
-              return ({ ...state, credential: JSON.parse(action.payload) });
+              return ({ ...state, credential: action?.payload || null });
             case 'config':
             default:
-              return ({ ...state, ...JSON.parse(action.payload) });
+              return ({ ...state, ...action?.payload });
           }
         },
       )

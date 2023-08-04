@@ -21,6 +21,12 @@ import { FormattedMessage } from 'react-intl';
 import messages from 'hocs/Locale/Messages/Connect/SerialMonitor';
 import otherMessages from 'hocs/Locale/Messages/Connect/ConnectOperation';
 
+const serialTextStyle = {
+  fontSize: 14,
+  whiteSpace: 'pre-line',
+  lineHeight: '15px',
+  fontFamily: 'Lucida Console, Courier, monospace',
+};
 function SerialMonitor({
   credential,
   config,
@@ -137,7 +143,7 @@ function SerialMonitor({
             />
             <CardContent sx={monitorStyle}>
               <Typography
-                sx={{ fontSize: 14, whiteSpace: 'pre-line' }}
+                sx={serialTextStyle}
                 color={`text.${connected ? 'primary' : 'secondary'}`}
               >
                 {logs || <FormattedMessage {...messages.noLogsHint} />}

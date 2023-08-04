@@ -7,7 +7,7 @@ const withTheme = (Child) => function withThemeHook(props) {
   useEffect(() => {
     dataService?.readLocalData({ fileName: 'appSetting' })
       ?.then((res) => {
-        const setting = JSON.parse(res);
+        const setting = res || null;
         setThemeMode(setting?.mode || 'light');
       });
   }, []);

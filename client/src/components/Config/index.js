@@ -18,8 +18,8 @@ function Config({
       readLocalData({ fileName: 'credential' }),
     ]).then((values) => {
       const temp = getInitialValues(
-        JSON.parse(values[0].payload),
-        JSON.parse(values[1].payload),
+        values[0]?.payload || null,
+        values[1]?.payload || null,
       );
       setInitialValues(temp);
     });

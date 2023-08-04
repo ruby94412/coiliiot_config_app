@@ -8,7 +8,7 @@ const withLocale = (Child) => function withLocalHook(props) {
   useEffect(() => {
     dataService?.readLocalData({ fileName: 'appSetting' })
       ?.then((res) => {
-        const setting = JSON.parse(res);
+        const setting = res || null;
         setLocale(setting?.locale || 'en');
       });
   }, []);

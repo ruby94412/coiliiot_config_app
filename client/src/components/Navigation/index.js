@@ -34,7 +34,6 @@ function Navigation({
 
   useEffect(() => {
     updateListener((info) => {
-      console.log(info);
       setUpdateInfo(info);
     });
   }, []);
