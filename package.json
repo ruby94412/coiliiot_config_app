@@ -22,15 +22,6 @@
     "win": {
       "target": ["nsis"],
       "icon": "./img/icon.ico"
-    },
-    "nsis": {
-      "installerIcon": "./img/icon.ico",
-      "uninstallerIcon": "./img/icon.ico",
-      "allowToChangeInstallationDirectory": true,
-      "oneClick": false,
-      "license": "./build/license_en.txt",
-      "installerLanguages": ["en_US"],
-      "include": "./build/installer.nsh"
     }
   },
   "scripts": {

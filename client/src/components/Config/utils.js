@@ -106,7 +106,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
   rst.basicConfigs = {
     config_version: 0,
     autoUpdateEnabled: true,
-    restartWhenInternetDisconnected: true,
+    disconnectedRestart: false,
     restartSchedule: 720,
     credential: { ssid: '', password: '' },
   };
@@ -170,10 +170,9 @@ export const getInitialValues = (originalConfig, originalCredential) => {
         cleanSession: true,
       },
       http: {
-        method: 'get',
+        method: 0,
         url: '',
-        requestType: 'body',
-        bodyType: 'urlencode',
+        contentType: 0,
         header: '',
         basicUser: '',
         basicPass: '',

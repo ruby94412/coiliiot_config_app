@@ -27,8 +27,8 @@ export default defineMessages({
     id: `${scope}.periodicalRestart`,
     defaultMessage: 'Periodical Restart',
   },
-  restartWhenInternetDisconnected: {
-    id: `${scope}.restartWhenInternetDisconnected`,
+  disconnectedRestart: {
+    id: `${scope}.disconnectedRestart`,
     defaultMessage: 'Restart After Internet Disconnected',
   },
   type: {
@@ -283,9 +283,9 @@ export default defineMessages({
     id: `${scope}.requestType`,
     defaultMessage: 'Request Type',
   },
-  bodyType: {
-    id: `${scope}.bodyType`,
-    defaultMessage: 'Body Type',
+  contentType: {
+    id: `${scope}.contentType`,
+    defaultMessage: 'Content Type',
   },
   header: {
     id: `${scope}.header`,

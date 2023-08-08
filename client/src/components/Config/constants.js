@@ -43,8 +43,8 @@ export const basicFields = [
     endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.minute} /></InputAdornment>,
   },
   {
-    label: <FormattedMessage {...messages.restartWhenInternetDisconnected} />,
-    propertyName: 'restartWhenInternetDisconnected',
+    label: <FormattedMessage {...messages.disconnectedRestart} />,
+    propertyName: 'disconnectedRestart',
     datatype: 'boolean',
     fieldType: 'radioGroup',
     radioOptions: [
@@ -167,28 +167,35 @@ export const httpFields = [
     label: <FormattedMessage {...messages.method} />,
     propertyName: 'method',
     fieldType: 'radioGroup',
-    radioOptions: ['get', 'post'],
+    radioOptions: [
+      { label: 'GET', value: 0 },
+      { label: 'POST', value: 1 },
+    ],
   },
   {
     label: <FormattedMessage {...messages.url} />,
     propertyName: 'url',
   },
+  // {
+  //   label: <FormattedMessage {...messages.requestType} />,
+  //   propertyName: 'requestType',
+  //   fieldType: 'radioGroup',
+  //   radioOptions: ['body', 'param'],
+  // },
   {
-    label: <FormattedMessage {...messages.requestType} />,
-    propertyName: 'requestType',
+    label: <FormattedMessage {...messages.contentType} />,
+    propertyName: 'contentType',
     fieldType: 'radioGroup',
-    radioOptions: ['body', 'param'],
+    radioOptions: [
+      { label: 'urlencode', value: 0 },
+      { label: 'text/plain', value: 1 },
+      { label: 'octet-stream', value: 2 },
+    ],
   },
-  {
-    label: <FormattedMessage {...messages.bodyType} />,
-    propertyName: 'bodyType',
-    fieldType: 'radioGroup',
-    radioOptions: ['urlencode', 'json', 'stream'],
-  },
-  {
-    label: <FormattedMessage {...messages.header} />,
-    propertyName: 'header',
-  },
+  // {
+  //   label: <FormattedMessage {...messages.header} />,
+  //   propertyName: 'header',
+  // },
   {
     label: <FormattedMessage {...messages.basicUser} />,
     propertyName: 'basicUser',
