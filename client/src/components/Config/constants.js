@@ -77,7 +77,12 @@ export const socketFields = [
   },
   { label: <FormattedMessage {...messages.registerMessage} />, propertyName: 'registerMessage', datatype: 'text' },
   { label: <FormattedMessage {...messages.pulseMessage} />, propertyName: 'pulseMessage', datatype: 'text' },
-  { label: <FormattedMessage {...messages.pulseFrequency} />, propertyName: 'pulseFrequency', datatype: 'number' },
+  {
+    label: <FormattedMessage {...messages.pulseFrequency} />,
+    propertyName: 'pulseFrequency',
+    datatype: 'number',
+    endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.second} /></InputAdornment>,
+  },
   { label: <FormattedMessage {...messages.host} />, propertyName: 'host', datatype: 'text' },
   { label: <FormattedMessage {...messages.port} />, propertyName: 'port', datatype: 'number' },
 ];

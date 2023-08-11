@@ -67,7 +67,7 @@
   "coiliiot.app.config.constants.type": "类型",
   "coiliiot.app.config.constants.registerMessage": "注册包",
   "coiliiot.app.config.constants.pulseMessage": "心跳包",
-  "coiliiot.app.config.constants.pulseFrequency": "心跳包间隔(秒)",
+  "coiliiot.app.config.constants.pulseFrequency": "心跳包间隔",
   "coiliiot.app.config.constants.host": "服务器地址",
   "coiliiot.app.config.constants.port": "端口号",
   "coiliiot.app.config.constants.autoPollInterval": "主动轮训间隔时间",

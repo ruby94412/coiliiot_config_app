@@ -70,7 +70,7 @@
   "coiliiot.app.config.constants.type": "Type",
   "coiliiot.app.config.constants.registerMessage": "Register Message",
   "coiliiot.app.config.constants.pulseMessage": "Heartbeat Message",
-  "coiliiot.app.config.constants.pulseFrequency": "Heartbeat Message Frequency(second)",
+  "coiliiot.app.config.constants.pulseFrequency": "Heartbeat Message Frequency",
   "coiliiot.app.config.constants.host": "Host",
   "coiliiot.app.config.constants.port": "Port",
   "coiliiot.app.config.constants.autoPollInterval": "Interval Between Data Auto Polling",

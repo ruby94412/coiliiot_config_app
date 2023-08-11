@@ -41,11 +41,11 @@ export default defineMessages({
   },
   pulseMessage: {
     id: `${scope}.pulseMessage`,
-    defaultMessage: 'Pulse Message',
+    defaultMessage: 'HeartBeat Message',
   },
   pulseFrequency: {
     id: `${scope}.pulseFrequency`,
-    defaultMessage: 'Pulse Message Frequency',
+    defaultMessage: 'HeartBeat Message Frequency',
   },
   host: {
     id: `${scope}.host`,
