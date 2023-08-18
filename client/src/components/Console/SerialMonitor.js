@@ -18,8 +18,8 @@ import {
 import { LoadingButton } from '@mui/lab';
 import ErrorModal from 'components/common/ErrorModal';
 import { FormattedMessage } from 'react-intl';
-import messages from 'hocs/Locale/Messages/Connect/SerialMonitor';
-import otherMessages from 'hocs/Locale/Messages/Connect/ConnectOperation';
+import messages from 'hocs/Locale/Messages/Console/SerialMonitor';
+import otherMessages from 'hocs/Locale/Messages/Console/ConnectOperation';
 
 const serialTextStyle = {
   fontSize: 14,

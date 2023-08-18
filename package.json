@@ -3,7 +3,9 @@
   "author": "Coiliiot",
   "version": "0.1.1",
   "description": "configuration app for data transfer unit",
-  "main": "main.js",
+  "main": "index.cjs",
+  "module" : "main.js",
+  "type": "module",
   "build": {
     "appId": "com.example.coiliiotConfig",
     "productName": "Coiliiot Config",
@@ -20,7 +22,9 @@
       "icon": "./img/blue_logo.icns"
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "./img/icon.ico"
     }
   },
@@ -61,6 +65,8 @@
     "electron-is-dev": "^2.0.0",
     "electron-store": "^8.1.0",
     "electron-updater": "^6.1.1",
+    "esm": "^3.2.25",
+    "esptool-js": "^0.3.0",
     "serialport": "^11.0.0"
   }
 }

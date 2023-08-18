@@ -57,13 +57,19 @@ function Navigation({
                 sx={{ textAlign: 'center' }}
                 onClick={() => { setPageIndex(0); }}
               >
-                <ListItemText primary={<FormattedMessage {...messages.connectText} />} />
+                <ListItemText primary={<FormattedMessage {...messages.configText} />} />
               </ListItemButton>
               <ListItemButton
                 sx={{ textAlign: 'center' }}
                 onClick={() => { setPageIndex(1); }}
               >
-                <ListItemText primary={<FormattedMessage {...messages.configText} />} />
+                <ListItemText primary={<FormattedMessage {...messages.consoleText} />} />
+              </ListItemButton>
+              <ListItemButton
+                sx={{ textAlign: 'center' }}
+                onClick={() => { setPageIndex(2); }}
+              >
+                <ListItemText primary={<FormattedMessage {...messages.flashText} />} />
               </ListItemButton>
             </ListItem>
           </List>

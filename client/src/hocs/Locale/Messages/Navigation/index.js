@@ -11,12 +11,16 @@ export default defineMessages({
     id: `${scope}.logoutConfirmation`,
     defaultMessage: 'Please Confirm To Logout',
   },
-  connectText: {
-    id: `${scope}.connectText`,
+  consoleText: {
+    id: `${scope}.consoleText`,
     defaultMessage: 'Connect',
   },
   configText: {
     id: `${scope}.configText`,
     defaultMessage: 'Configure',
+  },
+  flashText: {
+    id: `${scope}.flashText`,
+    defaultMessage: 'Flash',
   },
 });

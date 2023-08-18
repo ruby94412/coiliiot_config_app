@@ -18,7 +18,7 @@ import {
 import { LoadingButton } from '@mui/lab';
 import ErrorModal from 'components/common/ErrorModal';
 import { FormattedMessage } from 'react-intl';
-import messages from 'hocs/Locale/Messages/Connect/ConnectOperation';
+import messages from 'hocs/Locale/Messages/Console/ConnectOperation';
 
 function ConnectOperation({
   connected,
@@ -26,6 +26,7 @@ function ConnectOperation({
   connectPort,
   disconnectPort,
   serialPortsListener,
+  isFlash = false,
 }) {
   const [ports, setPorts] = useState([]);
   const [portPath, setPortPath] = useState('');
@@ -58,7 +59,7 @@ function ConnectOperation({
 
   const handleConnect = () => {
     setConnectLoading(true);
-    connectPort({ path: portPath }).then((res) => {
+    connectPort({ path: portPath, isFlash }).then((res) => {
       if (res.error) {
         setErrorMsg(res.error.message);
         setSnackbar({

@@ -1,5 +1,8 @@
-const ipcMain = require('electron').ipcMain;
-const { SerialPort, ReadlineParser } = require('serialport');
+// const ipcMain = require('electron').ipcMain;
+// const { SerialPort, ReadlineParser } = require('serialport');
+
+import { ipcMain } from 'electron';
+import { SerialPort, ReadlineParser } from 'serialport';
 
 let portsForwardingInterval;
 let activePort;
@@ -12,13 +15,14 @@ const getPortsForwardingInterval = (mainWindow) => (
     } catch (error) {
       throw error;
     }
-  }, 2000));
+  }, 2000)
+);
 
 const portConnectionHandlers = (mainWindow) => {
   ipcMain.handle('connect_serial_port', async (evt, args) => {
     try {
-      const { path } = args;
-      const baudRate = 115200;
+      const { path, isFlash } = args;
+      const baudRate = isFlash ? 460800 : 115200;
       const connectedPort = await new Promise((res, rej) => {
         const port = new SerialPort(
           { path, baudRate },

@@ -1,8 +1,9 @@
 {
   "coiliiot.app.navigation.logoutLabel": "登出",
   "coiliiot.app.navigation.logoutConfirmation": "请点击确定退出登录",
-  "coiliiot.app.navigation.connectText": "连接",
+  "coiliiot.app.navigation.consoleText": "操作",
   "coiliiot.app.navigation.configText": "配置",
+  "coiliiot.app.navigation.flashText": "烧录",
   "coiliiot.app.navigation.settingDrawer.settingTitle": "页面设置",
   "coiliiot.app.navigation.settingDrawer.modeTitle": "模式",
   "coiliiot.app.navigation.settingDrawer.modeLight": "亮屏",
@@ -153,17 +154,17 @@
   "coiliiot.app.config.productType.espDTUTitle": "WIFI/以太网 DTU",
   "coiliiot.app.config.productType.espIOTitle": "IO控制器",
 
-  "coiliiot.app.connect.connectOperation.portSelectLabel": "端口",
-  "coiliiot.app.connect.connectOperation.connectButton": "连接",
-  "coiliiot.app.connect.connectOperation.disconnectButton": "断开",
-  "coiliiot.app.connect.connectOperation.snackBarSuccess": "操作成功",
-  "coiliiot.app.connect.connectOperation.snackBarError": "操作失败",
+  "coiliiot.app.console.connectOperation.portSelectLabel": "端口",
+  "coiliiot.app.console.connectOperation.connectButton": "连接",
+  "coiliiot.app.console.connectOperation.disconnectButton": "断开",
+  "coiliiot.app.console.connectOperation.snackBarSuccess": "操作成功",
+  "coiliiot.app.console.connectOperation.snackBarError": "操作失败",
 
 
-  "coiliiot.app.connect.serialMonitor.serialMonitorLabel": "端口监视器",
-  "coiliiot.app.connect.serialMonitor.applyConfigButton": "应用配置",
-  "coiliiot.app.connect.serialMonitor.resetConfigButton": "重置配置",
-  "coiliiot.app.connect.serialMonitor.restartConsoleButton": "重启设备",
-  "coiliiot.app.connect.serialMonitor.clearLogsButton": "清空日志",
-  "coiliiot.app.connect.serialMonitor.noLogsHint": "没有日志"
+  "coiliiot.app.console.serialMonitor.serialMonitorLabel": "端口监视器",
+  "coiliiot.app.console.serialMonitor.applyConfigButton": "应用配置",
+  "coiliiot.app.console.serialMonitor.resetConfigButton": "重置配置",
+  "coiliiot.app.console.serialMonitor.restartConsoleButton": "重启设备",
+  "coiliiot.app.console.serialMonitor.clearLogsButton": "清空日志",
+  "coiliiot.app.console.serialMonitor.noLogsHint": "没有日志"
 }

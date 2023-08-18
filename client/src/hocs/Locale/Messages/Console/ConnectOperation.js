@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-export const scope = 'coiliiot.app.connect.connectOperation';
+export const scope = 'coiliiot.app.console.connectOperation';
 
 export default defineMessages({
   portSelectLabel: {

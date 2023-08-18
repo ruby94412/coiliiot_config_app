@@ -1,4 +1,5 @@
-const { ipcRenderer, contextBridge } = require('electron');
+// const { ipcRenderer, contextBridge } = require('electron');
+import { ipcRenderer, contextBridge } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
   // Invoke Methods

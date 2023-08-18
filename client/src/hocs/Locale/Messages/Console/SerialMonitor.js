@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-export const scope = 'coiliiot.app.connect.serialMonitor';
+export const scope = 'coiliiot.app.console.serialMonitor';
 
 export default defineMessages({
   serialMonitorLabel: {

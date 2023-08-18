@@ -1,8 +1,9 @@
 {
   "coiliiot.app.navigation.logoutLabel": "Logout",
   "coiliiot.app.navigation.logoutConfirmation": "Please Confirm To Logout",
-  "coiliiot.app.navigation.connectText": "Connect",
+  "coiliiot.app.navigation.consoleText": "Console",
   "coiliiot.app.navigation.configText": "Configure",
+  "coiliiot.app.navigation.flashText": "Flash",
   "coiliiot.app.navigation.settingDrawer.settingTitle": "Settings",
   "coiliiot.app.navigation.settingDrawer.modeTitle": "Mode",
   "coiliiot.app.navigation.settingDrawer.modeLight": "Light",
@@ -152,17 +153,17 @@
   "coiliiot.app.config.dataAccordion.customizeJsonTitle": "Customize Json Format",
   "coiliiot.app.config.dataAccordion.addPropertyButton": "Add Property",
   
-  "coiliiot.app.connect.connectOperation.portSelectLabel": "Port",
-  "coiliiot.app.connect.connectOperation.connectButton": "Connect",
-  "coiliiot.app.connect.connectOperation.disconnectButton": "Disconnect",
-  "coiliiot.app.connect.connectOperation.snackBarSuccess": "Operation Success",
-  "coiliiot.app.connect.connectOperation.snackBarError": "Operation Error",
+  "coiliiot.app.console.connectOperation.portSelectLabel": "Port",
+  "coiliiot.app.console.connectOperation.connectButton": "Connect",
+  "coiliiot.app.console.connectOperation.disconnectButton": "Disconnect",
+  "coiliiot.app.console.connectOperation.snackBarSuccess": "Operation Success",
+  "coiliiot.app.console.connectOperation.snackBarError": "Operation Error",
 
-  "coiliiot.app.connect.serialMonitor.serialMonitorLabel": "Serial Monitor",
-  "coiliiot.app.connect.serialMonitor.applyConfigButton": "Apply Config",
-  "coiliiot.app.connect.serialMonitor.resetConfigButton": "Reset Config",
-  "coiliiot.app.connect.serialMonitor.restartConsoleButton": "Restart Console",
-  "coiliiot.app.connect.serialMonitor.clearLogsButton": "Clear Logs",
-  "coiliiot.app.connect.serialMonitor.noLogsHint": "No logs"
+  "coiliiot.app.console.serialMonitor.serialMonitorLabel": "Serial Monitor",
+  "coiliiot.app.console.serialMonitor.applyConfigButton": "Apply Config",
+  "coiliiot.app.console.serialMonitor.resetConfigButton": "Reset Config",
+  "coiliiot.app.console.serialMonitor.restartConsoleButton": "Restart Console",
+  "coiliiot.app.console.serialMonitor.clearLogsButton": "Clear Logs",
+  "coiliiot.app.console.serialMonitor.noLogsHint": "No logs"
 }
 

@@ -2,8 +2,9 @@ import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Collapse } from '@mui/material';
 import Logo from 'components/common/LogoWithAnimation';
-import Connect from 'components/Connect';
+import Console from 'components/Console';
 import Config from 'components/Config';
+import Flash from 'components/Flash';
 import Navigation from 'components/Navigation';
 import withTheme from 'hocs/Theme';
 import withLocale from 'hocs/Locale';
@@ -26,10 +27,13 @@ function MainContent({
         setPageIndex={setPageIndex}
       />
       <Collapse in={pageIndex === 0} sx={{ width: '100%' }}>
-        <Connect />
+        <Config />
       </Collapse>
       <Collapse in={pageIndex === 1} sx={{ width: '100%' }}>
-        <Config />
+        <Console />
+      </Collapse>
+      <Collapse in={pageIndex === 2} sx={{ width: '100%' }}>
+        <Flash />
       </Collapse>
     </>
   );

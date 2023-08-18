@@ -1,6 +1,10 @@
-const { autoUpdater } = require('electron-updater');
-const ipcMain = require('electron').ipcMain;
-const isDev = require('electron-is-dev');
+// const { autoUpdater } = require('electron-updater');
+// const ipcMain = require('electron').ipcMain;
+// const isDev = require('electron-is-dev');
+
+import { autoUpdater } from 'electron-updater';
+import { ipcMain } from 'electron';
+import isDev from 'electron-is-dev';
 
 const runHandlers = (mainWindow) => {
   autoUpdater.autoDownload = false;
@@ -58,12 +62,12 @@ const runHandlers = (mainWindow) => {
   
 }
 
-const distroyHandlers = () => {
+const destroyHandlers = () => {
   autoUpdater.removeAllListeners();
   ipcMain.removeHandler('download_update');
 }
 
 module.exports = {
   runHandlers,
-  distroyHandlers,
+  destroyHandlers,
 };
