@@ -39,7 +39,7 @@ const flashHandlers = (mainWindow) => {
       transport = new Transport(connectedPort);
       esploader = new ESPLoader({
         transport,
-        baudrate,
+        baudrate: 460800,
         terminal: espLoaderTerminal,
       });
       let chip = await esploader.main_fn();

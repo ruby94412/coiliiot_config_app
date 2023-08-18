@@ -27,6 +27,14 @@ export const connectPort = createAsyncThunk(
   },
 );
 
+export const flashConnect = createAsyncThunk(
+  'data/flashConnect',
+  async (data) => {
+    const res = await dataService.flashConnect(data);
+    return res;
+  },
+);
+
 export const disconnectPort = createAsyncThunk(
   'data/disconnectPort',
   async (data) => {
