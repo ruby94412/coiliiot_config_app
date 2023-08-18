@@ -1,12 +1,7 @@
-// const { app, BrowserWindow, screen: electronScreen } = require('electron');
-// const isDev = require('electron-is-dev');
-// const path = require('path');
-// const { runHandlers, destroyHandlers } = require('./service/handlers');
-
-import {app, BrowserWindow, electronScreen as screen} from 'electron';
-import isDev from 'electron-is-dev';
-import path from 'path';
-import { runHandlers, destroyHandlers } from './service/handlers';
+const { app, BrowserWindow, screen: electronScreen } = require('electron');
+const isDev = require('electron-is-dev');
+const path = require('path');
+const { runHandlers, destroyHandlers } = require('./service/handlers');
 
 if (isDev) {
   Object.defineProperty(app, 'isPackaged', {

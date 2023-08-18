@@ -1,12 +1,7 @@
-// const ipcMain = require('electron').ipcMain;
-// const fs = require('fs');
-// const path = require('path');
-// const Store = require('electron-store');
-
-import { ipcMain } from 'electron';
-import fs from 'fs';
-import path from 'path';
-import Store from 'electron-store';
+const ipcMain = require('electron').ipcMain;
+const fs = require('fs');
+const path = require('path');
+const Store = require('electron-store');
 
 const readAndWrite = () => {
   const store = new Store();

@@ -1,8 +1,5 @@
-// const ipcMain = require('electron').ipcMain;
-// const { SerialPort, ReadlineParser } = require('serialport');
-
-import { ipcMain } from 'electron';
-import { SerialPort, ReadlineParser } from 'serialport';
+const ipcMain = require('electron').ipcMain;
+const { SerialPort, ReadlineParser } = require('serialport');
 
 let portsForwardingInterval;
 let activePort;
@@ -11,7 +8,7 @@ const getPortsForwardingInterval = (mainWindow) => (
     if (!mainWindow) return;
     try {
       const ports = await SerialPort.list();
-      mainWindow?.webContents.send('serial-ports', ports);
+      mainWindow.webContents.send('serial-ports', ports);
     } catch (error) {
       throw error;
     }
@@ -85,7 +82,8 @@ const runHandlers = (mainWindow) => {
 };
 
 const destroyHandlers = () => {
-  if (activePort?.isOpen) activePort.close();
+  if (!activePort) return;
+  if (activePort.isOpen) activePort.close();
   const channels = ['connect_serial_port', 'disconnect_serial_port', 'send_msg_to_port'];
   channels.forEach((channel) => { ipcMain.removeHandler(channel);});
   clearInterval(portsForwardingInterval);

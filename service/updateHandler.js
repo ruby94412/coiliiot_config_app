@@ -1,12 +1,9 @@
-// const { autoUpdater } = require('electron-updater');
-// const ipcMain = require('electron').ipcMain;
-// const isDev = require('electron-is-dev');
-
-import { autoUpdater } from 'electron-updater';
-import { ipcMain } from 'electron';
-import isDev from 'electron-is-dev';
+const { autoUpdater } = require('electron-updater');
+const ipcMain = require('electron').ipcMain;
+const isDev = require('electron-is-dev');
 
 const runHandlers = (mainWindow) => {
+  if (!mainWindow) return;
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = true;
 
@@ -20,7 +17,7 @@ const runHandlers = (mainWindow) => {
   
   autoUpdater.checkForUpdates();
   autoUpdater.on('update-not-available', () => {
-    mainWindow?.webContents.send('auto-update', {
+    mainWindow.webContents.send('auto-update', {
       type: 'info',
       currentVersion: autoUpdater.currentVersion,
       updateAvailable: false,
@@ -28,7 +25,7 @@ const runHandlers = (mainWindow) => {
   });
 
   autoUpdater.on('update-available', (info) => {
-    mainWindow?.webContents.send('auto-update', {
+    mainWindow.webContents.send('auto-update', {
       type: 'info',
       currentVersion: autoUpdater.currentVersion,
       updateAvailable: true,
@@ -37,14 +34,14 @@ const runHandlers = (mainWindow) => {
   });
 
   autoUpdater.on('download-progress', (info) => {
-    mainWindow?.webContents.send('auto-update', {
+    mainWindow.webContents.send('auto-update', {
       type: 'progress',
       ...info
     });
   });
 
   autoUpdater.on('update-downloaded', (info) => {
-    mainWindow?.webContents.send('auto-update', {
+    mainWindow.webContents.send('auto-update', {
       type: 'downloaded',
       ...info
     });

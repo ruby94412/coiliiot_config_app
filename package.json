@@ -4,8 +4,6 @@
   "version": "0.1.1",
   "description": "configuration app for data transfer unit",
   "main": "index.cjs",
-  "module" : "main.js",
-  "type": "module",
   "build": {
     "appId": "com.example.coiliiotConfig",
     "productName": "Coiliiot Config",

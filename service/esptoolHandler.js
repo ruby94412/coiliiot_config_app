@@ -1,10 +1,6 @@
-// const ipcMain = require('electron').ipcMain;
-// const { ESPLoader, Transport } = require('esptool-js');
-// const { SerialPort, ReadlineParser } = require('serialport');
-
-import { ipcMain } from 'electron';
-import { ESPLoader, Transport } from 'esptool-js';
-import { SerialPort, ReadlineParser } from 'serialport';
+const ipcMain = require('electron').ipcMain;
+const { ESPLoader, Transport } = require('esptool-js');
+const { SerialPort, ReadlineParser } = require('serialport');
 
 let esploader;
 let transport;
