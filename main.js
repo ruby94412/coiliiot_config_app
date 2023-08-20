@@ -31,9 +31,7 @@ const createMainWindow = () => {
 
   mainWindow.setMenu(null);
   mainWindow.loadURL(startURL);
-
   mainWindow.once('ready-to-show', () => mainWindow.show());
-
   mainWindow.on('closed', (e) => {
     // e.preventDefault();
     destroyHandlers();

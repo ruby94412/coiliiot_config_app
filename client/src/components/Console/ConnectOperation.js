@@ -25,6 +25,7 @@ function ConnectOperation({
   setConnected,
   connectPort,
   disconnectPort,
+  serialPortsListener,
   isFlash = false,
 }) {
   const [ports, setPorts] = useState([]);

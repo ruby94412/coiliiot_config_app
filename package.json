@@ -64,7 +64,7 @@
     "electron-store": "^8.1.0",
     "electron-updater": "^6.1.1",
     "esm": "^3.2.25",
-    "esptool-js": "^0.3.0",
+    "pako": "^2.1.0",
     "serialport": "^11.0.0"
   }
 }

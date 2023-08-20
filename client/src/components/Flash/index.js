@@ -47,16 +47,16 @@ function Flash({
     setDisable(portPath === '');
   }, [portPath]);
   const handleConnect = () => {
-    setConnectLoading(true);
-    flashConnect({ path: portPath }).then((res) => {
-      if (res.error) {
-        console.log('failure');
-      } else {
-        console.log('success');
-      }
-    }).finally(() => {
-      setConnectLoading(false);
-    });
+    // setConnectLoading(true);
+    // flashConnect({ path: portPath }).then((res) => {
+    //   if (res.error) {
+    //     console.log('failure');
+    //   } else {
+    //     console.log('success');
+    //   }
+    // }).finally(() => {
+    //   setConnectLoading(false);
+    // });
   };
   const handlePortPathChange = (e) => {
     setPortPath(e.target.value);

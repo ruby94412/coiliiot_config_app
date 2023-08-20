@@ -8,6 +8,8 @@ const getPortsForwardingInterval = (mainWindow) => (
     if (!mainWindow) return;
     try {
       const ports = await SerialPort.list();
+      ports.forEach((p) => {
+      })
       mainWindow.webContents.send('serial-ports', ports);
     } catch (error) {
       throw error;
@@ -28,6 +30,8 @@ const portConnectionHandlers = (mainWindow) => {
             else res(port);
           }
         );
+        port.
+        console.log(port);
         port.on('open', () => {
           port.write('restart');
         });
