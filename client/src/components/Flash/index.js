@@ -25,41 +25,44 @@ function Flash({
   serialPortsListener,
 }) {
   const [ports, setPorts] = useState([]);
-  const [portPath, setPortPath] = useState('');
+  const [selectedPort, setSelectedPort] = useState(null);
   const [connected, setConnected] = useState(false);
   const [disable, setDisable] = useState(true);
   const [connectLoading, setConnectLoading] = useState(false);
   useEffect(() => {
     serialPortsListener((rawPorts) => {
-      const temp = rawPorts?.map((rawPort) => (rawPort?.path || 'invalid port')) || [];
-      setPorts(temp);
+      setPorts(rawPorts);
     });
   }, []);
 
   useEffect(() => {
-    const condition = connected && portPath && !ports.toString().includes(portPath);
+    const condition = connected
+      && selectedPort
+      && !ports.includes((p) => (p.path === selectedPort.path));
     if (condition) {
-      setPortPath('');
+      setSelectedPort('');
       setConnected(false);
     }
   }, [ports]);
   useEffect(() => {
-    setDisable(portPath === '');
-  }, [portPath]);
+    setDisable(selectedPort === '');
+  }, [selectedPort]);
   const handleConnect = () => {
-    // setConnectLoading(true);
-    // flashConnect({ path: portPath }).then((res) => {
-    //   if (res.error) {
-    //     console.log('failure');
-    //   } else {
-    //     console.log('success');
-    //   }
-    // }).finally(() => {
-    //   setConnectLoading(false);
-    // });
+    const { vendorId, productId, path } = selectedPort;
+    console.log(vendorId, productId);
+    setConnectLoading(true);
+    flashConnect({ vendorId, productId, path }).then((res) => {
+      if (res.error) {
+        console.log('failure');
+      } else {
+        console.log('success');
+      }
+    }).finally(() => {
+      setConnectLoading(false);
+    });
   };
   const handlePortPathChange = (e) => {
-    setPortPath(e.target.value);
+    setSelectedPort(ports.find((port) => (port.path === e.target.value)));
   };
   return (
     <div>
@@ -71,17 +74,17 @@ function Flash({
               <Select
                 size="small"
                 onChange={handlePortPathChange}
-                value={portPath}
+                value={selectedPort?.path || ''}
                 sx={{ minWidth: '300px' }}
                 disabled={connected}
               >
                 {
-                  ports.map((option) => (
+                  ports.map((port) => (
                     <MenuItem
-                      key={option?.value || option}
-                      value={option?.label ? option.value : option}
+                      key={port.path}
+                      value={port.path}
                     >
-                      {option?.label || option}
+                      {port.path}
                     </MenuItem>
                   ))
                 }

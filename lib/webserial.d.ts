@@ -1,10 +1,12 @@
 /// <reference types="w3c-web-serial" />
+import { SerialPort } from "serialport";
 declare class Transport {
     device: SerialPort;
     slip_reader_enabled: boolean;
     left_over: Uint8Array;
     baudrate: number;
-    constructor(device: SerialPort);
+    info: any;
+    constructor(device: SerialPort, info: any);
     get_info(): string;
     get_pid(): number | undefined;
     slip_writer(data: Uint8Array): Uint8Array;
