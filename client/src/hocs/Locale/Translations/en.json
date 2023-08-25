@@ -164,6 +164,12 @@
   "coiliiot.app.console.serialMonitor.resetConfigButton": "Reset Config",
   "coiliiot.app.console.serialMonitor.restartConsoleButton": "Restart Console",
   "coiliiot.app.console.serialMonitor.clearLogsButton": "Clear Logs",
-  "coiliiot.app.console.serialMonitor.noLogsHint": "No logs"
+  "coiliiot.app.console.serialMonitor.noLogsHint": "No logs",
+
+  "coiliiot.app.flash.connectOperation.eraseButton": "Erase Flash",
+  "coiliiot.app.flash.connectOperation.addButton": "Add File",
+  "coiliiot.app.flash.connectOperation.flashButton": "Flash Program",
+  "coiliiot.app.flash.connectOperation.snackBarSuccess": "Operation Success",
+  "coiliiot.app.flash.connectOperation.snackBarError": "Operation Error"
 }
 

@@ -14,6 +14,7 @@ import {
 import {
   serialDataListener,
   sendMsgToPort,
+  restartPort,
 } from 'slice/data';
 import { LoadingButton } from '@mui/lab';
 import ErrorModal from 'components/common/ErrorModal';
@@ -33,6 +34,7 @@ function SerialMonitor({
   connected,
   serialDataListener,
   sendMsgToPort,
+  restartPort,
 }) {
   const [logs, setLogs] = useState('');
   const logsEndRef = useRef(null);
@@ -108,7 +110,7 @@ function SerialMonitor({
 
   const handleReboot = () => {
     setLoadings((pre) => ({ ...pre, reboot: true }));
-    sendMsgToPort({ type: 0 }).then((res) => {
+    restartPort().then((res) => {
       if (res.error) {
         setErrorMsg(res.error.message);
         setSnackbar({
@@ -209,4 +211,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   serialDataListener,
   sendMsgToPort,
+  restartPort,
 })(SerialMonitor);

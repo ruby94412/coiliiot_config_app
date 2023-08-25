@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld('api', {
   disconnectPort: () => ipcRenderer.invoke('disconnect_serial_port'),
   sendMsgToPort: (args) => ipcRenderer.invoke('send_msg_to_port', args),
   flashConnect: (args) => ipcRenderer.invoke('connect_flash_port', args),
+  restartPort: (args) => ipcRenderer.invoke('restart_port', args),
   enableUpdate: () => ipcRenderer.invoke('enable_update'),
   downloadUpdate: () => ipcRenderer.invoke('download_update'),
 

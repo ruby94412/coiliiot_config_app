@@ -7,6 +7,7 @@ const dataService = {
   flashConnect: (args) => api.flashConnect(args),
   disconnectPort: (args) => api.disconnectPort(args),
   sendMsgToPort: (args) => api.sendMsgToPort(args),
+  restartPort: (args) => api.restartPort(args),
   enableUpdate: () => api.enableUpdate(),
   downloadUpdate: () => api.downloadUpdate(),
   serialPortsListener: (cb) => api.serialPortsListener(cb),

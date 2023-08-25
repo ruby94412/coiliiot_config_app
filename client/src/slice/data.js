@@ -51,6 +51,14 @@ export const sendMsgToPort = createAsyncThunk(
   },
 );
 
+export const restartPort = createAsyncThunk(
+  'data/restartPort',
+  async (data) => {
+    const res = await dataService.restartPort(data);
+    return res;
+  },
+);
+
 export const enableUpdate = createAsyncThunk(
   'data/enableUpdate',
   async () => {

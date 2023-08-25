@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import ConnectOperation from './ConnectOperation';
 import SerialMonitor from './SerialMonitor';
 
-function Connect() {
+function Console() {
   const [connected, setConnected] = useState(false);
   return (
     <Box sx={{ width: '100%' }}>
@@ -16,4 +16,4 @@ function Connect() {
   );
 }
 
-export default Connect;
+export default Console;

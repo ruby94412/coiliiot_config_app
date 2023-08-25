@@ -166,5 +166,11 @@
   "coiliiot.app.console.serialMonitor.resetConfigButton": "重置配置",
   "coiliiot.app.console.serialMonitor.restartConsoleButton": "重启设备",
   "coiliiot.app.console.serialMonitor.clearLogsButton": "清空日志",
-  "coiliiot.app.console.serialMonitor.noLogsHint": "没有日志"
+  "coiliiot.app.console.serialMonitor.noLogsHint": "没有日志",
+
+  "coiliiot.app.flash.connectOperation.eraseButton": "清空程序",
+  "coiliiot.app.flash.connectOperation.addButton": "添加文件",
+  "coiliiot.app.flash.connectOperation.flashButton": "烧录程序",
+  "coiliiot.app.flash.connectOperation.snackBarSuccess": "操作成功",
+  "coiliiot.app.flash.connectOperation.snackBarError": "操作失败"
 }

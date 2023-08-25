@@ -27,16 +27,12 @@ const portConnectionHandlers = (mainWindow) => {
             else res(port);
           }
         );
-        port.on('open', () => {
-          port.write('restart');
-        });
-        
+        port.set
       });
       const parser = new ReadlineParser();
       
       connectedPort.pipe(parser);
       parser.on('data', (data) => {
-        console.log('asdfasfasdf==========', data);
         mainWindow.webContents.send('serial-data', data);
       });
       activePort = connectedPort;
@@ -75,6 +71,31 @@ const portConnectionHandlers = (mainWindow) => {
       throw error;
     }
   });
+
+  ipcMain.handle('restart_port', async (evt, args) => {
+    console.log('restart called');
+    try {
+      await new Promise((res, rej) => {
+        activePort.set({ dtr: false }, (err) => {
+          if (err) rej(err);
+          else res('set dtr false complete');
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+    try {
+      await new Promise((res, rej) => {
+        activePort.set({ dtr: true }, (err) => {
+          if (err) rej(err);
+          else res('set dtr true complete');
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+    return { success: true };
+  });
   return activePort;
 };
 
@@ -86,7 +107,7 @@ const runHandlers = (mainWindow) => {
 const destroyHandlers = () => {
   if (!activePort) return;
   if (activePort.isOpen) activePort.close();
-  const channels = ['connect_serial_port', 'disconnect_serial_port', 'send_msg_to_port'];
+  const channels = ['connect_serial_port', 'disconnect_serial_port', 'send_msg_to_port', 'restart_port'];
   channels.forEach((channel) => { ipcMain.removeHandler(channel);});
   clearInterval(portsForwardingInterval);
 };
