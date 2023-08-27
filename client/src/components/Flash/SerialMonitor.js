@@ -76,7 +76,7 @@ function SerialMonitor({
   const handleAddFile = () => {
     const id = Math.random().toString();
     setFileArray((oldRows) => [...oldRows, {
-      id, address: '', data: '', file: null, isNew: true,
+      id, address: '', data: '', file: null, status: 0, isNew: true,
     }]);
     setRowModesModel((oldModel) => ({
       ...oldModel,

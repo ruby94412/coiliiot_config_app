@@ -13,6 +13,8 @@ import {
   FormControl,
   FormLabel,
   MenuItem,
+  LinearProgress,
+  Typography,
   Collapse,
   List,
   ListItem,
@@ -32,22 +34,43 @@ import ConnectOperation from './ConnectOperation';
 import SerialMonitor from './SerialMonitor';
 
 const addressOptions = [0x1000, 0x8000, 0x10000];
+const formatDataSize = (size) => {
+  let sizeInBytes = size;
+  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  let unitIndex = 0;
+
+  while (sizeInBytes >= 1024 && unitIndex < units.length - 1) {
+    sizeInBytes /= 1024;
+    unitIndex++;
+  }
+
+  return `${Math.round(sizeInBytes * 100) / 100} ${units[unitIndex]}`;
+};
+
 const getColumns = ({
   rowModesModel,
   handleSaveClick,
   handleCancelClick,
   handleEditClick,
   handleDeleteClick,
+  handleAddressChange,
+  handleFileChange,
 }) => [
   {
     field: 'address',
     headerName: 'Address',
     headerClassName: 'custom-height',
     minWidth: 150,
-    renderCell: ({ id, value }) => {
+    renderCell: (params) => {
+      const { id, value } = params;
       const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
       return isInEditMode ? (
-        <Select size="small" sx={{ width: '100%' }}>
+        <Select
+          size="small"
+          sx={{ width: '100%' }}
+          value={value}
+          onChange={handleAddressChange(id)}
+        >
           {
             addressOptions.map((option) => (
               <MenuItem
@@ -59,7 +82,7 @@ const getColumns = ({
             ))
           }
         </Select>
-      ) : (<span>{value ? value.toString(16) : ''}</span>);
+      ) : (<span>{value ? `0x${value.toString(16)}` : ''}</span>);
     },
   },
   {
@@ -70,16 +93,43 @@ const getColumns = ({
     renderCell: ({ id, value }) => {
       const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
       return isInEditMode ? (
-        <MuiFileInput size="small" />
-      ) : (<span>asdfasdfasdf</span>);
+        <MuiFileInput size="small" value={value} onChange={handleFileChange(id)} />
+      ) : (
+        <>
+          { value && (
+            <>
+              <span>{`${value?.name} \u00A0 \u00A0 \u00A0`}</span>
+              <span style={{ fontSize: '12px' }}>{formatDataSize(value?.size)}</span>
+            </>
+          )}
+        </>
+      );
     },
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    minWidth: 180,
+    headerClassName: 'custom-height',
+    renderCell: ({ value }) => (
+      <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+        <Box sx={{ width: '100%', mr: 1 }}>
+          <LinearProgress variant="determinate" value={value} color="primary" />
+        </Box>
+        <Box sx={{ minWidth: 35 }}>
+          <Typography variant="caption">
+            {`${Math.round(value)}%`}
+          </Typography>
+        </Box>
+      </Box>
+    ),
   },
   {
     field: 'actions',
     type: 'actions',
     headerClassName: 'custom-height',
     headerName: 'Actions',
-    width: 100,
+    width: 80,
     cellClassName: 'actions',
     getActions: ({ id }) => {
       const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -88,16 +138,14 @@ const getColumns = ({
           <GridActionsCellItem
             icon={<SaveIcon />}
             label="Save"
-            sx={{
-              color: 'primary.main',
-            }}
+            sx={{ color: 'primary.main' }}
             onClick={handleSaveClick(id)}
           />,
           <GridActionsCellItem
             icon={<CancelIcon />}
             label="Cancel"
-            className="textPrimary"
             onClick={handleCancelClick(id)}
+            sx={{ color: 'primary.main' }}
             color="inherit"
           />,
         ];
@@ -106,15 +154,12 @@ const getColumns = ({
         <GridActionsCellItem
           icon={<EditIcon />}
           label="Edit"
-          className="textPrimary"
           onClick={handleEditClick(id)}
-          color="inherit"
         />,
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
           onClick={handleDeleteClick(id)}
-          color="inherit"
         />,
       ];
     },
@@ -178,21 +223,27 @@ function FileSelect({
     setFileArray(temp);
   };
 
-  const handleAddressChange = (idx) => (e) => {
-    const temp = [...fileArray];
-    temp[idx].address = e.target.value;
-    setFileArray(temp);
+  const handleAddressChange = (id) => (e) => {
+    setFileArray(fileArray.map(
+      (row) => (row.id === id ? { ...row, address: e.target.value } : row),
+    ));
   };
 
-  const handleFileChange = (idx) => (e) => {
-    const temp = [...fileArray];
+  const handleFileChange = (id) => (e) => {
+    if (!e) {
+      setFileArray(fileArray.map(
+        (row) => (row.id === id ? { ...row, data: '', file: null } : row),
+      ));
+      return;
+    }
     const reader = new FileReader();
     reader.onload = (ev) => {
-      temp[idx].data = ev.target.result;
+      const data = ev.target.result;
+      setFileArray(fileArray.map(
+        (row) => (row.id === id ? { ...row, data, file: e } : row),
+      ));
     };
     reader.readAsBinaryString(e);
-    temp[idx].file = e;
-    setFileArray(temp);
   };
 
   const columns = getColumns({
@@ -201,6 +252,8 @@ function FileSelect({
     handleCancelClick,
     handleEditClick,
     handleDeleteClick,
+    handleAddressChange,
+    handleFileChange,
   });
   return (
     <>
@@ -226,7 +279,7 @@ function FileSelect({
                   },
                 }}
                 autoHeight
-                rowHeight={80}
+                rowHeight={45}
                 rows={fileArray}
                 columns={columns}
                 editMode="row"
@@ -240,27 +293,6 @@ function FileSelect({
                 hideFooterPagination
               />
             </Grid>
-            {/* <Grid item xs={6}>
-              <FormLabel><FormattedMessage {...messages.portSelectLabel} /></FormLabel>
-              <br />
-              <TransitionGroup>
-                {fileArray?.map((file, idx) => (
-                  <Collapse key={`data${idx}`}>
-                    <div style={{ display: 'flex' }}>
-                      <MuiFileInput
-                        size="small"
-                        sx={{ minWidth: '300px', my: 1 }}
-                        onChange={handleFileChange(idx)}
-                        value={fileArray[idx].file}
-                      />
-                      <IconButton onClick={handleDelete(idx)}>
-                        <DeleteIcon sx={{ '&:hover': { color: 'red' }, width: '45px' }} />
-                      </IconButton>
-                    </div>
-                  </Collapse>
-                ))}
-              </TransitionGroup>
-            </Grid> */}
           </Grid>
         </Grid>
       </Grid>
