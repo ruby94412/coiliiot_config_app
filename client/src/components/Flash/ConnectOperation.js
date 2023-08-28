@@ -6,7 +6,6 @@ import {
   FormControl,
   FormLabel,
   MenuItem,
-  Box,
   Grid,
 } from '@mui/material';
 import {
@@ -15,7 +14,7 @@ import {
 } from 'slice/data';
 import { LoadingButton } from '@mui/lab';
 import ErrorModal from 'components/common/ErrorModal';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import messages from 'hocs/Locale/Messages/Console/ConnectOperation';
 import { ESPLoader, Transport } from 'esptool-js';
 
@@ -23,7 +22,9 @@ function ConnectOperation({
   serialPortsListener,
   espProps,
   setEspProps,
+  setTerminalData,
 }) {
+  const intl = useIntl();
   const [ports, setPorts] = useState([]);
   const [selectedPort, setSelectedPort] = useState(null);
   const [connected, setConnected] = useState(false);
@@ -57,10 +58,10 @@ function ConnectOperation({
 
     },
     writeLine(data) {
-      console.log(data);
+      setTerminalData({ data, switchLine: true });
     },
     write(data) {
-      console.log(data);
+      setTerminalData({ data, switchLine: false });
     },
   };
 
@@ -70,19 +71,33 @@ function ConnectOperation({
       usbProductId: parseInt(selectedPort.productId, 16),
     }];
     setConnectLoading(true);
+    const timeout = new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error(intl.formatMessage(messages.timeout)));
+      }, 10000);
+    });
     const device = await navigator.serial.requestPort({ filters });
     const transport = new Transport(device);
+    // eslint-disable-next-line no-async-promise-executor
+    const connection = new Promise(async (res, rej) => {
+      try {
+        const esploader = new ESPLoader({
+          transport,
+          baudrate: 115200,
+          terminal: espLoaderTerminal,
+        });
+        const chip = await esploader.main_fn();
+        setEspProps({
+          device, esploader, transport, chip,
+        });
+        setConnected(true);
+        res();
+      } catch (e) {
+        rej(e);
+      }
+    });
     try {
-      const esploader = new ESPLoader({
-        transport,
-        baudrate: 115200,
-        terminal: espLoaderTerminal,
-      });
-      const chip = await esploader.main_fn();
-      setEspProps({
-        device, esploader, transport, chip,
-      });
-      setConnected(true);
+      await Promise.race([connection, timeout]);
     } catch (e) {
       setErrorMsg(e.message);
     } finally {
@@ -121,7 +136,7 @@ function ConnectOperation({
   };
   return (
     <>
-      <Grid container spacing={2} direction="row" sx={{ marginBottom: '10px' }}>
+      <Grid container spacing={2} direction="row" sx={{ marginBottom: '25px' }}>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
           <Grid
             container

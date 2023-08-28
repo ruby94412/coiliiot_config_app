@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Box, Collapse } from '@mui/material';
+import { Box } from '@mui/material';
 import ConnectOperation from './ConnectOperation';
 import SerialMonitor from './SerialMonitor';
-import FileSelect from './FileSelect';
+import FileSelect from './FileTable';
 
 function Flash() {
   const [espProps, setEspProps] = useState({
@@ -13,23 +13,24 @@ function Flash() {
   });
   const [fileArray, setFileArray] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+  const [terminalData, setTerminalData] = useState('');
   return (
     <Box sx={{ width: '100%', marginTop: '50px' }}>
-      <ConnectOperation espProps={espProps} setEspProps={setEspProps} />
-      <Collapse in={fileArray.length > 0}>
-        <FileSelect
-          fileArray={fileArray}
-          setFileArray={setFileArray}
-          rowModesModel={rowModesModel}
-          setRowModesModel={setRowModesModel}
-        />
-      </Collapse>
-      <SerialMonitor
+      <ConnectOperation
         espProps={espProps}
         setEspProps={setEspProps}
+        setTerminalData={setTerminalData}
+      />
+      <FileSelect
+        espProps={espProps}
         fileArray={fileArray}
         setFileArray={setFileArray}
+        rowModesModel={rowModesModel}
         setRowModesModel={setRowModesModel}
+      />
+      <SerialMonitor
+        espProps={espProps}
+        terminalData={terminalData}
       />
     </Box>
   );

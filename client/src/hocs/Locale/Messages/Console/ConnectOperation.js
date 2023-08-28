@@ -23,4 +23,8 @@ export default defineMessages({
     id: `${scope}.snackBarError`,
     defaultMessage: 'Operation Error',
   },
+  timeout: {
+    id: `${scope}.timeout`,
+    defaultMessage: 'Connection Timeout',
+  },
 });

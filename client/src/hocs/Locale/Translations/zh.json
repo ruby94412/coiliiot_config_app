@@ -159,6 +159,7 @@
   "coiliiot.app.console.connectOperation.disconnectButton": "断开",
   "coiliiot.app.console.connectOperation.snackBarSuccess": "操作成功",
   "coiliiot.app.console.connectOperation.snackBarError": "操作失败",
+  "coiliiot.app.console.connectOperation.timeout": "连接超时",
 
 
   "coiliiot.app.console.serialMonitor.serialMonitorLabel": "端口监视器",
@@ -168,9 +169,18 @@
   "coiliiot.app.console.serialMonitor.clearLogsButton": "清空日志",
   "coiliiot.app.console.serialMonitor.noLogsHint": "没有日志",
 
-  "coiliiot.app.flash.connectOperation.eraseButton": "清空程序",
-  "coiliiot.app.flash.connectOperation.addButton": "添加文件",
-  "coiliiot.app.flash.connectOperation.flashButton": "烧录程序",
-  "coiliiot.app.flash.connectOperation.snackBarSuccess": "操作成功",
-  "coiliiot.app.flash.connectOperation.snackBarError": "操作失败"
+  "coiliiot.app.flash.toolbar.eraseButton": "清空程序",
+  "coiliiot.app.flash.toolbar.addButton": "添加文件",
+  "coiliiot.app.flash.toolbar.flashButton": "烧录程序",
+  "coiliiot.app.flash.toolbar.snackBarSuccess": "操作成功",
+  "coiliiot.app.flash.toolbar.snackBarError": "操作失败",
+  "coiliiot.app.flash.toolbar.eraseConfirmText": "请确认删除设备上的固件",
+  "coiliiot.app.flash.toolbar.emptyFileArray": "文件为空",
+  "coiliiot.app.flash.toolbar.invalidInput": "文件地址或文件错误",
+  "coiliiot.app.flash.toolbar.duplicateAddresses": "重复的文件地址",
+
+  "coiliiot.app.flash.fileTable.addressHeader": "地址",
+  "coiliiot.app.flash.fileTable.fileHeader": "文件",
+  "coiliiot.app.flash.fileTable.statusHeader": "烧录状态",
+  "coiliiot.app.flash.fileTable.actionHeader": "操作"
 }

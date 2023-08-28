@@ -1,11 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import {
-  GridRowModes,
-} from '@mui/x-data-grid';
-import {
-  Box,
-  Button,
   Grid,
   Card,
   CardHeader,
@@ -18,11 +13,9 @@ import {
   serialDataListener,
   sendMsgToPort,
 } from 'slice/data';
-import { LoadingButton } from '@mui/lab';
 import ErrorModal from 'components/common/ErrorModal';
 import { FormattedMessage } from 'react-intl';
 import messages from 'hocs/Locale/Messages/Console/SerialMonitor';
-import otherMessages from 'hocs/Locale/Messages/Flash/ConnectOperation';
 
 const serialTextStyle = {
   fontSize: 14,
@@ -31,35 +24,24 @@ const serialTextStyle = {
   fontFamily: 'Lucida Console, Courier, monospace',
 };
 function SerialMonitor({
-  serialDataListener,
   espProps,
-  setEspProps,
-  fileArray,
-  setFileArray,
-  setRowModesModel,
+  terminalData,
 }) {
-  const boxStyle = {
-    display: 'flex', alignItems: 'start', flexDirection: 'column',
-  };
-
   const monitorStyle = {
-    height: '200px', overflowY: 'scroll', py: 0, wordWrap: 'break-word',
+    height: '150px', overflowY: 'scroll', py: 0, wordWrap: 'break-word',
   };
   const [logs, setLogs] = useState('');
   const logsEndRef = useRef(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [snackbar, setSnackbar] = useState(null);
-  const [loadings, setLoadings] = useState({ erase: false, flash: false, add: false });
 
   const scrollToBottom = () => {
     logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
-    serialDataListener((data) => {
-      setLogs((pre) => (`${pre}${pre ? '\n' : ''}${data}`));
-    });
-  }, []);
+    setLogs((pre) => (`${pre}${pre && terminalData?.switchLine ? '\n' : ''}${terminalData?.data || ''}`));
+  }, [terminalData]);
 
   useEffect(() => {
     scrollToBottom();
@@ -73,40 +55,6 @@ function SerialMonitor({
     setSnackbar(null);
   };
 
-  const handleAddFile = () => {
-    const id = Math.random().toString();
-    setFileArray((oldRows) => [...oldRows, {
-      id, address: '', data: '', file: null, status: 0, isNew: true,
-    }]);
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'address' },
-    }));
-  };
-
-  const handleProgram = () => {
-    const temp = fileArray.map((file) => ({ address: file.address, data: file.data }));
-    console.log(temp);
-  };
-
-  const handleErase = async () => {
-    setLoadings((pre) => ({ ...pre, erase: true }));
-    try {
-      await espProps.esploader.erase_flash();
-      setSnackbar({
-        children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
-      });
-    } catch (e) {
-      setErrorMsg(e.message);
-      setSnackbar({
-        children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
-      });
-    } finally {
-      setTimeout(() => {
-        setLoadings((pre) => ({ ...pre, erase: false }));
-      }, 2000);
-    }
-  };
   return (
     <>
       <Grid container spacing={2} direction="row" sx={{ marginTop: '10px' }}>
@@ -118,45 +66,7 @@ function SerialMonitor({
             sx={{ width: '60%' }}
             justifyContent="flex-start"
           >
-            <Grid item xs={3}>
-              <Box sx={boxStyle}>
-                <LoadingButton
-                  variant="contained"
-                  disabled={!espProps.device || (loadings.erase || loadings.flash || loadings.add)}
-                  loading={loadings.apply}
-                  sx={{ width: '80%', mb: 2 }}
-                  onClick={handleAddFile}
-                >
-                  <FormattedMessage {...otherMessages.addButton} />
-                </LoadingButton>
-                <LoadingButton
-                  variant="contained"
-                  disabled={!espProps.device || (loadings.erase || loadings.flash || loadings.add)}
-                  loading={loadings.flash}
-                  sx={{ width: '80%', mb: 2 }}
-                  onClick={handleProgram}
-                >
-                  <FormattedMessage {...otherMessages.flashButton} />
-                </LoadingButton>
-                <LoadingButton
-                  variant="contained"
-                  disabled={!espProps.device || (loadings.erase || loadings.flash || loadings.add)}
-                  loading={loadings.reboot}
-                  sx={{ width: '80%', mb: 2 }}
-                  onClick={handleErase}
-                >
-                  <FormattedMessage {...otherMessages.eraseButton} />
-                </LoadingButton>
-                <Button
-                  variant="contained"
-                  onClick={handleClear}
-                  sx={{ width: '80%', mb: 2 }}
-                >
-                  <FormattedMessage {...messages.clearLogsButton} />
-                </Button>
-              </Box>
-            </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={12}>
               <Card sx={{ width: '100%' }}>
                 <CardHeader
                   subheader={(

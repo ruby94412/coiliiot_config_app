@@ -73,7 +73,6 @@ const portConnectionHandlers = (mainWindow) => {
   });
 
   ipcMain.handle('restart_port', async (evt, args) => {
-    console.log('restart called');
     try {
       await new Promise((res, rej) => {
         activePort.set({ dtr: false }, (err) => {

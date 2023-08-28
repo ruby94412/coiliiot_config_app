@@ -158,6 +158,7 @@
   "coiliiot.app.console.connectOperation.disconnectButton": "Disconnect",
   "coiliiot.app.console.connectOperation.snackBarSuccess": "Operation Success",
   "coiliiot.app.console.connectOperation.snackBarError": "Operation Error",
+  "coiliiot.app.console.connectOperation.timeout": "Connection Timeout",
 
   "coiliiot.app.console.serialMonitor.serialMonitorLabel": "Serial Monitor",
   "coiliiot.app.console.serialMonitor.applyConfigButton": "Apply Config",
@@ -166,10 +167,19 @@
   "coiliiot.app.console.serialMonitor.clearLogsButton": "Clear Logs",
   "coiliiot.app.console.serialMonitor.noLogsHint": "No logs",
 
-  "coiliiot.app.flash.connectOperation.eraseButton": "Erase Flash",
-  "coiliiot.app.flash.connectOperation.addButton": "Add File",
-  "coiliiot.app.flash.connectOperation.flashButton": "Flash Program",
-  "coiliiot.app.flash.connectOperation.snackBarSuccess": "Operation Success",
-  "coiliiot.app.flash.connectOperation.snackBarError": "Operation Error"
+  "coiliiot.app.flash.toolbar.eraseButton": "Erase",
+  "coiliiot.app.flash.toolbar.addButton": "Add",
+  "coiliiot.app.flash.toolbar.flashButton": "Flash",
+  "coiliiot.app.flash.toolbar.snackBarSuccess": "Operation Success",
+  "coiliiot.app.flash.toolbar.snackBarError": "Operation Error",
+  "coiliiot.app.flash.toolbar.eraseConfirmText": "Please Confirm To Erase Firmware On The Device",
+  "coiliiot.app.flash.toolbar.emptyFileArray": "Files to be flashed are empty",
+  "coiliiot.app.flash.toolbar.invalidInput": "Input is invalid",
+  "coiliiot.app.flash.toolbar.duplicateAddresses": "Duplicate addresses",
+
+  "coiliiot.app.flash.fileTable.addressHeader": "Address",
+  "coiliiot.app.flash.fileTable.fileHeader": "File",
+  "coiliiot.app.flash.fileTable.statusHeader": "Status",
+  "coiliiot.app.flash.fileTable.actionHeader": "Actions"
 }
 
