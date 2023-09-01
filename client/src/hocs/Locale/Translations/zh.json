@@ -4,6 +4,9 @@
   "coiliiot.app.navigation.consoleText": "操作",
   "coiliiot.app.navigation.configText": "配置",
   "coiliiot.app.navigation.flashText": "烧录",
+  "coiliiot.app.navigation.consoleConnected": "操作端口已连接",
+  "coiliiot.app.navigation.flashConnected": "烧录端口已连接",
+  "coiliiot.app.navigation.noPortsConnected": "端口未连接",
   "coiliiot.app.navigation.settingDrawer.settingTitle": "页面设置",
   "coiliiot.app.navigation.settingDrawer.modeTitle": "模式",
   "coiliiot.app.navigation.settingDrawer.modeLight": "亮屏",
@@ -160,6 +163,8 @@
   "coiliiot.app.console.connectOperation.snackBarSuccess": "操作成功",
   "coiliiot.app.console.connectOperation.snackBarError": "操作失败",
   "coiliiot.app.console.connectOperation.timeout": "连接超时",
+  "coiliiot.app.console.connectOperation.flashDisconnectConfirm": "该端口已在烧录功能中连接，点击确认以在烧录功能中断开连接",
+  "coiliiot.app.console.connectOperation.consoleDisconnectConfirm": "该端口已在控制功能中连接，点击确认以在控制功能中断开连接",
 
 
   "coiliiot.app.console.serialMonitor.serialMonitorLabel": "端口监视器",

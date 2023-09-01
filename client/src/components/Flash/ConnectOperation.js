@@ -11,7 +11,9 @@ import {
 import {
   flashConnect,
   serialPortsListener,
+  emitFlashConnect,
 } from 'slice/data';
+import ConfirmDialog from 'components/common/ConfirmDialog';
 import { LoadingButton } from '@mui/lab';
 import ErrorModal from 'components/common/ErrorModal';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -23,6 +25,8 @@ function ConnectOperation({
   espProps,
   setEspProps,
   setTerminalData,
+  emitFlashConnect,
+  connectionStatus,
 }) {
   const intl = useIntl();
   const [ports, setPorts] = useState([]);
@@ -32,6 +36,7 @@ function ConnectOperation({
   const [connectLoading, setConnectLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [snackbar, setSnackbar] = useState(null);
+  const [cslDstConfirming, setCslDstConfirming] = useState(false);
 
   useEffect(() => {
     serialPortsListener((rawPorts) => {
@@ -65,7 +70,32 @@ function ConnectOperation({
     },
   };
 
+  const clearUp = () => {
+    setEspProps({
+      device: null, esploader: null, transport: null, chip: null,
+    });
+  };
+
+  const handleDisconnect = async () => {
+    if (espProps.transport) {
+      try {
+        setConnectLoading(true);
+        await espProps.transport.disconnect();
+        setConnected(false);
+        clearUp();
+      } catch (e) {
+        setErrorMsg(e.message);
+      } finally {
+        setConnectLoading(false);
+      }
+    } else setConnected(false);
+  };
+
   const handleConnect = async () => {
+    if (connectionStatus.isConsoleConnected) {
+      setCslDstConfirming(true);
+      return;
+    }
     const filters = [{
       usbVendorId: parseInt(selectedPort.vendorId, 16),
       usbProductId: parseInt(selectedPort.productId, 16),
@@ -100,30 +130,10 @@ function ConnectOperation({
       await Promise.race([connection, timeout]);
     } catch (e) {
       setErrorMsg(e.message);
+      handleDisconnect();
     } finally {
       setConnectLoading(false);
     }
-  };
-
-  const clearUp = () => {
-    setEspProps({
-      device: null, esploader: null, transport: null, chip: null,
-    });
-  };
-
-  const handleDisconnect = async () => {
-    if (espProps.transport) {
-      try {
-        setConnectLoading(true);
-        await espProps.transport.disconnect();
-        setConnected(false);
-        clearUp();
-      } catch (e) {
-        setErrorMsg(e.message);
-      } finally {
-        setConnectLoading(false);
-      }
-    } else setConnected(false);
   };
 
   const handlePortPathChange = (e) => {
@@ -134,6 +144,14 @@ function ConnectOperation({
     if (connected) handleDisconnect();
     else handleConnect();
   };
+
+  useEffect(() => {
+    emitFlashConnect({ isFlashConnected: connected });
+  }, [connected]);
+
+  useEffect(() => {
+    if (connectionStatus?.isFlashDisconnectConfirmed) handleDisconnect();
+  }, [connectionStatus]);
   return (
     <>
       <Grid container spacing={2} direction="row" sx={{ marginBottom: '25px' }}>
@@ -194,13 +212,25 @@ function ConnectOperation({
         onClose={() => { setErrorMsg(null); }}
         isErrorModalOpen={!!errorMsg}
       />
+      <ConfirmDialog
+        isOpen={cslDstConfirming}
+        onClose={() => { setCslDstConfirming(false); }}
+        handleConfirmCb={() => {
+          setCslDstConfirming(false);
+          emitFlashConnect({ isConsoleDisconnectConfirmed: true });
+        }}
+        content={<FormattedMessage {...messages.consoleDisconnectConfirm} />}
+      />
     </>
   );
 }
-
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => {
+  const { connectionStatus } = state.credentialAndConfig;
+  return { connectionStatus };
+};
 
 export default connect(mapStateToProps, {
   flashConnect,
   serialPortsListener,
+  emitFlashConnect,
 })(ConnectOperation);

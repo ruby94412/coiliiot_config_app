@@ -27,4 +27,12 @@ export default defineMessages({
     id: `${scope}.timeout`,
     defaultMessage: 'Connection Timeout',
   },
+  flashDisconnectConfirm: {
+    id: `${scope}.flashDisconnectConfirm`,
+    defaultMessage: 'This port is connected in flash section, you need to confirm to disconnect the port in flash before open the connection here',
+  },
+  consoleDisconnectConfirm: {
+    id: `${scope}.consoleDisconnectConfirm`,
+    defaultMessage: 'This port is connected in console section, you need to confirm to disconnect the port in flash before open the connection here',
+  },
 });

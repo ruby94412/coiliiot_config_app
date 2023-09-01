@@ -4,6 +4,9 @@
   "coiliiot.app.navigation.consoleText": "Console",
   "coiliiot.app.navigation.configText": "Configure",
   "coiliiot.app.navigation.flashText": "Flash",
+  "coiliiot.app.navigation.consoleConnected": "Console Connected",
+  "coiliiot.app.navigation.flashConnected": "Flash Connected",
+  "coiliiot.app.navigation.noPortsConnected": "No Ports Connected",
   "coiliiot.app.navigation.settingDrawer.settingTitle": "Settings",
   "coiliiot.app.navigation.settingDrawer.modeTitle": "Mode",
   "coiliiot.app.navigation.settingDrawer.modeLight": "Light",
@@ -159,6 +162,8 @@
   "coiliiot.app.console.connectOperation.snackBarSuccess": "Operation Success",
   "coiliiot.app.console.connectOperation.snackBarError": "Operation Error",
   "coiliiot.app.console.connectOperation.timeout": "Connection Timeout",
+  "coiliiot.app.console.connectOperation.flashDisconnectConfirm": "This port is connected in flash section, you need to confirm to disconnect the port in flash before open the connection here",
+  "coiliiot.app.console.connectOperation.consoleDisconnectConfirm": "This port is connected in console section, you need to confirm to disconnect the port in flash before open the connection here",
 
   "coiliiot.app.console.serialMonitor.serialMonitorLabel": "Serial Monitor",
   "coiliiot.app.console.serialMonitor.applyConfigButton": "Apply Config",

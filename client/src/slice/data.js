@@ -96,6 +96,16 @@ export const updateListener = createAsyncThunk(
   },
 );
 
+export const emitConsoleConnect = createAsyncThunk(
+  'data/emitConsoleConnect',
+  (connectOperation) => (connectOperation),
+);
+
+export const emitFlashConnect = createAsyncThunk(
+  'data/emitFlashConnect',
+  (connectOperation) => (connectOperation),
+);
+
 const dataSlice = createSlice({
   name: 'credentialAndConfig',
   initialState,
@@ -130,6 +140,14 @@ const dataSlice = createSlice({
               return ({ ...state, ...data });
           }
         },
+      )
+      .addCase(
+        emitConsoleConnect.fulfilled,
+        (state, action) => ({ ...state, connectionStatus: { ...action.payload } }),
+      )
+      .addCase(
+        emitFlashConnect.fulfilled,
+        (state, action) => ({ ...state, connectionStatus: { ...action.payload } }),
       );
   },
 });

@@ -23,4 +23,16 @@ export default defineMessages({
     id: `${scope}.flashText`,
     defaultMessage: 'Flash',
   },
+  consoleConnected: {
+    id: `${scope}.consoleConnected`,
+    defaultMessage: 'Console Connected',
+  },
+  flashConnected: {
+    id: `${scope}.flashConnected`,
+    defaultMessage: 'Flash Connected',
+  },
+  noPortsConnected: {
+    id: `${scope}.noPortsConnected`,
+    defaultMessage: 'No Ports Connected',
+  },
 });

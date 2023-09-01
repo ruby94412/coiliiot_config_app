@@ -14,7 +14,9 @@ import {
   serialPortsListener,
   connectPort,
   disconnectPort,
+  emitConsoleConnect,
 } from 'slice/data';
+import ConfirmDialog from 'components/common/ConfirmDialog';
 import { LoadingButton } from '@mui/lab';
 import ErrorModal from 'components/common/ErrorModal';
 import { FormattedMessage } from 'react-intl';
@@ -26,7 +28,8 @@ function ConnectOperation({
   connectPort,
   disconnectPort,
   serialPortsListener,
-  isFlash = false,
+  emitConsoleConnect,
+  connectionStatus,
 }) {
   const [ports, setPorts] = useState([]);
   const [portPath, setPortPath] = useState('');
@@ -34,6 +37,7 @@ function ConnectOperation({
   const [errorMsg, setErrorMsg] = useState(null);
   const [connectLoading, setConnectLoading] = useState(false);
   const [snackbar, setSnackbar] = useState(null);
+  const [flsDscConfirming, setFlsDstConfirming] = useState(false);
 
   useEffect(() => {
     serialPortsListener((rawPorts) => {
@@ -58,8 +62,12 @@ function ConnectOperation({
   };
 
   const handleConnect = () => {
+    if (connectionStatus.isFlashConnected) {
+      setFlsDstConfirming(true);
+      return;
+    }
     setConnectLoading(true);
-    connectPort({ path: portPath, isFlash }).then((res) => {
+    connectPort({ path: portPath }).then((res) => {
       if (res.error) {
         setErrorMsg(res.error.message);
         setSnackbar({
@@ -103,6 +111,14 @@ function ConnectOperation({
   const handleCloseSnackbar = () => {
     setSnackbar(null);
   };
+
+  useEffect(() => {
+    emitConsoleConnect({ isConsoleConnected: connected });
+  }, [connected]);
+
+  useEffect(() => {
+    if (connectionStatus?.isConsoleDisconnectConfirmed) handleDisconnect();
+  }, [connectionStatus]);
 
   return (
     <>
@@ -152,6 +168,15 @@ function ConnectOperation({
         onClose={() => { setErrorMsg(null); }}
         isErrorModalOpen={!!errorMsg}
       />
+      <ConfirmDialog
+        isOpen={flsDscConfirming}
+        onClose={() => { setFlsDstConfirming(false); }}
+        handleConfirmCb={() => {
+          setFlsDstConfirming(false);
+          emitConsoleConnect({ isFlashDisconnectConfirmed: true });
+        }}
+        content={<FormattedMessage {...messages.flashDisconnectConfirm} />}
+      />
       {!!snackbar && (
         <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={2000}>
           <Alert {...snackbar} onClose={handleCloseSnackbar} />
@@ -161,10 +186,14 @@ function ConnectOperation({
   );
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => {
+  const { connectionStatus } = state.credentialAndConfig;
+  return { connectionStatus };
+};
 
 export default connect(mapStateToProps, {
   serialPortsListener,
   connectPort,
   disconnectPort,
+  emitConsoleConnect,
 })(ConnectOperation);
