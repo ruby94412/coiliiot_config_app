@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {
   Grid,
   RadioGroup,
@@ -122,11 +123,11 @@ export const getInitialValues = (originalConfig, originalCredential) => {
     rst.autoPollConfigs.push({
       enabled: false,
       delay: 1000,
-      commands: [],
       serialId: i,
       numberOfRetry: 3,
       timeout: 1,
       period: 600,
+      commands: [],
     });
   }
   for (let i = 0; i < 8; i++) {
@@ -204,7 +205,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
     rst.networkConfigs[index] = {
       ...defaultConfig, networkId, type, serialId, enabled: true,
     };
-    const typeArr = ['socket', 'aliyun', 'mqtt'];
+    const typeArr = ['socket', 'aliyun', 'mqtt', 'http'];
     rst.networkConfigs[index][typeArr[type]] = other;
   });
 
@@ -426,5 +427,63 @@ export const nodeToJson = (node) => {
       rst[propertyKey] = propertyValue;
       break;
   }
+  return rst;
+};
+
+export const simplifyConfig = (config, credential) => {
+  const {
+    basicConfigs, serialConfigs, networkConfigs, autoPollConfigs, networkSummary, config_version,
+  } = config;
+  const rst = {
+    cred: [], net_sum: [], cfg_v: config_version, basic: [], serial: [], net: [], auto: [],
+  };
+
+  Object.entries(credential).forEach(([, value]) => {
+    rst.cred.push(value);
+  });
+
+  Object.entries(networkSummary).forEach(([, value]) => {
+    rst.net_sum.push(value);
+  });
+
+  Object.entries(basicConfigs).forEach(([, value]) => {
+    rst.basic.push(typeof value === 'boolean' ? +value : value);
+  });
+
+  serialConfigs.forEach((cfg) => {
+    const temp = [];
+    Object.entries(cfg).forEach(([, value]) => {
+      temp.push(typeof value === 'boolean' ? +value : value);
+    });
+    rst.serial.push(temp);
+  });
+
+  networkConfigs.forEach((cfg) => {
+    const temp = [];
+    Object.entries(cfg).forEach(([, value]) => {
+      temp.push(typeof value === 'boolean' ? +value : value);
+    });
+    rst.net.push(temp);
+  });
+
+  autoPollConfigs.forEach((cfg) => {
+    const temp = [];
+    Object.entries(cfg).forEach(([, value]) => {
+      switch (typeof value) {
+        case 'object': {
+          const commands = value.map((command) => (command.wrap));
+          temp.push(commands);
+          break;
+        }
+        case 'boolean':
+          temp.push(+value);
+          break;
+        default:
+          temp.push(value);
+          break;
+      }
+    });
+    rst.auto.push(temp);
+  });
   return rst;
 };

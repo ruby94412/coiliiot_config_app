@@ -46,6 +46,7 @@ const AutoPoll = forwardRef(({
       dec: row.detail.dec,
       rawDec: row.detail.rawDec,
       id: row.id,
+      wrap: `${row.id}-${row.detail.dec.map((num) => (num.toString(16).padStart(2, '0'))).join(' ')}`,
     }));
     formikRefs.current[serialId].setFieldValue('commands', commands);
   };

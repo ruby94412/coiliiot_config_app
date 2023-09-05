@@ -123,15 +123,18 @@ function ConnectOperation({
         setConnected(true);
         res();
       } catch (e) {
+        console.log(e, '-----');
         rej(e);
       }
     });
     try {
       await Promise.race([connection, timeout]);
     } catch (e) {
+      console.log('asdfasdfasdfasdf');
       setErrorMsg(e.message);
       handleDisconnect();
     } finally {
+      console.log('asdfasdfasdfasdf');
       setConnectLoading(false);
     }
   };
