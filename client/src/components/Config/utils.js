@@ -396,7 +396,7 @@ export const handleFormDataSubmit = (values) => {
       config.networkConfigs.push(temp);
     }
   });
-  config.config_version = new Date().toString();
+  config.config_version = getUid();
   return { config, credential };
 };
 

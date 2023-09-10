@@ -21,6 +21,7 @@ import ErrorModal from 'components/common/ErrorModal';
 import { FormattedMessage } from 'react-intl';
 import messages from 'hocs/Locale/Messages/Console/SerialMonitor';
 import otherMessages from 'hocs/Locale/Messages/Console/ConnectOperation';
+import { simplifyConfig } from 'components/Config/utils';
 
 const serialTextStyle = {
   fontSize: 14,
@@ -66,7 +67,8 @@ function SerialMonitor({
 
   const handleApply = () => {
     setLoadings((pre) => ({ ...pre, apply: true }));
-    sendMsgToPort({ type: 1, data: { config, credential } })
+    const sp = simplifyConfig(config, credential);
+    sendMsgToPort({ type: 1, data: sp })
       .then((res) => {
         const err = res.error;
         if (err) {
