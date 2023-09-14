@@ -135,6 +135,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       networkId: i,
       enabled: false,
       type: 0,
+      serialId: 0,
       socket: {
         registerMessage: '',
         pulseMessage: '',
@@ -178,7 +179,6 @@ export const getInitialValues = (originalConfig, originalCredential) => {
         basicUser: '',
         basicPass: '',
       },
-      serialId: 0,
     });
   }
   if (originalConfig?.basicConfigs) {
@@ -390,7 +390,7 @@ export const handleFormDataSubmit = (values) => {
       const detail = ele[typeArr[type]];
       config.networkSummary[typeArr[type]].push(networkId);
       const temp = {
-        enabled, serialId, type, networkId, ...detail,
+        networkId, enabled, type, serialId, ...detail,
       };
       Object.keys(temp).forEach((key) => temp[key] === undefined && delete temp[key]);
       config.networkConfigs.push(temp);
@@ -430,6 +430,13 @@ export const nodeToJson = (node) => {
   return rst;
 };
 
+const castStringValueToOrigin = (value) => {
+  if (value === 'true') return 1;
+  if (value === 'false') return 0;
+  if (Number.isNaN(+value)) return value;
+  return +value;
+};
+
 export const simplifyConfig = (config, credential) => {
   const {
     basicConfigs, serialConfigs, networkConfigs, autoPollConfigs, networkSummary, config_version,
@@ -439,21 +446,21 @@ export const simplifyConfig = (config, credential) => {
   };
 
   Object.entries(credential).forEach(([, value]) => {
-    rst.cred.push(value);
+    rst.cred.push(castStringValueToOrigin(value));
   });
 
   Object.entries(networkSummary).forEach(([, value]) => {
-    rst.net_sum.push(value);
+    rst.net_sum.push(castStringValueToOrigin(value));
   });
 
   Object.entries(basicConfigs).forEach(([, value]) => {
-    rst.basic.push(typeof value === 'boolean' ? +value : value);
+    rst.basic.push(castStringValueToOrigin(value));
   });
 
   serialConfigs.forEach((cfg) => {
     const temp = [];
     Object.entries(cfg).forEach(([, value]) => {
-      temp.push(typeof value === 'boolean' ? +value : value);
+      temp.push(castStringValueToOrigin(value));
     });
     rst.serial.push(temp);
   });
@@ -461,7 +468,7 @@ export const simplifyConfig = (config, credential) => {
   networkConfigs.forEach((cfg) => {
     const temp = [];
     Object.entries(cfg).forEach(([, value]) => {
-      temp.push(typeof value === 'boolean' ? +value : value);
+      temp.push(castStringValueToOrigin(value));
     });
     rst.net.push(temp);
   });

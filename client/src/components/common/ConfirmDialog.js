@@ -12,6 +12,8 @@ function ConfirmDialog({
   handleConfirmCb,
   isOpen,
   onClose,
+  renderOtherContent,
+  width,
 }) {
   const handleConfirm = () => {
     handleConfirmCb();
@@ -19,7 +21,7 @@ function ConfirmDialog({
   };
   return (
     <Dialog
-      maxWidth="xs"
+      // maxWidth="xs"
       open={isOpen}
       onClose={onClose}
       PaperProps={{
@@ -27,12 +29,14 @@ function ConfirmDialog({
           backgroundColor: '#424141',
           color: 'white',
           minWidth: '350px',
+          width,
         },
       }}
     >
       {title && <DialogTitle>{title}</DialogTitle>}
       <DialogContent dividers>
         {content}
+        {renderOtherContent && renderOtherContent()}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} variant="contained">

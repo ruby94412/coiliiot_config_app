@@ -166,11 +166,16 @@
   "coiliiot.app.console.connectOperation.consoleDisconnectConfirm": "This port is connected in console section, you need to confirm to disconnect the port in flash before open the connection here",
 
   "coiliiot.app.console.serialMonitor.serialMonitorLabel": "Serial Monitor",
+  "coiliiot.app.console.serialMonitor.readConfigButton": "Read Config",
   "coiliiot.app.console.serialMonitor.applyConfigButton": "Apply Config",
   "coiliiot.app.console.serialMonitor.resetConfigButton": "Reset Config",
   "coiliiot.app.console.serialMonitor.restartConsoleButton": "Restart Console",
   "coiliiot.app.console.serialMonitor.clearLogsButton": "Clear Logs",
   "coiliiot.app.console.serialMonitor.noLogsHint": "No logs",
+  "coiliiot.app.console.serialMonitor.readConfigSuccess": "Read Configuration From Device Successfully, Click Import To Apply Data To [Conguration] Section",
+  "coiliiot.app.console.serialMonitor.readConfigFailure": "Failed To Read Valid Configuration",
+  "coiliiot.app.console.serialMonitor.importButton": "Import",
+  "coiliiot.app.console.serialMonitor.configData": "Configuration Data",
 
   "coiliiot.app.flash.toolbar.eraseButton": "Erase",
   "coiliiot.app.flash.toolbar.addButton": "Add",

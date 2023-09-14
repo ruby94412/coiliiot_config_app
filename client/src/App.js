@@ -25,6 +25,7 @@ function MainContent({
         locale={locale}
         themeMode={themeMode}
         setPageIndex={setPageIndex}
+        pageIndex={pageIndex}
       />
       <Collapse in={pageIndex === 0} sx={{ width: '100%' }}>
         <Config />

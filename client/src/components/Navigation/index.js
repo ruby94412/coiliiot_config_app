@@ -7,10 +7,8 @@ import {
   Chip,
   Toolbar,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import {
   Settings as SettingsIcon,
@@ -28,6 +26,7 @@ function Navigation({
   setLocale,
   locale,
   themeMode,
+  pageIndex,
   setPageIndex,
   updateListener,
   connectionStatus,
@@ -36,6 +35,10 @@ function Navigation({
   const [anchorElDrawer, setAnchorElDrawer] = useState('right');
   const [updateInfo, setUpdateInfo] = useState();
 
+  const handleChange = (event, newValue) => {
+    setPageIndex(newValue);
+  };
+
   useEffect(() => {
     updateListener((info) => {
       setUpdateInfo(info);
@@ -43,8 +46,28 @@ function Navigation({
   }, []);
 
   const renderChip = () => {
-    if (connectionStatus?.isConsoleConnected) return (<Chip label={<FormattedMessage {...messages.consoleConnected} />} size="small" color="success" icon={<TerminalIcon />} />);
-    if (connectionStatus?.isFlashConnected) return (<Chip label={<FormattedMessage {...messages.flashConnected} />} size="small" color="warning" icon={<FlashIcon />} />);
+    if (connectionStatus?.isConsoleConnected) {
+      return (
+        <Chip
+          label={<FormattedMessage {...messages.consoleConnected} />}
+          size="small"
+          color="success"
+          icon={<TerminalIcon />}
+          onClick={() => { setPageIndex(1); }}
+        />
+      );
+    }
+    if (connectionStatus?.isFlashConnected) {
+      return (
+        <Chip
+          label={<FormattedMessage {...messages.flashConnected} />}
+          size="small"
+          color="warning"
+          icon={<FlashIcon />}
+          onClick={() => { setPageIndex(2); }}
+        />
+      );
+    }
     return (<Chip label={<FormattedMessage {...messages.noPortsConnected} />} sx={{ backgroundColor: '#626363', color: 'white' }} size="small" />);
   };
 
@@ -62,29 +85,19 @@ function Navigation({
         <Toolbar>
           <Logo />
           <Box sx={{ flexGrow: 1 }} />
-          <List>
-            <ListItem disablePadding>
-              {renderChip()}
-              <ListItemButton
-                sx={{ textAlign: 'center' }}
-                onClick={() => { setPageIndex(0); }}
-              >
-                <ListItemText primary={<FormattedMessage {...messages.configText} />} />
-              </ListItemButton>
-              <ListItemButton
-                sx={{ textAlign: 'center' }}
-                onClick={() => { setPageIndex(1); }}
-              >
-                <ListItemText primary={<FormattedMessage {...messages.consoleText} />} />
-              </ListItemButton>
-              <ListItemButton
-                sx={{ textAlign: 'center' }}
-                onClick={() => { setPageIndex(2); }}
-              >
-                <ListItemText primary={<FormattedMessage {...messages.flashText} />} />
-              </ListItemButton>
-            </ListItem>
-          </List>
+
+          {renderChip()}
+          <Tabs
+            value={pageIndex}
+            onChange={handleChange}
+            textColor="secondary"
+            indicatorColor="secondary"
+            aria-label="secondary tabs example"
+          >
+            <Tab value={0} sx={{ color: 'white' }} label={<FormattedMessage {...messages.configText} />} />
+            <Tab value={1} sx={{ color: 'white' }} label={<FormattedMessage {...messages.consoleText} />} />
+            <Tab value={2} sx={{ color: 'white' }} label={<FormattedMessage {...messages.flashText} />} />
+          </Tabs>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
               size="large"

@@ -10,18 +10,23 @@ import {
   Typography,
   Snackbar,
   Alert,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
 } from '@mui/material';
 import {
   serialDataListener,
   sendMsgToPort,
   restartPort,
 } from 'slice/data';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { simplifyConfig } from 'components/Config/utils';
 import ErrorModal from 'components/common/ErrorModal';
-import { FormattedMessage } from 'react-intl';
+import ConfirmDialog from 'components/common/ConfirmDialog';
 import messages from 'hocs/Locale/Messages/Console/SerialMonitor';
 import otherMessages from 'hocs/Locale/Messages/Console/ConnectOperation';
-import { simplifyConfig } from 'components/Config/utils';
 
 const serialTextStyle = {
   fontSize: 14,
@@ -37,11 +42,16 @@ function SerialMonitor({
   sendMsgToPort,
   restartPort,
 }) {
+  const intl = useIntl();
   const [logs, setLogs] = useState('');
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [deviceConfig, setDeviceConfig] = useState(null);
   const logsEndRef = useRef(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [snackbar, setSnackbar] = useState(null);
-  const [loadings, setLoadings] = useState({ apply: false, reset: false, reboot: false });
+  const [loadings, setLoadings] = useState({
+    read: false, apply: false, reset: false, reboot: false,
+  });
 
   const scrollToBottom = () => {
     logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -53,9 +63,26 @@ function SerialMonitor({
 
   useEffect(() => {
     serialDataListener((data) => {
+      if (data.startsWith('read data response: ')) {
+        const jsonString = data.substring(20);
+        try {
+          const temp = JSON.parse(jsonString);
+          setDeviceConfig(temp);
+          setIsConfirmOpen(true);
+        } catch (e) {
+          setErrorMsg(intl.formatMessage(messages.readConfigFailure));
+          setSnackbar({
+            children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
+          });
+        }
+      }
       setLogs((pre) => (`${pre}${pre ? '\n' : ''}${data}`));
     });
   }, []);
+
+  const renderAccordion = () => (
+    <Box sx={{ mt: 1 }}><Typography fontSize={11}>{JSON.stringify(deviceConfig)}</Typography></Box>
+  );
 
   useEffect(() => {
     scrollToBottom();
@@ -65,22 +92,38 @@ function SerialMonitor({
     setLogs('');
   };
 
+  const handleResponse = (res) => {
+    const err = res.error;
+    if (err) {
+      setErrorMsg(err.error.message);
+      setSnackbar({
+        children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
+      });
+    } else {
+      setSnackbar({
+        children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
+      });
+    }
+  };
+
+  const handleRead = () => {
+    setLoadings((pre) => ({ ...pre, read: true }));
+    sendMsgToPort({ type: 0 })
+      .then((res) => {
+        handleResponse(res);
+      }).finally(() => {
+        setTimeout(() => {
+          setLoadings((pre) => ({ ...pre, read: false }));
+        }, 2000);
+      });
+  };
+
   const handleApply = () => {
     setLoadings((pre) => ({ ...pre, apply: true }));
     const sp = simplifyConfig(config, credential);
     sendMsgToPort({ type: 1, data: sp })
       .then((res) => {
-        const err = res.error;
-        if (err) {
-          setErrorMsg(err.error.message);
-          setSnackbar({
-            children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
-          });
-        } else {
-          setSnackbar({
-            children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
-          });
-        }
+        handleResponse(res);
       }).finally(() => {
         setTimeout(() => {
           setLoadings((pre) => ({ ...pre, apply: false }));
@@ -92,17 +135,7 @@ function SerialMonitor({
     setLoadings((pre) => ({ ...pre, reset: true }));
     sendMsgToPort({ type: 2 })
       .then((res) => {
-        const err = res.error;
-        if (err) {
-          setErrorMsg(err.error.message);
-          setSnackbar({
-            children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
-          });
-        } else {
-          setSnackbar({
-            children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
-          });
-        }
+        handleResponse(res);
       }).finally(() => {
         setTimeout(() => {
           setLoadings((pre) => ({ ...pre, reset: false }));
@@ -113,16 +146,7 @@ function SerialMonitor({
   const handleReboot = () => {
     setLoadings((pre) => ({ ...pre, reboot: true }));
     restartPort().then((res) => {
-      if (res.error) {
-        setErrorMsg(res.error.message);
-        setSnackbar({
-          children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
-        });
-      } else {
-        setSnackbar({
-          children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
-        });
-      }
+      handleResponse(res);
     }).finally(() => {
       setTimeout(() => {
         setLoadings((pre) => ({ ...pre, reboot: false }));
@@ -133,6 +157,7 @@ function SerialMonitor({
   const handleCloseSnackbar = () => {
     setSnackbar(null);
   };
+
   return (
     <>
       <Grid container spacing={2} direction="row">
@@ -160,8 +185,21 @@ function SerialMonitor({
           <Box sx={{ width: '60%' }}>
             <LoadingButton
               variant="contained"
-              sx={{ mr: 2 }}
-              disabled={!connected || (loadings.apply || loadings.reboot || loadings.reset)}
+              sx={{ mr: 2, mb: 2 }}
+              disabled={!connected || (
+                loadings.read || loadings.apply || loadings.reboot || loadings.reset
+              )}
+              onClick={handleRead}
+              loading={loadings.read}
+            >
+              <FormattedMessage {...messages.readConfigButton} />
+            </LoadingButton>
+            <LoadingButton
+              variant="contained"
+              sx={{ mr: 2, mb: 2 }}
+              disabled={!connected || (
+                loadings.read || loadings.apply || loadings.reboot || loadings.reset
+              )}
               onClick={handleApply}
               loading={loadings.apply}
             >
@@ -169,8 +207,10 @@ function SerialMonitor({
             </LoadingButton>
             <LoadingButton
               variant="contained"
-              sx={{ mr: 2 }}
-              disabled={!connected || (loadings.apply || loadings.reboot || loadings.reset)}
+              sx={{ mr: 2, mb: 2 }}
+              disabled={!connected || (
+                loadings.read || loadings.apply || loadings.reboot || loadings.reset
+              )}
               onClick={handleReset}
               loading={loadings.reset}
             >
@@ -178,8 +218,10 @@ function SerialMonitor({
             </LoadingButton>
             <LoadingButton
               variant="contained"
-              sx={{ mr: 2 }}
-              disabled={!connected || (loadings.apply || loadings.reboot || loadings.reset)}
+              sx={{ mr: 2, mb: 2 }}
+              disabled={!connected || (
+                loadings.read || loadings.apply || loadings.reboot || loadings.reset
+              )}
               onClick={handleReboot}
               loading={loadings.reboot}
             >
@@ -191,6 +233,16 @@ function SerialMonitor({
           </Box>
         </Grid>
       </Grid>
+      <ConfirmDialog
+        isOpen={isConfirmOpen}
+        onClose={() => { setIsConfirmOpen(false); }}
+        handleConfirmCb={() => {
+          setIsConfirmOpen(false);
+        }}
+        content={intl.formatMessage(messages.readConfigSuccess)}
+        width="800px"
+        renderOtherContent={renderAccordion}
+      />
       <ErrorModal
         errorMessage={errorMsg}
         onClose={() => { setErrorMsg(null); }}

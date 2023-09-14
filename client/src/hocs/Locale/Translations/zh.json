@@ -168,11 +168,16 @@
 
 
   "coiliiot.app.console.serialMonitor.serialMonitorLabel": "端口监视器",
+  "coiliiot.app.console.serialMonitor.readConfigButton": "读取配置",
   "coiliiot.app.console.serialMonitor.applyConfigButton": "应用配置",
   "coiliiot.app.console.serialMonitor.resetConfigButton": "重置配置",
   "coiliiot.app.console.serialMonitor.restartConsoleButton": "重启设备",
   "coiliiot.app.console.serialMonitor.clearLogsButton": "清空日志",
   "coiliiot.app.console.serialMonitor.noLogsHint": "没有日志",
+  "coiliiot.app.console.serialMonitor.readConfigSuccess": "成功获取设备上的配置, 点击导入将数据应用到[配置]界面",
+  "coiliiot.app.console.serialMonitor.readConfigFailure": "无法读取正确的配置",
+  "coiliiot.app.console.serialMonitor.importButton": "导入",
+  "coiliiot.app.console.serialMonitor.configData": "配置数据",
 
   "coiliiot.app.flash.toolbar.eraseButton": "清空程序",
   "coiliiot.app.flash.toolbar.addButton": "添加文件",
