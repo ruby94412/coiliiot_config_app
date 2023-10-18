@@ -23,4 +23,5 @@ const destroyHandlers = () => {
   ipcMain.removeHandler('write_data_to_local');
 };
 
+
 module.exports = { runHandlers, destroyHandlers };
