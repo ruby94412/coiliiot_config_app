@@ -208,7 +208,6 @@ export const getInitialValues = (originalConfig, originalCredential) => {
     const typeArr = ['socket', 'aliyun', 'mqtt', 'http'];
     rst.networkConfigs[index][typeArr[type]] = other;
   });
-
   return rst;
 };
 
@@ -491,6 +490,201 @@ export const simplifyConfig = (config, credential) => {
       }
     });
     rst.auto.push(temp);
+  });
+  return rst;
+};
+
+export const retrieveFromSimpleConfig = (simpleJson) => {
+  const rst = {
+    basicConfigs: {}, serialConfigs: [], networkConfigs: [], autoPollConfigs: [],
+  };
+  rst.basicConfigs = {
+    config_version: 0,
+    autoUpdateEnabled: true,
+    disconnectedRestart: false,
+    restartSchedule: 720,
+    credential: { ssid: '', password: '' },
+  };
+  for (let i = 0; i < 3; i++) {
+    rst.serialConfigs.push({
+      serialId: i,
+      enabled: false,
+      baudrate: 9600,
+      dataBit: 8,
+      stopBit: 1,
+      parityMode: 2,
+    });
+    rst.autoPollConfigs.push({
+      enabled: false,
+      delay: 1000,
+      serialId: i,
+      numberOfRetry: 3,
+      timeout: 1,
+      period: 600,
+      commands: [],
+    });
+  }
+  for (let i = 0; i < 8; i++) {
+    rst.networkConfigs.push({
+      networkId: i,
+      enabled: false,
+      type: 0,
+      serialId: 0,
+      socket: {
+        registerMessage: '',
+        pulseMessage: '',
+        pulseFrequency: 30,
+        host: '',
+        port: 8080,
+        socketType: 0,
+      },
+      aliyun: {
+        regionId: 'cn-shanghai',
+        productKey: '',
+        deviceSecret: '',
+        productSecret: '',
+        registerType: 0,
+        deviceName: '',
+        subscribeTopic: '',
+        publishTopic: '',
+        retain: 0,
+        lwtMessage: '',
+        qos: 0,
+        cleanSession: true,
+      },
+      mqtt: {
+        host: '',
+        port: 8080,
+        username: '',
+        password: '',
+        clientId: '',
+        subscribeTopic: '',
+        publishTopic: '',
+        retain: 0,
+        lwtMessage: '',
+        qos: 0,
+        cleanSession: true,
+      },
+      http: {
+        method: 0,
+        url: '',
+        contentType: 0,
+        header: '',
+        basicUser: '',
+        basicPass: '',
+      },
+    });
+  }
+
+  Object.entries(rst.basicConfigs).forEach(([k, v], idx) => {
+    if (k === 'credential') return;
+    switch (typeof v) {
+      case 'boolean':
+        rst.basicConfigs[k] = Boolean(simpleJson.basic[idx]);
+        break;
+      case 'number':
+        rst.basicConfigs[k] = Number(simpleJson.basic[idx]);
+        break;
+      case 'string':
+      default:
+        rst.basicConfigs[k] = simpleJson.basic[idx];
+        break;
+    }
+  });
+
+  Object.entries(rst.basicConfigs.credential).forEach(([k, v], idx) => {
+    rst.basicConfigs.credential[k] = simpleJson.cred[idx].toString();
+  });
+
+  rst.serialConfigs.forEach((defaultCfg, idx) => {
+    const simpleCfg = simpleJson.serial.find((arr) => (arr[0] === idx));
+    if (simpleCfg) {
+      Object.entries(rst.serialConfigs[idx]).forEach(([k, v], index) => {
+        switch (typeof v) {
+          case 'boolean':
+            rst.serialConfigs[idx][k] = Boolean(simpleCfg[index]);
+            break;
+          case 'number':
+            rst.serialConfigs[idx][k] = Number(simpleCfg[index]);
+            break;
+          case 'string':
+          default:
+            rst.serialConfigs[idx][k] = simpleCfg[index];
+            break;
+        }
+      });
+    }
+  });
+
+  rst.networkConfigs.forEach((defaultCfg, idx) => {
+    const simpleCfg = simpleJson.net.find((arr) => (arr[0] === idx));
+    if (simpleCfg) {
+      Object.entries(rst.networkConfigs[idx]).forEach(([k, v], index) => {
+        if (index < 4) {
+          switch (typeof v) {
+            case 'boolean':
+              rst.networkConfigs[idx][k] = Boolean(simpleCfg[index]);
+              break;
+            case 'number':
+              rst.networkConfigs[idx][k] = Number(simpleCfg[index]);
+              break;
+            case 'string':
+            default:
+              rst.networkConfigs[idx][k] = simpleCfg[index];
+              break;
+          }
+        } else {
+          const netTypeArr = ['socket', 'aliyun', 'mqtt', 'http'];
+          if (k === netTypeArr[simpleCfg[2]]) {
+            Object.entries(rst.networkConfigs[idx][k]).forEach(([k_type, v_type], idx_type) => {
+              switch (typeof v_type) {
+                case 'boolean':
+                  rst.networkConfigs[idx][k][k_type] = Boolean(simpleCfg[idx_type + 4]);
+                  break;
+                case 'number':
+                  rst.networkConfigs[idx][k][k_type] = Number(simpleCfg[idx_type + 4]);
+                  break;
+                case 'string':
+                default:
+                  rst.networkConfigs[idx][k][k_type] = simpleCfg[idx_type + 4];
+                  break;
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+
+  rst.autoPollConfigs.forEach((defaultCfg, idx) => {
+    const simpleCfg = simpleJson.auto.find((arr) => (arr[2] === idx));
+    if (simpleCfg) {
+      Object.entries(rst.autoPollConfigs[idx]).forEach(([k, v], index) => {
+        if (index < 6) {
+          switch (typeof v) {
+            case 'boolean':
+              rst.autoPollConfigs[idx][k] = Boolean(simpleCfg[index]);
+              break;
+            case 'number':
+              rst.autoPollConfigs[idx][k] = Number(simpleCfg[index]);
+              break;
+            case 'string':
+            default:
+              rst.autoPollConfigs[idx][k] = simpleCfg[index];
+              break;
+          }
+        } else {
+          const commands = [];
+          simpleCfg[6]?.forEach((cmdStr) => {
+            const id = cmdStr.split('-')[0];
+            const cmd = cmdStr.split('-')[1].split(' ').map((s) => (parseInt(s, 16)));
+            const rawDec = [cmd[0], cmd[1], cmd[2] * 256 + cmd[3], cmd[4] * 256 + cmd[5]];
+            commands.push({ id, rawDec });
+          });
+          rst.autoPollConfigs[idx].commands = commands;
+        }
+      });
+    }
   });
   return rst;
 };

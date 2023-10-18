@@ -39,7 +39,7 @@ const AutoPoll = forwardRef(({
     } else {
       setRows([]);
     }
-  }, [serialId]);
+  }, [serialId, initVals]);
 
   const setCommandsField = (tempRows) => {
     const commands = tempRows.map((row) => ({
@@ -81,6 +81,7 @@ const AutoPoll = forwardRef(({
   useImperativeHandle(ref, () => ({
     form: formikRefs,
   }));
+
   return (
     <>
       <Grid
@@ -123,7 +124,6 @@ const AutoPoll = forwardRef(({
                         radioOptions: enableOptions,
                         layout: { xs: 12 },
                       })}
-
                     </Grid>
                     <Collapse in={formikProps.values.enabled} timeout={500} exit style={{ marginTop: '10px' }}>
                       <Grid
@@ -142,6 +142,7 @@ const AutoPoll = forwardRef(({
                             })}
                           </Fragment>
                         ))}
+
                         <Grid item xs={12}>
                           <DataGrid
                             sx={{
@@ -153,9 +154,9 @@ const AutoPoll = forwardRef(({
                             rowHeight={35}
                             rows={rows}
                             columns={columns}
-                            components={{
-                              Toolbar: renderToolBar,
-                              NoRowsOverlay,
+                            slots={{
+                              toolbar: renderToolBar,
+                              noRowsOverlay: NoRowsOverlay,
                             }}
                             hideFooterSelectedRowCount
                             hideFooter

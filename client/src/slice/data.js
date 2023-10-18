@@ -106,6 +106,11 @@ export const emitFlashConnect = createAsyncThunk(
   (connectOperation) => (connectOperation),
 );
 
+export const setDeviceConfig = createAsyncThunk(
+  'data/setDeviceConfig',
+  (deviceConfig) => (deviceConfig),
+);
+
 const dataSlice = createSlice({
   name: 'credentialAndConfig',
   initialState,
@@ -148,6 +153,10 @@ const dataSlice = createSlice({
       .addCase(
         emitFlashConnect.fulfilled,
         (state, action) => ({ ...state, connectionStatus: { ...action.payload } }),
+      )
+      .addCase(
+        setDeviceConfig.fulfilled,
+        (state, action) => ({ ...state, deviceConfig: { ...action.payload } }),
       );
   },
 });

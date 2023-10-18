@@ -14,6 +14,7 @@ function ConfirmDialog({
   onClose,
   renderOtherContent,
   width,
+  confirmText,
 }) {
   const handleConfirm = () => {
     handleConfirmCb();
@@ -43,7 +44,7 @@ function ConfirmDialog({
           <FormattedMessage {...messages.cancelButton} />
         </Button>
         <Button onClick={handleConfirm} variant="contained">
-          <FormattedMessage {...messages.confirmButton} />
+          { confirmText || <FormattedMessage {...messages.confirmButton} /> }
         </Button>
       </DialogActions>
     </Dialog>

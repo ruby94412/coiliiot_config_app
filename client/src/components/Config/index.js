@@ -34,6 +34,7 @@ function Config({
         loadData={loadData}
         update={writeLocalData}
         initialValues={initialValues}
+        setInitialValues={setInitialValues}
       />
     ) : (<></>)
   );

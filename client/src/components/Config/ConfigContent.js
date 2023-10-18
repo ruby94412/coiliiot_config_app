@@ -7,15 +7,16 @@ import {
   Button,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { connect } from 'react-redux';
 import {
-  useState, useRef,
+  useState, useRef, useEffect,
 } from 'react';
 import { FormattedMessage } from 'react-intl';
 import messages from 'hocs/Locale/Messages/Config/ConfigContent';
 import ConfirmDialog from 'components/common/ConfirmDialog';
 import TabPanel from 'components/common/TabPanel';
 import TransitionPanel from 'components/common/TransitionPanel';
-import { handleFormDataSubmit, simplifyConfig } from './utils';
+import { handleFormDataSubmit, simplifyConfig, retrieveFromSimpleConfig } from './utils';
 import Platform from './Platform';
 import Serial from './Serial';
 import Basic from './Basic';
@@ -32,6 +33,8 @@ function Content({
   loadData,
   update,
   initialValues,
+  setInitialValues,
+  deviceConfig,
 }) {
   const [saveLoading, setSaveLoading] = useState(false);
   const [isConfigResetting, setIsConfigResetting] = useState(false);
@@ -44,6 +47,7 @@ function Content({
     network: useRef(null),
     autoPoll: useRef(null),
   };
+
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
   };
@@ -57,10 +61,7 @@ function Content({
       .map((networkForm) => (networkForm.values));
     formValues.autoPollConfigs = formRef.autoPoll.current.form.current
       .map((autoPollForm) => (autoPollForm.values));
-    console.log(JSON.stringify(handleFormDataSubmit(formValues)));
     const { config, credential } = handleFormDataSubmit(formValues);
-    const sp = simplifyConfig(config, credential);
-    console.log(JSON.stringify(sp));
     setSaveLoading(true);
     try {
       await Promise.all([
@@ -94,6 +95,7 @@ function Content({
   };
 
   const resetForm = () => {
+    if (!initialValues) return;
     formRef.basic.current.form.current.resetForm();
     for (let i = 0; i < formRef?.serial?.current?.form?.current?.length; i++) {
       formRef.serial.current.form.current[i].resetForm();
@@ -106,6 +108,22 @@ function Content({
     }
   };
 
+  const applyDeviceConfig = () => {
+    if (!deviceConfig) return;
+    const cfg = retrieveFromSimpleConfig(deviceConfig);
+    formRef.basic.current.form.current.resetForm({ values: cfg.basicConfigs });
+    for (let i = 0; i < formRef?.serial?.current?.form?.current?.length; i++) {
+      formRef.serial.current.form.current[i].resetForm({ values: cfg.serialConfigs[i] });
+    }
+    for (let i = 0; i < formRef?.network?.current?.form?.current?.length; i++) {
+      formRef.network.current.form.current[i].resetForm({ values: cfg.networkConfigs[i] });
+    }
+    for (let i = 0; i < formRef?.autoPoll?.current?.form?.current?.length; i++) {
+      formRef.autoPoll.current.form.current[i].resetForm({ values: cfg.autoPollConfigs[i] });
+    }
+    setInitialValues(cfg);
+  };
+
   const handleCloseSnackbar = () => {
     setSnackbar(null);
   };
@@ -115,6 +133,11 @@ function Content({
       setIsConfigResetting(true);
     }
   };
+
+  useEffect(() => {
+    applyDeviceConfig();
+  }, [deviceConfig]);
+
   return (
     <>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '90%' }}>
@@ -186,4 +209,9 @@ function Content({
   );
 }
 
-export default Content;
+const mapStateToProps = (state) => {
+  const { deviceConfig } = state.credentialAndConfig;
+  return { deviceConfig };
+};
+
+export default connect(mapStateToProps)(Content);

@@ -8,8 +8,21 @@
     "appId": "com.example.coiliiotConfig",
     "productName": "Coiliiot Config",
     "copyright": "Copyright © year Coiliiot",
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "./img/blue_logo.icns"
+    },
+    "dmg": {
+      "title": "Coiliiot Config",
+      "icon": "./img/blue_logo.icns"
+    },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "./img/icon.ico"
     },
     "nsis": {
@@ -18,7 +31,9 @@
       "allowToChangeInstallationDirectory": true,
       "oneClick": false,
       "license": "./build/license_en.txt",
-      "installerLanguages": ["en_US"],
+      "installerLanguages": [
+        "en_US"
+      ],
       "include": "./build/installer.nsh"
     }
   },
@@ -57,6 +72,7 @@
   },
   "dependencies": {
     "electron-is-dev": "^2.0.0",
+    "electron-store": "^8.1.0",
     "electron-updater": "^6.1.1",
     "serialport": "^11.0.0"
   }

@@ -10,14 +10,12 @@ import {
   Typography,
   Snackbar,
   Alert,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
 } from '@mui/material';
 import {
   serialDataListener,
   sendMsgToPort,
   restartPort,
+  setDeviceConfig,
 } from 'slice/data';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
@@ -28,6 +26,7 @@ import ConfirmDialog from 'components/common/ConfirmDialog';
 import messages from 'hocs/Locale/Messages/Console/SerialMonitor';
 import otherMessages from 'hocs/Locale/Messages/Console/ConnectOperation';
 
+const testRawCfg = '{"cred":["123123aasfsdfgsd","4444444qwrqwersdfgsdfg"],"net_sum":[0,[1,4],0,0],"cfg_v":"976f4d5999dab7bf","basic":[12324,0,1,72055],"serial":[[0,1,9600,7,1,1],[1,1,115200,8,1,2]],"net":[[0,1,0,0,"socketRegistermessage","socketmessage",30,"socketserver",8080,0],[1,1,1,0,"cn-shanghai","akukey","DeviceSecret",0,0,"DeviceSecret","ddd","ddd",0,"aas",0,1],[4,1,1,0,"cn-shanghai",0,"asdfasdffads",0,0,0,"asdfasdf","asdfasdfasdf",0,"asdfasdf",0,1]],"auto":[[1,1000,0,3,1,600,["47787c09579b2521-01 04 02 2b 02 9a 00 b1","cfd2296c90010c6b-01 01 03 09 03 78 ec 9e"]]]}';
 const serialTextStyle = {
   fontSize: 14,
   whiteSpace: 'pre-line',
@@ -41,12 +40,13 @@ function SerialMonitor({
   serialDataListener,
   sendMsgToPort,
   restartPort,
+  setDeviceConfig,
 }) {
   const intl = useIntl();
+  const logsEndRef = useRef(null);
   const [logs, setLogs] = useState('');
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [deviceConfig, setDeviceConfig] = useState(null);
-  const logsEndRef = useRef(null);
+  const [rawCfg, setRawCfg] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [snackbar, setSnackbar] = useState(null);
   const [loadings, setLoadings] = useState({
@@ -67,7 +67,7 @@ function SerialMonitor({
         const jsonString = data.substring(20);
         try {
           const temp = JSON.parse(jsonString);
-          setDeviceConfig(temp);
+          setRawCfg(temp);
           setIsConfirmOpen(true);
         } catch (e) {
           setErrorMsg(intl.formatMessage(messages.readConfigFailure));
@@ -80,8 +80,8 @@ function SerialMonitor({
     });
   }, []);
 
-  const renderAccordion = () => (
-    <Box sx={{ mt: 1 }}><Typography fontSize={11}>{JSON.stringify(deviceConfig)}</Typography></Box>
+  const renderDeviceConfigText = () => (
+    <Box sx={{ mt: 1 }}><Typography fontSize={11}>{JSON.stringify(rawCfg)}</Typography></Box>
   );
 
   useEffect(() => {
@@ -95,7 +95,7 @@ function SerialMonitor({
   const handleResponse = (res) => {
     const err = res.error;
     if (err) {
-      setErrorMsg(err.error.message);
+      setErrorMsg(err?.error?.message);
       setSnackbar({
         children: <FormattedMessage {...otherMessages.snackBarError} />, severity: 'error',
       });
@@ -158,6 +158,13 @@ function SerialMonitor({
     setSnackbar(null);
   };
 
+  const handleImport = () => {
+    setDeviceConfig(rawCfg);
+    setSnackbar({
+      children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
+    });
+  };
+
   return (
     <>
       <Grid container spacing={2} direction="row">
@@ -186,9 +193,9 @@ function SerialMonitor({
             <LoadingButton
               variant="contained"
               sx={{ mr: 2, mb: 2 }}
-              disabled={!connected || (
-                loadings.read || loadings.apply || loadings.reboot || loadings.reset
-              )}
+              // disabled={!connected || (
+              //   loadings.read || loadings.apply || loadings.reboot || loadings.reset
+              // )}
               onClick={handleRead}
               loading={loadings.read}
             >
@@ -227,7 +234,7 @@ function SerialMonitor({
             >
               <FormattedMessage {...messages.restartConsoleButton} />
             </LoadingButton>
-            <Button variant="contained" onClick={handleClear}>
+            <Button variant="contained" onClick={handleClear} sx={{ mr: 2, mb: 2 }}>
               <FormattedMessage {...messages.clearLogsButton} />
             </Button>
           </Box>
@@ -238,10 +245,12 @@ function SerialMonitor({
         onClose={() => { setIsConfirmOpen(false); }}
         handleConfirmCb={() => {
           setIsConfirmOpen(false);
+          handleImport();
         }}
         content={intl.formatMessage(messages.readConfigSuccess)}
         width="800px"
-        renderOtherContent={renderAccordion}
+        renderOtherContent={renderDeviceConfigText}
+        confirmText={intl.formatMessage(messages.importButton)}
       />
       <ErrorModal
         errorMessage={errorMsg}
@@ -266,4 +275,5 @@ export default connect(mapStateToProps, {
   serialDataListener,
   sendMsgToPort,
   restartPort,
+  setDeviceConfig,
 })(SerialMonitor);
