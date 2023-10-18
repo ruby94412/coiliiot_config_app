@@ -21,12 +21,33 @@ const serialIdOptions = [
 
 const AutoPoll = forwardRef(({
   initVals,
+  networkForm,
 }, ref) => {
   const intl = useIntl();
   const [params, setParams] = useState(null);
+  const [networks, setNetworks] = useState([]);
+  const [networkOptions, setNetworkOptions] = useState([]);
   const [serialId, setSerialId] = useState(0);
   const [rows, setRows] = useState([]);
   const formikRefs = useRef([]);
+
+  useEffect(() => {
+    if (networkForm?.form?.current?.length) {
+      const temp = networkForm.form?.current
+        .map((formikForm) => ({ ...formikForm.values }));
+      setNetworks(temp);
+    }
+  }, [networkForm]);
+
+  useEffect(() => {
+    const temp = [];
+    networks.forEach((network) => {
+      if (network.enabled && network.serialId === serialId) {
+        temp.push({ label: network.networkId + 1, value: network.networkId });
+      }
+    });
+    setNetworkOptions(temp);
+  }, [serialId, networks]);
 
   const enableOptions = [
     { label: intl.formatMessage(messages.autoPollOptionEnable), value: true },
@@ -67,11 +88,23 @@ const AutoPoll = forwardRef(({
   };
 
   const columns = getCommandTableColumns({ intl, setParams, deleteRow });
+
   const renderToolBar = () => (
     <TableToolBar
       setModalOpen={() => {
         setParams({
-          slaveId: 1, functionCode: 1, registerOffset: 0, numberOfRegisters: 1,
+          slaveId: 1,
+          functionCode: 1,
+          registerOffset: 0,
+          numberOfRegisters: 1,
+          enableJson: false,
+          networkIds: [],
+          propertyName: '',
+          address: 0,
+          dataType: 0,
+          order: 0,
+          ratio: 1,
+          deviation: 0,
         });
       }}
       text={intl.formatMessage(messages.commandGeneratorButton)}
@@ -162,13 +195,16 @@ const AutoPoll = forwardRef(({
                             hideFooter
                             hideFooterPagination
                           />
-                          <CommandGenerator
-                            rows={rows}
-                            setRows={setRows}
-                            params={params}
-                            setParams={setParams}
-                            setCommandsField={setCommandsField}
-                          />
+                          {params && (
+                            <CommandGenerator
+                              rows={rows}
+                              setRows={setRows}
+                              params={params}
+                              setParams={setParams}
+                              setCommandsField={setCommandsField}
+                              networkOptions={networkOptions}
+                            />
+                          )}
                         </Grid>
                       </Grid>
                     </Collapse>

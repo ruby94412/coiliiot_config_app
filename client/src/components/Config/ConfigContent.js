@@ -180,6 +180,7 @@ function Content({
           <AutoPoll
             initVals={initialValues?.autoPollConfigs}
             ref={(el) => { formRef.autoPoll.current = el; }}
+            networkForm={formRef.network.current}
           />
         </TabPanel>
       </TransitionPanel>

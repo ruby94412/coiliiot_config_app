@@ -15,4 +15,28 @@ export default defineMessages({
     id: `${scope}.cancel`,
     defaultMessage: 'Cancel',
   },
+  enableJson: {
+    id: `${scope}.enableJson`,
+    defaultMessage: 'Convert To Json',
+  },
+  enable: {
+    id: `${scope}.enable`,
+    defaultMessage: 'Enable',
+  },
+  disable: {
+    id: `${scope}.disable`,
+    defaultMessage: 'Disable',
+  },
+  commandDetail: {
+    id: `${scope}.commandDetail`,
+    defaultMessage: 'Command Detail',
+  },
+  convertDetail: {
+    id: `${scope}.convertDetail`,
+    defaultMessage: 'Convert Detail',
+  },
+  networkIdLabel: {
+    id: `${scope}.networkIdLabel`,
+    defaultMessage: 'Network Channel ID',
+  },
 });

@@ -688,3 +688,10 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
   });
   return rst;
 };
+
+export const commandRowsToField = (rows) => {
+  const rst = [];
+  rows?.forEach((row) => {
+    const wrap = [row.id, row.detail.hex, row.enableJson];
+  });
+};

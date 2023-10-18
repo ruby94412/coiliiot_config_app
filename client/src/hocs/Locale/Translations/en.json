@@ -142,6 +142,12 @@
   "coiliiot.app.config.commandGenerator.title": "Command Generator",
   "coiliiot.app.config.commandGenerator.confirm": "Confirm",
   "coiliiot.app.config.commandGenerator.cancel": "Cancel",
+  "coiliiot.app.config.commandGenerator.enableJson": "Convert To Json",
+  "coiliiot.app.config.commandGenerator.enable": "Enable",
+  "coiliiot.app.config.commandGenerator.disable": "Disable",
+  "coiliiot.app.config.commandGenerator.commandDetail": "Command Detail",
+  "coiliiot.app.config.commandGenerator.convertDetail": "Convert Detail",
+  "coiliiot.app.config.commandGenerator.networkIdLabel": "Network Channel ID",
 
   "coiliiot.app.config.dataConversion.networkDisabledText": "This Network Channel Is Not Enabled Yet",
   "coiliiot.app.config.dataConversion.autoPollDisabledText": "This Serial Channel Has No Auto Polling Yet",

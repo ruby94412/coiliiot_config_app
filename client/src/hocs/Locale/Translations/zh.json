@@ -139,6 +139,12 @@
   "coiliiot.app.config.commandGenerator.title": "生成命令",
   "coiliiot.app.config.commandGenerator.confirm": "确认",
   "coiliiot.app.config.commandGenerator.cancel": "取消",
+  "coiliiot.app.config.commandGenerator.enableJson": "转化成JSON",
+  "coiliiot.app.config.commandGenerator.enable": "启用",
+  "coiliiot.app.config.commandGenerator.disable": "不启用",
+  "coiliiot.app.config.commandGenerator.commandDetail": "命令信息",
+  "coiliiot.app.config.commandGenerator.convertDetail": "转换信息",
+  "coiliiot.app.config.commandGenerator.networkIdLabel": "网络通道ID",
 
 
   "coiliiot.app.config.dataConversion.networkDisabledText": "该网络通道尚未启用",

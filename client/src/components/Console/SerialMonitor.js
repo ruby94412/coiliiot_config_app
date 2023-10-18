@@ -17,7 +17,6 @@ import {
   restartPort,
   setDeviceConfig,
 } from 'slice/data';
-import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { simplifyConfig } from 'components/Config/utils';
