@@ -12,7 +12,7 @@ import messages from 'hocs/Locale/Messages/Config/AutoPoll';
 import TableToolBar from 'components/common/TableToolBar';
 import NoRowsOverlay from 'components/common/NoRowsOverlay';
 import CommandGenerator from './CommandGenerator';
-import { renderFields, convertRawCommands } from './utils';
+import { renderFields, convertRawCommands, commandRowsToField } from './utils';
 import { autoPollFields, getCommandTableColumns } from './constants';
 
 const serialIdOptions = [
@@ -42,7 +42,7 @@ const AutoPoll = forwardRef(({
   useEffect(() => {
     const temp = [];
     networks.forEach((network) => {
-      if (network.enabled && network.serialId === serialId) {
+      if (network.enabled && Number(network.serialId) === serialId) {
         temp.push({ label: network.networkId + 1, value: network.networkId });
       }
     });
@@ -63,12 +63,7 @@ const AutoPoll = forwardRef(({
   }, [serialId, initVals]);
 
   const setCommandsField = (tempRows) => {
-    const commands = tempRows.map((row) => ({
-      dec: row.detail.dec,
-      rawDec: row.detail.rawDec,
-      id: row.id,
-      wrap: `${row.id}-${row.detail.dec.map((num) => (num.toString(16).padStart(2, '0'))).join(' ')}`,
-    }));
+    const commands = commandRowsToField(tempRows);
     formikRefs.current[serialId].setFieldValue('commands', commands);
   };
 

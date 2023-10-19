@@ -174,7 +174,7 @@ function CommandGenerator({
                               <Checkbox
                                 checked={data?.networkIds?.includes(option.value)}
                                 onChange={handleNetworkSelect}
-                                name={option.value}
+                                name={option.value.toString()}
                               />
                             )}
                             label={option.label}

@@ -62,6 +62,7 @@ function Content({
     formValues.autoPollConfigs = formRef.autoPoll.current.form.current
       .map((autoPollForm) => (autoPollForm.values));
     const { config, credential } = handleFormDataSubmit(formValues);
+    const sp = JSON.stringify(simplifyConfig(config, credential));
     setSaveLoading(true);
     try {
       await Promise.all([

@@ -295,16 +295,46 @@ export const getUid = (type) => {
 export const convertRawCommands = (autoPollConfig) => {
   if (!autoPollConfig || !autoPollConfig.commands?.length) return [];
   const temp = autoPollConfig.commands?.map((command) => {
-    const rst = {
-      slaveId: command.rawDec[0],
-      functionCode: command.rawDec[1],
-      registerOffset: command.rawDec[2],
-      numberOfRegisters: command.rawDec[3],
+    const cmd = command[1].match(/.{1,2}/g).map((s) => (parseInt(s, 16)));
+    const defaultCmd = {
+      id: command[0],
+      enableJson: Boolean(command[2]),
     };
-    const commandDetail = getCommandDetail(rst);
-    rst.detail = commandDetail;
-    rst.id = command.id;
-    return rst;
+    const convertProps = {
+      networkIds: [],
+      propertyName: '',
+      address: 0,
+      dataType: 0,
+      order: 0,
+      ratio: 1,
+      deviation: 0,
+    };
+    if (command?.length > 3) {
+      Object.entries(convertProps).forEach(([k, v], index) => {
+        switch (typeof v) {
+          case 'boolean':
+            convertProps[k] = Boolean(command[index + 3]);
+            break;
+          case 'number':
+            convertProps[k] = Number(command[index + 3]);
+            break;
+          case 'string':
+          default:
+            convertProps[k] = command[index + 3];
+            break;
+        }
+      });
+    }
+    const cmdDetial = {
+      slaveId: cmd[0],
+      functionCode: cmd[1],
+      registerOffset: cmd[2] * 256 + cmd[3],
+      numberOfRegisters: cmd[4] * 256 + cmd[5],
+    };
+    const detail = getCommandDetail(cmdDetial);
+    return {
+      detail, ...cmdDetial, ...defaultCmd, ...convertProps,
+    };
   });
   return temp;
 };
@@ -476,11 +506,6 @@ export const simplifyConfig = (config, credential) => {
     const temp = [];
     Object.entries(cfg).forEach(([, value]) => {
       switch (typeof value) {
-        case 'object': {
-          const commands = value.map((command) => (command.wrap));
-          temp.push(commands);
-          break;
-        }
         case 'boolean':
           temp.push(+value);
           break;
@@ -660,28 +685,17 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
     const simpleCfg = simpleJson.auto.find((arr) => (arr[2] === idx));
     if (simpleCfg) {
       Object.entries(rst.autoPollConfigs[idx]).forEach(([k, v], index) => {
-        if (index < 6) {
-          switch (typeof v) {
-            case 'boolean':
-              rst.autoPollConfigs[idx][k] = Boolean(simpleCfg[index]);
-              break;
-            case 'number':
-              rst.autoPollConfigs[idx][k] = Number(simpleCfg[index]);
-              break;
-            case 'string':
-            default:
-              rst.autoPollConfigs[idx][k] = simpleCfg[index];
-              break;
-          }
-        } else {
-          const commands = [];
-          simpleCfg[6]?.forEach((cmdStr) => {
-            const id = cmdStr.split('-')[0];
-            const cmd = cmdStr.split('-')[1].split(' ').map((s) => (parseInt(s, 16)));
-            const rawDec = [cmd[0], cmd[1], cmd[2] * 256 + cmd[3], cmd[4] * 256 + cmd[5]];
-            commands.push({ id, rawDec });
-          });
-          rst.autoPollConfigs[idx].commands = commands;
+        switch (typeof v) {
+          case 'boolean':
+            rst.autoPollConfigs[idx][k] = Boolean(simpleCfg[index]);
+            break;
+          case 'number':
+            rst.autoPollConfigs[idx][k] = Number(simpleCfg[index]);
+            break;
+          case 'string':
+          default:
+            rst.autoPollConfigs[idx][k] = simpleCfg[index];
+            break;
         }
       });
     }
@@ -692,6 +706,13 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
 export const commandRowsToField = (rows) => {
   const rst = [];
   rows?.forEach((row) => {
-    const wrap = [row.id, row.detail.hex, row.enableJson];
+    const wrap = [row.id, row.detail.hex.join(''), +row.enableJson];
+    if (row.enableJson) {
+      const otherProps = [row.networkIds, row.propertyName,
+        row.address, row.dataType, row.order, row.ratio, row.deviation];
+      otherProps.forEach((prop) => { wrap.push(prop); });
+    }
+    rst.push([...wrap]);
   });
+  return rst;
 };
