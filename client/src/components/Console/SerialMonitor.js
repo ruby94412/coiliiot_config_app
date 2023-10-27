@@ -120,6 +120,7 @@ function SerialMonitor({
   const handleApply = () => {
     setLoadings((pre) => ({ ...pre, apply: true }));
     const sp = simplifyConfig(config, credential);
+    console.log(sp);
     sendMsgToPort({ type: 1, data: sp })
       .then((res) => {
         handleResponse(res);
@@ -192,9 +193,9 @@ function SerialMonitor({
             <LoadingButton
               variant="contained"
               sx={{ mr: 2, mb: 2 }}
-              // disabled={!connected || (
-              //   loadings.read || loadings.apply || loadings.reboot || loadings.reset
-              // )}
+              disabled={!connected || (
+                loadings.read || loadings.apply || loadings.reboot || loadings.reset
+              )}
               onClick={handleRead}
               loading={loadings.read}
             >

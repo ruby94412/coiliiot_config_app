@@ -125,7 +125,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       delay: 1000,
       serialId: i,
       numberOfRetry: 3,
-      timeout: 1,
+      timeout: 1000,
       period: 600,
       commands: [],
     });
@@ -245,6 +245,7 @@ export const getCommandDetail = ({
   }
   rawDec.push(crc);
   temp = crc.toString(16);
+  while (temp.length < 4) temp = `0${temp}`;
   dec.push(Number(`0x${temp.substring(2)}`));
   dec.push(Number(`0x${temp.substring(0, 2)}`));
   dec.forEach((num) => {
@@ -544,7 +545,7 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
       delay: 1000,
       serialId: i,
       numberOfRetry: 3,
-      timeout: 1,
+      timeout: 1000,
       period: 600,
       commands: [],
     });
