@@ -47,10 +47,6 @@ function SerialMonitor({
     scrollToBottom();
   }, [logs]);
 
-  const handleClear = () => {
-    setLogs('');
-  };
-
   const handleCloseSnackbar = () => {
     setSnackbar(null);
   };

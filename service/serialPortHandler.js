@@ -61,7 +61,6 @@ const portConnectionHandlers = (mainWindow) => {
   ipcMain.handle('send_msg_to_port', async (evt, args) => {
     try {
       await new Promise((res, rej) => {
-        console.log(JSON.stringify(args));
         activePort.write(JSON.stringify(args), (err) => {
           if (err) rej(err);
           else res('Command Sent');

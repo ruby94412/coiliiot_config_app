@@ -25,7 +25,6 @@ import ConfirmDialog from 'components/common/ConfirmDialog';
 import messages from 'hocs/Locale/Messages/Console/SerialMonitor';
 import otherMessages from 'hocs/Locale/Messages/Console/ConnectOperation';
 
-const testRawCfg = '{"cred":["123123aasfsdfgsd","4444444qwrqwersdfgsdfg"],"net_sum":[0,[1,4],0,0],"cfg_v":"976f4d5999dab7bf","basic":[12324,0,1,72055],"serial":[[0,1,9600,7,1,1],[1,1,115200,8,1,2]],"net":[[0,1,0,0,"socketRegistermessage","socketmessage",30,"socketserver",8080,0],[1,1,1,0,"cn-shanghai","akukey","DeviceSecret",0,0,"DeviceSecret","ddd","ddd",0,"aas",0,1],[4,1,1,0,"cn-shanghai",0,"asdfasdffads",0,0,0,"asdfasdf","asdfasdfasdf",0,"asdfasdf",0,1]],"auto":[[1,1000,0,3,1,600,["47787c09579b2521-01 04 02 2b 02 9a 00 b1","cfd2296c90010c6b-01 01 03 09 03 78 ec 9e"]]]}';
 const serialTextStyle = {
   fontSize: 14,
   whiteSpace: 'pre-line',
@@ -120,7 +119,6 @@ function SerialMonitor({
   const handleApply = () => {
     setLoadings((pre) => ({ ...pre, apply: true }));
     const sp = simplifyConfig(config, credential);
-    console.log(sp);
     sendMsgToPort({ type: 1, data: sp })
       .then((res) => {
         handleResponse(res);

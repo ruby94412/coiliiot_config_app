@@ -16,7 +16,7 @@ import messages from 'hocs/Locale/Messages/Config/ConfigContent';
 import ConfirmDialog from 'components/common/ConfirmDialog';
 import TabPanel from 'components/common/TabPanel';
 import TransitionPanel from 'components/common/TransitionPanel';
-import { handleFormDataSubmit, simplifyConfig, retrieveFromSimpleConfig } from './utils';
+import { handleFormDataSubmit, retrieveFromSimpleConfig } from './utils';
 import Platform from './Platform';
 import Serial from './Serial';
 import Basic from './Basic';
@@ -62,7 +62,6 @@ function Content({
     formValues.autoPollConfigs = formRef.autoPoll.current.form.current
       .map((autoPollForm) => (autoPollForm.values));
     const { config, credential } = handleFormDataSubmit(formValues);
-    const sp = JSON.stringify(simplifyConfig(config, credential));
     setSaveLoading(true);
     try {
       await Promise.all([

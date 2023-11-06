@@ -35,7 +35,6 @@ function ConnectOperation({
   const [disable, setDisable] = useState(true);
   const [connectLoading, setConnectLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [snackbar, setSnackbar] = useState(null);
   const [cslDstConfirming, setCslDstConfirming] = useState(false);
 
   useEffect(() => {

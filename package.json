@@ -1,7 +1,7 @@
 {
   "name": "coiliiot_config",
   "author": "Coiliiot",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "configuration app for data transfer unit",
   "main": "main.js",
   "build": {

@@ -618,6 +618,7 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
     }
   });
 
+  // eslint-disable-next-line no-unused-vars
   Object.entries(rst.basicConfigs.credential).forEach(([k, v], idx) => {
     rst.basicConfigs.credential[k] = simpleJson.cred[idx].toString();
   });
