@@ -3,3 +3,4 @@ client/node_modules
 Coiliiot*Config.dmg
 dist
 .DS_Store
+build
