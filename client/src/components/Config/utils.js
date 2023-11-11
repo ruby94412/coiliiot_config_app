@@ -5,6 +5,7 @@ import {
   Radio,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   Select,
   MenuItem,
@@ -23,7 +24,9 @@ export const renderFields = ({
 }) => {
   const layout = other.layout || { xs: 12, md: 4 };
   const style = other.style || { width: '80%' };
-  const { radioOptions, selectOptions, ...rest } = other;
+  const {
+    radioOptions, selectOptions, helperText, ...rest
+  } = other;
   switch (fieldType) {
     case 'radioGroup':
       return (
@@ -94,6 +97,7 @@ export const renderFields = ({
               type={datatype}
               {...rest}
             />
+            { helperText && <FormHelperText>{helperText}</FormHelperText>}
           </FormControl>
         </Grid>
       );
@@ -107,7 +111,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
   rst.basicConfigs = {
     config_version: 0,
     autoUpdateEnabled: true,
-    disconnectedRestart: false,
+    disconnectedRestart: 0,
     restartSchedule: 720,
     credential: { ssid: '', password: '' },
   };
@@ -138,8 +142,8 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       serialId: 0,
       socket: {
         registerMessage: '',
-        pulseMessage: '',
-        pulseFrequency: 30,
+        heartbeat: '',
+        heartbeatInterval: 30,
         host: '',
         port: 8080,
         socketType: 0,
@@ -157,6 +161,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
         lwtMessage: '',
         qos: 0,
         cleanSession: true,
+        keepalive: 300,
       },
       mqtt: {
         host: '',
@@ -170,6 +175,9 @@ export const getInitialValues = (originalConfig, originalCredential) => {
         lwtMessage: '',
         qos: 0,
         cleanSession: true,
+        keepalive: 300,
+        heartbeat: '',
+        heartbeatInterval: 30,
       },
       http: {
         method: 0,
@@ -461,10 +469,10 @@ export const nodeToJson = (node) => {
 };
 
 const castStringValueToOrigin = (value) => {
+  if (typeof value === 'boolean') return +value;
   if (value === 'true') return 1;
   if (value === 'false') return 0;
-  if (Number.isNaN(+value)) return value;
-  return +value;
+  return value;
 };
 
 export const simplifyConfig = (config, credential) => {
@@ -527,7 +535,7 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
   rst.basicConfigs = {
     config_version: 0,
     autoUpdateEnabled: true,
-    disconnectedRestart: false,
+    disconnectedRestart: 0,
     restartSchedule: 720,
     credential: { ssid: '', password: '' },
   };
@@ -558,8 +566,8 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
       serialId: 0,
       socket: {
         registerMessage: '',
-        pulseMessage: '',
-        pulseFrequency: 30,
+        heartbeat: '',
+        heartbeatInterval: 30,
         host: '',
         port: 8080,
         socketType: 0,
@@ -577,6 +585,7 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
         lwtMessage: '',
         qos: 0,
         cleanSession: true,
+        keepalive: 300,
       },
       mqtt: {
         host: '',
@@ -590,6 +599,9 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
         lwtMessage: '',
         qos: 0,
         cleanSession: true,
+        keepalive: 300,
+        heartbeat: '',
+        heartbeatInterval: 30,
       },
       http: {
         method: 0,

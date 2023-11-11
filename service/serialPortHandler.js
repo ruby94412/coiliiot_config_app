@@ -27,7 +27,6 @@ const portConnectionHandlers = (mainWindow) => {
             else res(port);
           }
         );
-        port.set
       });
       const parser = new ReadlineParser();
       

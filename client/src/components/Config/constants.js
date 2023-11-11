@@ -40,18 +40,18 @@ export const basicFields = [
     propertyName: 'restartSchedule',
     datatype: 'number',
     layout: { xs: 12, md: 6 },
+    helperText: <FormattedMessage {...messages.restartScheduleHelper} />,
     endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.minute} /></InputAdornment>,
+    inputProps: { min: 0, max: 1440, step: 15 },
   },
   {
     label: <FormattedMessage {...messages.disconnectedRestart} />,
     propertyName: 'disconnectedRestart',
-    datatype: 'boolean',
-    fieldType: 'radioGroup',
-    radioOptions: [
-      { label: <FormattedMessage {...messages.enable} />, value: true },
-      { label: <FormattedMessage {...messages.disable} />, value: false },
-    ],
+    datatype: 'number',
+    helperText: <FormattedMessage {...messages.restartScheduleHelper} />,
+    endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.minute} /></InputAdornment>,
     layout: { xs: 12, md: 6 },
+    inputProps: { min: 0, max: 5, step: 0.5 },
   },
 ];
 
@@ -75,16 +75,16 @@ export const socketFields = [
     fieldType: 'radioGroup',
     radioOptions: [{ label: 'TCP', value: 0 }, { label: 'UDP', value: 1 }],
   },
+  { label: <FormattedMessage {...messages.host} />, propertyName: 'host', datatype: 'text' },
+  { label: <FormattedMessage {...messages.port} />, propertyName: 'port', datatype: 'number' },
   { label: <FormattedMessage {...messages.registerMessage} />, propertyName: 'registerMessage', datatype: 'text' },
-  { label: <FormattedMessage {...messages.pulseMessage} />, propertyName: 'pulseMessage', datatype: 'text' },
+  { label: <FormattedMessage {...messages.heartbeat} />, propertyName: 'heartbeat', datatype: 'text' },
   {
-    label: <FormattedMessage {...messages.pulseFrequency} />,
-    propertyName: 'pulseFrequency',
+    label: <FormattedMessage {...messages.heartbeatInterval} />,
+    propertyName: 'heartbeatInterval',
     datatype: 'number',
     endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.second} /></InputAdornment>,
   },
-  { label: <FormattedMessage {...messages.host} />, propertyName: 'host', datatype: 'text' },
-  { label: <FormattedMessage {...messages.port} />, propertyName: 'port', datatype: 'number' },
 ];
 
 export const aliyunFields = [
@@ -130,6 +130,12 @@ export const aliyunFields = [
     ],
   },
   { label: <FormattedMessage {...messages.lwtMessage} />, propertyName: 'lwtMessage', datatype: 'text' },
+  {
+    label: <FormattedMessage {...messages.keepalive} />,
+    propertyName: 'keepalive',
+    datatype: 'number',
+    endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.second} /></InputAdornment>,
+  },
 ];
 
 export const mqttFields = [
@@ -165,6 +171,19 @@ export const mqttFields = [
     ],
   },
   { label: <FormattedMessage {...messages.lwtMessage} />, propertyName: 'lwtMessage', datatype: 'text' },
+  {
+    label: <FormattedMessage {...messages.keepalive} />,
+    propertyName: 'keepalive',
+    datatype: 'number',
+    endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.second} /></InputAdornment>,
+  },
+  { label: <FormattedMessage {...messages.heartbeat} />, propertyName: 'heartbeat', datatype: 'text' },
+  {
+    label: <FormattedMessage {...messages.heartbeatInterval} />,
+    propertyName: 'heartbeatInterval',
+    datatype: 'number',
+    endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.second} /></InputAdornment>,
+  },
 ];
 
 export const httpFields = [

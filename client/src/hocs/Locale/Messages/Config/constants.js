@@ -39,12 +39,12 @@ export default defineMessages({
     id: `${scope}.registerMessage`,
     defaultMessage: 'Register Message',
   },
-  pulseMessage: {
-    id: `${scope}.pulseMessage`,
+  heartbeat: {
+    id: `${scope}.heartbeat`,
     defaultMessage: 'HeartBeat Message',
   },
-  pulseFrequency: {
-    id: `${scope}.pulseFrequency`,
+  heartbeatInterval: {
+    id: `${scope}.heartbeatInterval`,
     defaultMessage: 'HeartBeat Message Frequency',
   },
   host: {
@@ -197,19 +197,23 @@ export default defineMessages({
   },
   qos: {
     id: `${scope}.qos`,
-    defaultMessage: 'Order',
+    defaultMessage: 'qos',
   },
   retain: {
     id: `${scope}.retain`,
-    defaultMessage: 'Order',
+    defaultMessage: 'retain',
   },
   lwtMessage: {
     id: `${scope}.lwtMessage`,
-    defaultMessage: 'Order',
+    defaultMessage: 'lwtMessage',
   },
   cleanSession: {
     id: `${scope}.cleanSession`,
-    defaultMessage: 'Order',
+    defaultMessage: 'cleanSession',
+  },
+  keepalive: {
+    id: `${scope}.keepalive`,
+    defaultMessage: 'keepalive',
   },
   propertyKey: {
     id: `${scope}.propertyKey`,
@@ -298,5 +302,9 @@ export default defineMessages({
   basicPass: {
     id: `${scope}.basicPass`,
     defaultMessage: 'Basic Auth Password',
+  },
+  restartScheduleHelper: {
+    id: `${scope}.restartScheduleHelper`,
+    defaultMessage: 'Enter 0 to disable',
   },
 });
