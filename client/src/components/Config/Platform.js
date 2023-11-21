@@ -10,7 +10,7 @@ import TransitionPanel from 'components/common/TransitionPanel';
 import TabPanel from 'components/common/TabPanel';
 import { renderFields } from './utils';
 import {
-  networkIds, networkOptions, aliyunFields, mqttFields, socketFields, httpFields,
+  networkIds, networkOptions, aliyunFields, mqttFields, socketFields, httpFields, azureFields,
 } from './constants';
 
 const Platform = forwardRef(({
@@ -36,17 +36,21 @@ const Platform = forwardRef(({
     let fields;
     let typeName;
     switch (type) {
+      case 4:
+        fields = azureFields;
+        typeName = 'azure';
+        break;
       case 3:
         fields = httpFields;
         typeName = 'http';
         break;
-      case 1:
-        fields = aliyunFields;
-        typeName = 'aliyun';
-        break;
       case 2:
         fields = mqttFields;
         typeName = 'mqtt';
+        break;
+      case 1:
+        fields = aliyunFields;
+        typeName = 'aliyun';
         break;
       case 0:
       default:

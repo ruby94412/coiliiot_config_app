@@ -187,6 +187,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
         basicUser: '',
         basicPass: '',
       },
+      azure: {},
     });
   }
   if (originalConfig?.basicConfigs) {
@@ -213,7 +214,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
     rst.networkConfigs[index] = {
       ...defaultConfig, networkId, type, serialId, enabled: true,
     };
-    const typeArr = ['socket', 'aliyun', 'mqtt', 'http'];
+    const typeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
     rst.networkConfigs[index][typeArr[type]] = other;
   });
   return rst;
@@ -408,7 +409,7 @@ export const handleFormDataSubmit = (values) => {
     networkConfigs: [],
     autoPollConfigs: [],
     networkSummary: {
-      socket: [], aliyun: [], mqtt: [], http: [],
+      socket: [], aliyun: [], mqtt: [], http: [], azure: [],
     },
   };
   const { credential, ...otherBasics } = values.basicConfigs;
@@ -424,7 +425,7 @@ export const handleFormDataSubmit = (values) => {
       const {
         enabled, serialId, type, networkId,
       } = ele;
-      const typeArr = ['socket', 'aliyun', 'mqtt', 'http'];
+      const typeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
       const detail = ele[typeArr[type]];
       config.networkSummary[typeArr[type]].push(networkId);
       const temp = {
@@ -611,6 +612,9 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
         basicUser: '',
         basicPass: '',
       },
+      azure: {
+
+      },
     });
   }
 
@@ -673,7 +677,7 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
               break;
           }
         } else {
-          const netTypeArr = ['socket', 'aliyun', 'mqtt', 'http'];
+          const netTypeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
           if (k === netTypeArr[simpleCfg[2]]) {
             Object.entries(rst.networkConfigs[idx][k]).forEach(([k_type, v_type], idx_type) => {
               switch (typeof v_type) {

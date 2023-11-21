@@ -14,6 +14,7 @@ export const networkOptions = [
   { label: 'Socket', value: 0 },
   { label: 'MQTT', value: 2 },
   { label: 'HTTP', value: 3 },
+  { label: 'Azure', value: 4 },
   { label: <FormattedMessage {...messages.aliyun} />, value: 1 },
 ];
 
@@ -230,6 +231,7 @@ export const httpFields = [
   },
 ];
 
+export const azureFields = [];
 export const serialFields = [
   {
     label: <FormattedMessage {...messages.baudrate} />,
