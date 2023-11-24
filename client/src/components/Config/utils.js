@@ -1,5 +1,8 @@
 /* eslint-disable camelcase */
 import {
+  Fragment,
+} from 'react';
+import {
   Grid,
   RadioGroup,
   Radio,
@@ -11,6 +14,9 @@ import {
   MenuItem,
   OutlinedInput,
 } from '@mui/material';
+import {
+  aliyunFields, mqttFields, socketFields, httpFields, azureFields,
+} from './constants';
 
 export const renderFields = ({
   label,
@@ -146,6 +152,8 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       enabled: false,
       type: 0,
       serialId: 0,
+      transmissionPeriod: 0,
+      transmissionType: 0,
       socket: {
         registerMessage: '',
         heartbeat: '',
@@ -194,6 +202,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
         basicPass: '',
       },
       azure: {},
+      conversions: [],
     });
   }
   if (originalConfig?.basicConfigs) {
@@ -577,6 +586,8 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
       enabled: false,
       type: 0,
       serialId: 0,
+      transmissionPeriod: 0,
+      transmissionType: 0,
       socket: {
         registerMessage: '',
         heartbeat: '',
@@ -624,9 +635,8 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
         basicUser: '',
         basicPass: '',
       },
-      azure: {
-
-      },
+      azure: {},
+      conversions: [],
     });
   }
 
@@ -745,4 +755,69 @@ export const commandRowsToField = (rows) => {
     rst.push([...wrap]);
   });
   return rst;
+};
+
+export const renderNetworkFields = (formikProps) => {
+  const { type, aliyun } = formikProps.values;
+  let fields;
+  let typeName;
+  switch (type) {
+    case 4:
+      fields = azureFields;
+      typeName = 'azure';
+      break;
+    case 3:
+      fields = httpFields;
+      typeName = 'http';
+      break;
+    case 2:
+      fields = mqttFields;
+      typeName = 'mqtt';
+      break;
+    case 1:
+      fields = aliyunFields;
+      typeName = 'aliyun';
+      break;
+    case 0:
+    default:
+      fields = socketFields;
+      typeName = 'socket';
+      break;
+  }
+  const shouldUnmount = (field) => {
+    const condition = (
+      typeName === 'aliyun'
+        && Number(aliyun.registerType) === 0
+        && field.propertyName === 'productSecret'
+    ) || (
+      typeName === 'aliyun'
+        && Number(aliyun.registerType) === 1
+        && field.propertyName === 'deviceSecret'
+    );
+    return condition;
+  };
+
+  return (
+    <>
+      {fields.map((field) => (
+        <Fragment key={field.propertyName}>
+          {
+            shouldUnmount(field) ? (<></>)
+              : (
+                <>
+                  {
+                    renderFields({
+                      value: formikProps.values[typeName][field.propertyName],
+                      name: `${typeName}.${field.propertyName}`,
+                      handleChange: formikProps.handleChange,
+                      ...field,
+                    })
+                  }
+                </>
+              )
+          }
+        </Fragment>
+      ))}
+    </>
+  );
 };

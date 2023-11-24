@@ -13,9 +13,9 @@ import {
   AccordionSummary,
 } from 'components/common/StyledAccordion';
 import TabPanel from 'components/common/TabPanel';
-import { renderFields } from './utils';
+import { renderFields, renderNetworkFields } from './utils';
 import {
-  networkIds, networkOptions, aliyunFields, mqttFields, socketFields, httpFields, azureFields,
+  networkIds, networkOptions,
 } from './constants';
 
 const Platform = forwardRef(({
@@ -23,7 +23,7 @@ const Platform = forwardRef(({
 }, ref) => {
   const formikRefs = useRef([]);
   const [networkId, setNetworkId] = useState(0);
-  const [expanded, setExpanded] = useState('platformFields');
+  const [expanded, setExpanded] = useState('networkFields');
 
   const enableOptions = [
     { label: <FormattedMessage {...messages.statusOptionEnable} />, value: true },
@@ -34,72 +34,14 @@ const Platform = forwardRef(({
   };
 
   const handleEnabledChange = (index) => (e) => {
-    formikRefs.current[index].setFieldValue('enabled', e.target.value === 'true');
+    const enabled = e.target.value === 'true';
+    formikRefs.current[index].setFieldValue('enabled', enabled);
+    if (enabled) setExpanded('networkFields');
   };
 
-  const renderNetwork = (formikProps) => {
-    const { type, aliyun } = formikProps.values;
-    let fields;
-    let typeName;
-    switch (type) {
-      case 4:
-        fields = azureFields;
-        typeName = 'azure';
-        break;
-      case 3:
-        fields = httpFields;
-        typeName = 'http';
-        break;
-      case 2:
-        fields = mqttFields;
-        typeName = 'mqtt';
-        break;
-      case 1:
-        fields = aliyunFields;
-        typeName = 'aliyun';
-        break;
-      case 0:
-      default:
-        fields = socketFields;
-        typeName = 'socket';
-        break;
-    }
-    const shouldUnmount = (field) => {
-      const condition = (
-        typeName === 'aliyun'
-          && Number(aliyun.registerType) === 0
-          && field.propertyName === 'productSecret'
-      ) || (
-        typeName === 'aliyun'
-          && Number(aliyun.registerType) === 1
-          && field.propertyName === 'deviceSecret'
-      );
-      return condition;
-    };
-
-    return (
-      <>
-        {fields.map((field) => (
-          <Fragment key={field.propertyName}>
-            {
-              shouldUnmount(field) ? (<></>)
-                : (
-                  <>
-                    {
-                      renderFields({
-                        value: formikProps.values[typeName][field.propertyName],
-                        name: `${typeName}.${field.propertyName}`,
-                        handleChange: formikProps.handleChange,
-                        ...field,
-                      })
-                    }
-                  </>
-                )
-            }
-          </Fragment>
-        ))}
-      </>
-    );
+  const handleSerialIdChange = (index) => (e) => {
+    formikRefs.current[index].setFieldValue('serialId', Number(e.target.value));
+    setExpanded('dataTransmissionFields');
   };
 
   const handleExpandChange = (panel) => (event, isExpanded) => {
@@ -166,7 +108,7 @@ const Platform = forwardRef(({
                               label: <FormattedMessage {...messages.serialIdLabel} />,
                               value: Number(formikProps.values.serialId),
                               name: 'serialId',
-                              handleChange: formikProps.handleChange,
+                              handleChange: handleSerialIdChange(index),
                               fieldType: 'radioGroup',
                               radioOptions: [
                                 { label: '1', value: 0 },
@@ -180,9 +122,9 @@ const Platform = forwardRef(({
                       </Grid>
                     </Grid>
                     <Collapse in={formikProps.values.enabled} timeout={500} exit style={{ marginTop: '10px' }}>
-                      <Accordion expanded={expanded === 'serialFields'} onChange={handleExpandChange('serialFields')}>
+                      <Accordion expanded={expanded === 'networkFields'} onChange={handleExpandChange('networkFields')}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                          <FormattedMessage {...messages.serialIdLabel} />
+                          <FormattedMessage {...messages.networkFields} />
                         </AccordionSummary>
                         <AccordionDetails>
                           <Grid
@@ -198,7 +140,50 @@ const Platform = forwardRef(({
                               fieldType: 'select',
                               selectOptions: networkOptions,
                             })}
-                            {renderNetwork(formikProps)}
+                            {renderNetworkFields(formikProps)}
+                          </Grid>
+                        </AccordionDetails>
+                      </Accordion>
+                      <Accordion expanded={expanded === 'dataTransmissionFields'} onChange={handleExpandChange('dataTransmissionFields')}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                          <FormattedMessage {...messages.dataTransmissionFields} />
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Grid
+                            container
+                            spacing={2}
+                            direction="row"
+                          >
+                            {
+                              renderFields({
+                                label: <FormattedMessage {...messages.transmissionTypeLabel} />,
+                                value: formikProps.values.transmissionType,
+                                name: 'transmissionType',
+                                handleChange: handleEnabledChange(index),
+                                fieldType: 'radioGroup',
+                                radioOptions: [
+                                  { label: '1', value: 0 },
+                                  { label: '2', value: 1 },
+                                  { label: '3', value: 2 },
+                                ],
+                                layout: { xs: 4 },
+                              })
+                            }
+                            {
+                              renderFields({
+                                label: <FormattedMessage {...messages.transmissionTypeLabel} />,
+                                value: formikProps.values.transmissionType,
+                                name: 'transmissionType',
+                                handleChange: handleEnabledChange(index),
+                                fieldType: 'radioGroup',
+                                radioOptions: [
+                                  { label: '1', value: 0 },
+                                  { label: '2', value: 1 },
+                                  { label: '3', value: 2 },
+                                ],
+                                layout: { xs: 4 },
+                              })
+                            }
                           </Grid>
                         </AccordionDetails>
                       </Accordion>

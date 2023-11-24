@@ -27,4 +27,40 @@ export default defineMessages({
     id: `${scope}.statusOptionDisable`,
     defaultMessage: 'Disable',
   },
+  networkFields: {
+    id: `${scope}.networkFields`,
+    defaultMessage: 'Network Fields',
+  },
+  dataTransmissionFields: {
+    id: `${scope}.dataTransmissionFields`,
+    defaultMessage: 'Data Transmission Fields',
+  },
+  transmissionTypeLabel: {
+    id: `${scope}.transmissionTypeLabel`,
+    defaultMessage: 'Transmission Data Type',
+  },
+  transmissionTypeOptionModbus: {
+    id: `${scope}.transmissionTypeOptionModbus`,
+    defaultMessage: 'Modbus Command',
+  },
+  transmissionTypeOptionJson: {
+    id: `${scope}.transmissionTypeOptionJson`,
+    defaultMessage: 'Json',
+  },
+  transmissionPeriodRadioLabel: {
+    id: `${scope}.transmissionPeriodRadioLabel`,
+    defaultMessage: 'When To Transmit',
+  },
+  transmissionPeriodOptionChange: {
+    id: `${scope}.transmissionPeriodLabel`,
+    defaultMessage: 'Transmit When Data Change',
+  },
+  transmissionPeriodOptionPeriod: {
+    id: `${scope}.transmissionPeriodOptionPeriod`,
+    defaultMessage: 'Transmit Periodically',
+  },
+  transmissionPeriodInputLabel: {
+    id: `${scope}.transmissionPeriodInputLabel`,
+    defaultMessage: 'Transmit Period',
+  },
 });
