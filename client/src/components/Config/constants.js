@@ -290,6 +290,10 @@ export const autoPollFields = [
 
 export const commandGeneratorFields = [
   {
+    label: <FormattedMessage {...messages.tag} />,
+    propertyName: 'tag',
+  },
+  {
     label: <FormattedMessage {...messages.slaveId} />,
     propertyName: 'slaveId',
     datatype: 'number',
@@ -391,6 +395,15 @@ export const getCommandTableColumns = ({
   setParams,
   deleteRow,
 }) => [
+  {
+    field: 'tag',
+    headerName: intl.formatMessage(messages.tag),
+    flex: 1,
+    minWidth: 80,
+    headerAlign: 'right',
+    type: 'number',
+    align: 'right',
+  },
   {
     field: 'slaveId',
     headerName: intl.formatMessage(messages.slaveId),

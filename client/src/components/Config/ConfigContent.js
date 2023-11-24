@@ -23,12 +23,6 @@ import Basic from './Basic';
 import AutoPoll from './AutoPoll';
 import ProductType from './ProductType';
 
-const a11yProps = (index) => ({
-  id: `simple-tab-${index}`,
-  'aria-controls': `simple-tabpanel-${index}`,
-  color: 'red',
-});
-
 function Content({
   loadData,
   update,
@@ -144,17 +138,16 @@ function Content({
         <Tabs
           value={tabIndex}
           onChange={handleTabChange}
-          aria-label="basic tabs"
           variant="scrollable"
         >
-          <Tab label={<FormattedMessage {...messages.productTabLabel} />} {...a11yProps(0)} />
-          <Tab label={<FormattedMessage {...messages.basicTabLabel} />} {...a11yProps(1)} />
-          <Tab label={<FormattedMessage {...messages.serialTabLabel} />} {...a11yProps(2)} />
-          <Tab label={<FormattedMessage {...messages.networkTabLabel} />} {...a11yProps(3)} />
-          <Tab label={<FormattedMessage {...messages.autoPollLabel} />} {...a11yProps(4)} />
+          <Tab label={<FormattedMessage {...messages.productTabLabel} />} />
+          <Tab label={<FormattedMessage {...messages.basicTabLabel} />} />
+          <Tab label={<FormattedMessage {...messages.serialTabLabel} />} />
+          <Tab label={<FormattedMessage {...messages.networkTabLabel} />} />
+          <Tab label={<FormattedMessage {...messages.autoPollLabel} />} />
         </Tabs>
       </Box>
-      <TransitionPanel index={tabIndex} sx={{ p: 3 }}>
+      <TransitionPanel index={tabIndex}>
         <TabPanel value={tabIndex} index={0}>
           <ProductType />
         </TabPanel>

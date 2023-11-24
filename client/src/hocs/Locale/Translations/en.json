@@ -28,9 +28,16 @@
   "coiliiot.app.config.basic.wifiDivider": "Wifi Credential",
 
   "coiliiot.app.config.serial.serialIdLabel": "Serial Channel ID",
-  "coiliiot.app.config.serial.statusLabel": "Status",
+  "coiliiot.app.config.serial.statusLabel": "Serial Status",
   "coiliiot.app.config.serial.statusOptionEnable": "Enable",
   "coiliiot.app.config.serial.statusOptionDisable": "Disable",
+  "coiliiot.app.config.serial.autoPollStatusLabel": "Autopoll Status",
+  "coiliiot.app.config.serial.serialFields": "Serial Fields",
+  "coiliiot.app.config.serial.autoPollFields": "Autopoll Fields",
+  "coiliiot.app.config.serial.commandLabel": "Command",
+  "coiliiot.app.config.serial.commandsIntervalLabel": "Interval Between Commands",
+  "coiliiot.app.config.serial.commandHelperText": "E.g: 01 04 00 00 00 01 31 CA",
+  "coiliiot.app.config.serial.commandGeneratorButton": "Add Command",
 
   "coiliiot.app.config.platform.networkIdLabel": "Network Channel ID",
   "coiliiot.app.config.platform.platformTypeLabel": "Platform Type",
@@ -140,6 +147,7 @@
   "coiliiot.app.config.constants.basicPass": "Basic Auth Password",
   "coiliiot.app.config.constants.minute": "minute",
   "coiliiot.app.config.constants.restartScheduleHelper": "Enter 0 to disable",
+  "coiliiot.app.config.constants.tag": "Tag",
 
   "coiliiot.app.config.commandGenerator.title": "Command Generator",
   "coiliiot.app.config.commandGenerator.confirm": "Confirm",

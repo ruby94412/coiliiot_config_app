@@ -37,18 +37,18 @@ function CommandGenerator({
   params,
   setParams,
   setCommandsField,
-  networkOptions,
+  // networkOptions,
 }) {
   const intl = useIntl();
   const handleClose = () => setParams(null);
   const [data, setData] = useState(params);
   const [command, setCommand] = useState(null);
-  const [expanded, setExpanded] = useState('commandDetail');
+  // const [expanded, setExpanded] = useState('commandDetail');
 
-  const enableOptions = [
-    { label: intl.formatMessage(messages.enable), value: true },
-    { label: intl.formatMessage(messages.disable), value: false },
-  ];
+  // const enableOptions = [
+  //   { label: intl.formatMessage(messages.enable), value: true },
+  //   { label: intl.formatMessage(messages.disable), value: false },
+  // ];
 
   useEffect(() => {
     setData(params);
@@ -64,16 +64,16 @@ function CommandGenerator({
     setData(updatedData);
   };
 
-  const handleNetworkSelect = (e) => {
-    const id = Number(e.target.name);
-    const networkIds = [...data.networkIds];
-    if (networkIds.includes(id)) networkIds.splice(networkIds.indexOf(id));
-    else networkIds.push(id);
-    networkIds.sort((a, b) => (a - b));
-    const updatedData = { ...data };
-    updatedData.networkIds = networkIds;
-    setData(updatedData);
-  };
+  // const handleNetworkSelect = (e) => {
+  //   const id = Number(e.target.name);
+  //   const networkIds = [...data.networkIds];
+  //   if (networkIds.includes(id)) networkIds.splice(networkIds.indexOf(id));
+  //   else networkIds.push(id);
+  //   networkIds.sort((a, b) => (a - b));
+  //   const updatedData = { ...data };
+  //   updatedData.networkIds = networkIds;
+  //   setData(updatedData);
+  // };
 
   const handleConfirm = () => {
     let temp;
@@ -89,16 +89,16 @@ function CommandGenerator({
     handleClose();
   };
 
-  const handleEnableJsonChange = (e) => {
-    const updatedData = { ...data };
-    updatedData.enableJson = (e.target.value === 'true');
-    setData(updatedData);
-    setExpanded(e.target.value === 'true' ? 'jsonFields' : 'commandDetail');
-  };
+  // const handleEnableJsonChange = (e) => {
+  //   const updatedData = { ...data };
+  //   updatedData.enableJson = (e.target.value === 'true');
+  //   setData(updatedData);
+  //   setExpanded(e.target.value === 'true' ? 'jsonFields' : 'commandDetail');
+  // };
 
-  const handleExpandChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  // const handleExpandChange = (panel) => (event, isExpanded) => {
+  //   setExpanded(isExpanded ? panel : false);
+  // };
 
   return (
     <Dialog
@@ -108,35 +108,38 @@ function CommandGenerator({
     >
       <DialogTitle><FormattedMessage {...messages.title} /></DialogTitle>
       <DialogContent dividers>
-        <Accordion expanded={expanded === 'commandDetail'} onChange={handleExpandChange('commandDetail')}>
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+        >
+          {commandGeneratorFields.map((field) => (
+            <Fragment key={field.propertyName}>
+              {renderFields({
+                name: field.propertyName,
+                value: data[field.propertyName],
+                handleChange: handleDataChange(field.propertyName),
+                layout: { xs: 12, md: 6 },
+                ...field,
+              })}
+            </Fragment>
+          ))}
+        </Grid>
+        {
+          command
+          && <Grid item xs={12} pt={4}><CommandDetail command={command} /></Grid>
+        }
+        {/* <Accordion
+              expanded={expanded === 'commandDetail'}
+              onChange={handleExpandChange('commandDetail')}
+            >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <FormattedMessage {...messages.commandDetail} />
           </AccordionSummary>
           <AccordionDetails>
-            <Grid
-              container
-              spacing={2}
-              direction="row"
-            >
-              {commandGeneratorFields.map((field) => (
-                <Fragment key={field.propertyName}>
-                  {renderFields({
-                    name: field.propertyName,
-                    value: data[field.propertyName],
-                    handleChange: handleDataChange(field.propertyName),
-                    layout: { xs: 12, md: 6 },
-                    ...field,
-                  })}
-                </Fragment>
-              ))}
-            </Grid>
-            {
-              command
-              && <Grid item xs={12} pt={4}><CommandDetail command={command} /></Grid>
-            }
           </AccordionDetails>
-        </Accordion>
-        <Grid
+        </Accordion> */}
+        {/* <Grid
           container
           spacing={2}
           direction="row"
@@ -151,9 +154,10 @@ function CommandGenerator({
             radioOptions: enableOptions,
             layout: { xs: 12 },
           })}
-        </Grid>
-        <Collapse in={data.enableJson}>
-          <Accordion expanded={expanded === 'jsonFields'} onChange={handleExpandChange('jsonFields')}>
+        </Grid> */}
+        {/* <Collapse in={data.enableJson}>
+          <Accordion expanded={expanded === 'jsonFields'}
+            onChange={handleExpandChange('jsonFields')}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <FormattedMessage {...messages.convertDetail} />
             </AccordionSummary>
@@ -165,7 +169,9 @@ function CommandGenerator({
               >
                 <Grid item xs={12}>
                   <FormControl sx={{ display: 'flex' }}>
-                    <FormLabel component="legend"><FormattedMessage {...messages.networkIdLabel} /></FormLabel>
+                    <FormLabel component="legend">
+                      <FormattedMessage {...messages.networkIdLabel} />
+                    </FormLabel>
                     <FormGroup row>
                       {
                         networkOptions?.map((option) => (
@@ -199,7 +205,7 @@ function CommandGenerator({
               </Grid>
             </AccordionDetails>
           </Accordion>
-        </Collapse>
+        </Collapse> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} variant="contained">

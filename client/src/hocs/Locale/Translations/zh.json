@@ -28,9 +28,16 @@
   "coiliiot.app.config.basic.wifiDivider": "WIFI 信息",
 
   "coiliiot.app.config.serial.serialIdLabel": "串口通道ID",
-  "coiliiot.app.config.serial.statusLabel": "启用状态",
+  "coiliiot.app.config.serial.statusLabel": "串口状态",
   "coiliiot.app.config.serial.statusOptionEnable": "启用",
   "coiliiot.app.config.serial.statusOptionDisable": "不启用",
+  "coiliiot.app.config.serial.autoPollStatusLabel": "主动轮训状态",
+  "coiliiot.app.config.serial.serialFields": "串口配置",
+  "coiliiot.app.config.serial.autoPollFields": "主动轮训配置",
+  "coiliiot.app.config.serial.commandLabel": "命令",
+  "coiliiot.app.config.serial.commandsIntervalLabel": "命令间隔时间",
+  "coiliiot.app.config.serial.commandHelperText": "示例: 01 04 00 00 00 01 31 CA",
+  "coiliiot.app.config.serial.commandGeneratorButton": "添加命令",
 
   "coiliiot.app.config.platform.networkIdLabel": "网络通道ID",
   "coiliiot.app.config.platform.platformTypeLabel": "网络类型",
@@ -137,6 +144,7 @@
   "coiliiot.app.config.constants.basicPass": "Basic验证密码",
   "coiliiot.app.config.constants.minute": "分钟",
   "coiliiot.app.config.constants.restartScheduleHelper": "输入0即为不启用",
+  "coiliiot.app.config.constants.tag": "标签",
 
   "coiliiot.app.config.commandGenerator.title": "生成命令",
   "coiliiot.app.config.commandGenerator.confirm": "确认",

@@ -6,7 +6,12 @@ import { FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import messages from 'hocs/Locale/Messages/Config/Platform';
 import TransitionPanel from 'components/common/TransitionPanel';
-// import SwipeableViews from 'react-swipeable-views';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+} from 'components/common/StyledAccordion';
 import TabPanel from 'components/common/TabPanel';
 import { renderFields } from './utils';
 import {
@@ -18,6 +23,7 @@ const Platform = forwardRef(({
 }, ref) => {
   const formikRefs = useRef([]);
   const [networkId, setNetworkId] = useState(0);
+  const [expanded, setExpanded] = useState('platformFields');
 
   const enableOptions = [
     { label: <FormattedMessage {...messages.statusOptionEnable} />, value: true },
@@ -92,16 +98,12 @@ const Platform = forwardRef(({
             }
           </Fragment>
         ))}
-        {renderFields({
-          label: <FormattedMessage {...messages.serialIdLabel} />,
-          value: Number(formikProps.values.serialId),
-          name: 'serialId',
-          handleChange: formikProps.handleChange,
-          fieldType: 'radioGroup',
-          radioOptions: [{ label: '1', value: 0 }, { label: '2', value: 1 }, { label: '3', value: 2 }],
-        })}
       </>
     );
+  };
+
+  const handleExpandChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
   };
 
   useImperativeHandle(ref, () => ({
@@ -150,25 +152,56 @@ const Platform = forwardRef(({
                           handleChange: handleEnabledChange(index),
                           fieldType: 'radioGroup',
                           radioOptions: enableOptions,
+                          layout: { xs: 4 },
                         })
                       }
+                      <Grid item xs={4}>
+                        <Collapse in={formikProps.values.enabled} timeout={500} exit>
+                          <Grid
+                            container
+                            spacing={2}
+                            direction="row"
+                          >
+                            {renderFields({
+                              label: <FormattedMessage {...messages.serialIdLabel} />,
+                              value: Number(formikProps.values.serialId),
+                              name: 'serialId',
+                              handleChange: formikProps.handleChange,
+                              fieldType: 'radioGroup',
+                              radioOptions: [
+                                { label: '1', value: 0 },
+                                { label: '2', value: 1 },
+                                { label: '3', value: 2 },
+                              ],
+                              layout: { xs: 12 },
+                            })}
+                          </Grid>
+                        </Collapse>
+                      </Grid>
                     </Grid>
                     <Collapse in={formikProps.values.enabled} timeout={500} exit style={{ marginTop: '10px' }}>
-                      <Grid
-                        container
-                        spacing={2}
-                        direction="row"
-                      >
-                        {renderFields({
-                          label: <FormattedMessage {...messages.platformTypeLabel} />,
-                          value: formikProps.values.type,
-                          name: 'type',
-                          handleChange: formikProps.handleChange,
-                          fieldType: 'select',
-                          selectOptions: networkOptions,
-                        })}
-                        {renderNetwork(formikProps)}
-                      </Grid>
+                      <Accordion expanded={expanded === 'serialFields'} onChange={handleExpandChange('serialFields')}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                          <FormattedMessage {...messages.serialIdLabel} />
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Grid
+                            container
+                            spacing={2}
+                            direction="row"
+                          >
+                            {renderFields({
+                              label: <FormattedMessage {...messages.platformTypeLabel} />,
+                              value: formikProps.values.type,
+                              name: 'type',
+                              handleChange: formikProps.handleChange,
+                              fieldType: 'select',
+                              selectOptions: networkOptions,
+                            })}
+                            {renderNetwork(formikProps)}
+                          </Grid>
+                        </AccordionDetails>
+                      </Accordion>
                     </Collapse>
                   </>
                 )}

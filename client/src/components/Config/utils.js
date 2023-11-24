@@ -123,6 +123,12 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       dataBit: 8,
       stopBit: 1,
       parityMode: 2,
+      autoPollEnabled: false,
+      delay: 1000,
+      numberOfRetry: 3,
+      timeout: 1000,
+      period: 5,
+      commands: [],
     });
     rst.autoPollConfigs.push({
       enabled: false,
@@ -548,6 +554,12 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
       dataBit: 8,
       stopBit: 1,
       parityMode: 2,
+      autoPollEnabled: false,
+      delay: 1000,
+      numberOfRetry: 3,
+      timeout: 1000,
+      period: 5,
+      commands: [],
     });
     rst.autoPollConfigs.push({
       enabled: false,

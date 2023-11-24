@@ -307,4 +307,8 @@ export default defineMessages({
     id: `${scope}.restartScheduleHelper`,
     defaultMessage: 'Enter 0 to disable',
   },
+  tag: {
+    id: `${scope}.tag`,
+    defaultMessage: 'tag',
+  },
 });

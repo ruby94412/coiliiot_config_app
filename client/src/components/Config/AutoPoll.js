@@ -170,7 +170,6 @@ const AutoPoll = forwardRef(({
                             })}
                           </Fragment>
                         ))}
-
                         <Grid item xs={12}>
                           <DataGrid
                             sx={{
