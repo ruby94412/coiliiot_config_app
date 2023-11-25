@@ -1,10 +1,13 @@
 import {
   useState, Fragment, useRef, forwardRef, useImperativeHandle,
 } from 'react';
-import { Grid, Collapse } from '@mui/material';
+import {
+  Grid, Collapse, InputAdornment,
+} from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import messages from 'hocs/Locale/Messages/Config/Platform';
+import constMsg from 'hocs/Locale/Messages/Config/constants';
 import TransitionPanel from 'components/common/TransitionPanel';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import {
@@ -24,7 +27,17 @@ const Platform = forwardRef(({
   const formikRefs = useRef([]);
   const [networkId, setNetworkId] = useState(0);
   const [expanded, setExpanded] = useState('networkFields');
-
+  const serialIdOptions = [
+    { label: '1', value: 0 }, { label: '2', value: 1 }, { label: '3', value: 2 },
+  ];
+  const transmissionTypeOptions = [
+    { label: <FormattedMessage {...messages.transmissionTypeOptionModbus} />, value: 0 },
+    { label: <FormattedMessage {...messages.transmissionTypeOptionJson} />, value: 1 },
+  ];
+  const transmissionPeriodOptions = [
+    { label: <FormattedMessage {...messages.transmissionPeriodOptionChange} />, value: 0 },
+    { label: <FormattedMessage {...messages.transmissionPeriodOptionPeriod} />, value: 30 },
+  ];
   const enableOptions = [
     { label: <FormattedMessage {...messages.statusOptionEnable} />, value: true },
     { label: <FormattedMessage {...messages.statusOptionDisable} />, value: false },
@@ -46,6 +59,14 @@ const Platform = forwardRef(({
 
   const handleExpandChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+  };
+
+  const handleTransmissionTypeChange = (index) => (e) => {
+    formikRefs.current[index].setFieldValue('transmissionType', Number(e.target.value));
+  };
+
+  const handleTransmissionPeriodRadioChange = (index) => (e) => {
+    formikRefs.current[index].setFieldValue('transmissionPeriod', Number(e.target.value));
   };
 
   useImperativeHandle(ref, () => ({
@@ -110,11 +131,7 @@ const Platform = forwardRef(({
                               name: 'serialId',
                               handleChange: handleSerialIdChange(index),
                               fieldType: 'radioGroup',
-                              radioOptions: [
-                                { label: '1', value: 0 },
-                                { label: '2', value: 1 },
-                                { label: '3', value: 2 },
-                              ],
+                              radioOptions: serialIdOptions,
                               layout: { xs: 12 },
                             })}
                           </Grid>
@@ -159,31 +176,50 @@ const Platform = forwardRef(({
                                 label: <FormattedMessage {...messages.transmissionTypeLabel} />,
                                 value: formikProps.values.transmissionType,
                                 name: 'transmissionType',
-                                handleChange: handleEnabledChange(index),
+                                handleChange: handleTransmissionTypeChange(index),
                                 fieldType: 'radioGroup',
-                                radioOptions: [
-                                  { label: '1', value: 0 },
-                                  { label: '2', value: 1 },
-                                  { label: '3', value: 2 },
-                                ],
+                                radioOptions: transmissionTypeOptions,
                                 layout: { xs: 4 },
                               })
                             }
                             {
                               renderFields({
-                                label: <FormattedMessage {...messages.transmissionTypeLabel} />,
-                                value: formikProps.values.transmissionType,
-                                name: 'transmissionType',
-                                handleChange: handleEnabledChange(index),
+                                label: <FormattedMessage
+                                  {...messages.transmissionPeriodRadioLabel}
+                                />,
+                                value: formikProps.values.transmissionPeriod,
+                                name: 'transmissionPeriod',
+                                handleChange: handleTransmissionPeriodRadioChange(index),
                                 fieldType: 'radioGroup',
-                                radioOptions: [
-                                  { label: '1', value: 0 },
-                                  { label: '2', value: 1 },
-                                  { label: '3', value: 2 },
-                                ],
-                                layout: { xs: 4 },
+                                radioOptions: transmissionPeriodOptions,
+                                layout: { xs: 6 },
                               })
                             }
+                            <Grid item xs={2}>
+                              <Collapse
+                                in={formikProps.values.transmissionPeriod > 0}
+                                timeout={500}
+                                exit
+                              >
+                                <Grid
+                                  container
+                                  spacing={2}
+                                  direction="row"
+                                >
+                                  {renderFields({
+                                    label: <FormattedMessage
+                                      {...messages.transmissionPeriodInputLabel}
+                                    />,
+                                    name: 'transmissionPeriod',
+                                    value: formikProps.values.transmissionPeriod,
+                                    handleChange: formikProps.handleChange,
+                                    layout: { xs: 12 },
+                                    style: { width: '100%' },
+                                    endAdornment: <InputAdornment position="end"><FormattedMessage {...constMsg.second} /></InputAdornment>,
+                                  })}
+                                </Grid>
+                              </Collapse>
+                            </Grid>
                           </Grid>
                         </AccordionDetails>
                       </Accordion>

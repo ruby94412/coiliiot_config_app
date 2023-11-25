@@ -50,7 +50,7 @@
   "coiliiot.app.config.platform.transmissionTypeLabel": "传输数据类型",
   "coiliiot.app.config.platform.transmissionTypeOptionModbus": "Modbus命令",
   "coiliiot.app.config.platform.transmissionTypeOptionJson": "Json",
-  "coiliiot.app.config.platform.transmissionPeriod": "传输方式",
+  "coiliiot.app.config.platform.transmissionPeriodRadioLabel": "传输方式",
   "coiliiot.app.config.platform.transmissionPeriodOptionChange": "数据发生变化时传输",
   "coiliiot.app.config.platform.transmissionPeriodOptionPeriod": "按周期传输",
   "coiliiot.app.config.platform.transmissionPeriodInputLabel": "传输周期",

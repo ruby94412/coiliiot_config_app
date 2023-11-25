@@ -52,8 +52,8 @@ export default defineMessages({
     defaultMessage: 'When To Transmit',
   },
   transmissionPeriodOptionChange: {
-    id: `${scope}.transmissionPeriodLabel`,
-    defaultMessage: 'Transmit When Data Change',
+    id: `${scope}.transmissionPeriodOptionChange`,
+    defaultMessage: 'Transmit When Data Changes',
   },
   transmissionPeriodOptionPeriod: {
     id: `${scope}.transmissionPeriodOptionPeriod`,

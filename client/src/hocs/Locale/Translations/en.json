@@ -50,8 +50,8 @@
   "coiliiot.app.config.platform.transmissionTypeLabel": "Transmission Data Type",
   "coiliiot.app.config.platform.transmissionTypeOptionModbus": "Modbus Command",
   "coiliiot.app.config.platform.transmissionTypeOptionJson": "Json",
-  "coiliiot.app.config.platform.transmissionPeriod": "When To Transmit",
-  "coiliiot.app.config.platform.transmissionPeriodOptionChange": "Transmit When Data Change",
+  "coiliiot.app.config.platform.transmissionPeriodRadioLabel": "When To Transmit",
+  "coiliiot.app.config.platform.transmissionPeriodOptionChange": "Transmit When Data Changes",
   "coiliiot.app.config.platform.transmissionPeriodOptionPeriod": "Transmit Periodically",
   "coiliiot.app.config.platform.transmissionPeriodInputLabel": "Transmit Period",
 
