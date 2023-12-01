@@ -311,4 +311,8 @@ export default defineMessages({
     id: `${scope}.tag`,
     defaultMessage: 'tag',
   },
+  cmdStr: {
+    id: `${scope}.cmdStr`,
+    defaultMessage: 'Modbus Command',
+  },
 });

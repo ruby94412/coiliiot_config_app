@@ -13,7 +13,11 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
+  Tooltip,
 } from '@mui/material';
+import {
+  HelpOutline as HelperIcon,
+} from '@mui/icons-material';
 import {
   aliyunFields, mqttFields, socketFields, httpFields, azureFields,
 } from './constants';
@@ -31,14 +35,22 @@ export const renderFields = ({
   const layout = other.layout || { xs: 12, md: 4 };
   const style = other.style || { width: '80%' };
   const {
-    radioOptions, selectOptions, helperText, ...rest
+    radioOptions, selectOptions, helperText, helperTooltip, ...rest
   } = other;
   switch (fieldType) {
     case 'radioGroup':
       return (
         <Grid item {...layout}>
           <FormControl sx={{ display: 'flex' }}>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel>
+              {label}
+              { helperTooltip
+                && (
+                  <Tooltip title={helperTooltip}>
+                    <HelperIcon sx={{ fontSize: '15px' }} />
+                  </Tooltip>
+                )}
+            </FormLabel>
             <RadioGroup
               row
               value={value}
@@ -56,6 +68,7 @@ export const renderFields = ({
                 ))
               }
             </RadioGroup>
+            { helperText && <FormHelperText sx={{ marginLeft: 0 }}>{helperText}</FormHelperText>}
           </FormControl>
         </Grid>
       );
@@ -63,7 +76,15 @@ export const renderFields = ({
       return (
         <Grid item {...layout}>
           <FormControl sx={{ display: 'flex' }}>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel>
+              {label}
+              { helperTooltip
+                && (
+                  <Tooltip title={helperTooltip}>
+                    <HelperIcon sx={{ fontSize: '15px' }} />
+                  </Tooltip>
+                )}
+            </FormLabel>
             <Select
               size="small"
               style={style}
@@ -83,6 +104,7 @@ export const renderFields = ({
                 ))
               }
             </Select>
+            { helperText && <FormHelperText sx={{ marginLeft: 0 }}>{helperText}</FormHelperText>}
           </FormControl>
         </Grid>
       );
@@ -93,7 +115,15 @@ export const renderFields = ({
       return (
         <Grid item {...layout}>
           <FormControl sx={{ display: 'flex' }}>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel>
+              {label}
+              { helperTooltip
+                && (
+                  <Tooltip title={helperTooltip}>
+                    <HelperIcon sx={{ fontSize: '15px' }} />
+                  </Tooltip>
+                )}
+            </FormLabel>
             <OutlinedInput
               size="small"
               style={style}
@@ -103,7 +133,7 @@ export const renderFields = ({
               type={datatype}
               {...rest}
             />
-            { helperText && <FormHelperText>{helperText}</FormHelperText>}
+            { helperText && <FormHelperText sx={{ marginLeft: 0 }}>{helperText}</FormHelperText>}
           </FormControl>
         </Grid>
       );
@@ -112,7 +142,7 @@ export const renderFields = ({
 
 export const getInitialValues = (originalConfig, originalCredential) => {
   const rst = {
-    basicConfigs: {}, serialConfigs: [], networkConfigs: [], autoPollConfigs: [],
+    basicConfigs: {}, serialConfigs: [], networkConfigs: [],
   };
   rst.basicConfigs = {
     config_version: 0,
@@ -136,15 +166,6 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       period: 5,
       commands: [],
     });
-    rst.autoPollConfigs.push({
-      enabled: false,
-      delay: 1000,
-      serialId: i,
-      numberOfRetry: 3,
-      timeout: 1000,
-      period: 600,
-      commands: [],
-    });
   }
   for (let i = 0; i < 8; i++) {
     rst.networkConfigs.push({
@@ -152,8 +173,9 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       enabled: false,
       type: 0,
       serialId: 0,
-      transmissionPeriod: 0,
       transmissionType: 0,
+      transmissionPeriod: 30,
+      transmissionDataType: [0, 0, 0],
       socket: {
         registerMessage: '',
         heartbeat: '',
@@ -202,7 +224,8 @@ export const getInitialValues = (originalConfig, originalCredential) => {
         basicPass: '',
       },
       azure: {},
-      conversions: [],
+      conversions: [[], [], []],
+      commands: [[], [], []],
     });
   }
   if (originalConfig?.basicConfigs) {
@@ -215,19 +238,31 @@ export const getInitialValues = (originalConfig, originalCredential) => {
     const defaultConfig = rst.serialConfigs[index];
     rst.serialConfigs[index] = { ...defaultConfig, ...origin };
   });
-  originalConfig?.autoPollConfigs?.forEach((origin) => {
-    const index = origin.serialId;
-    const defaultConfig = rst.autoPollConfigs[index];
-    rst.autoPollConfigs[index] = { ...defaultConfig, ...origin };
-  });
   originalConfig?.networkConfigs?.forEach((origin) => {
     const index = origin.networkId;
     const defaultConfig = rst.networkConfigs[index];
     const {
-      networkId, type, serialId, ...other
+      networkId,
+      type,
+      serialId,
+      transmissionType,
+      transmissionPeriod,
+      transmissionDataType,
+      conversions,
+      commands,
+      ...other
     } = origin;
     rst.networkConfigs[index] = {
-      ...defaultConfig, networkId, type, serialId, enabled: true,
+      ...defaultConfig,
+      networkId,
+      type,
+      serialId,
+      enabled: true,
+      transmissionType,
+      transmissionPeriod,
+      transmissionDataType,
+      conversions,
+      commands,
     };
     const typeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
     rst.networkConfigs[index][typeArr[type]] = other;
@@ -304,6 +339,8 @@ export const getUid = (type) => {
     .toString(16)
     .substring(1);
   switch (type) {
+    case 'simple':
+      return `${s4()}`;
     case 'user':
       return `${s4() + s4()}-${s4()}-${s4()}`;
     case 'group':
@@ -317,7 +354,7 @@ export const getUid = (type) => {
   }
 };
 
-export const convertRawCommands = (autoPollConfig) => {
+export const convertRawCommands_archived = (autoPollConfig) => {
   if (!autoPollConfig || !autoPollConfig.commands?.length) return [];
   const temp = autoPollConfig.commands?.map((command) => {
     const cmd = command[1].match(/.{1,2}/g).map((s) => (parseInt(s, 16)));
@@ -362,6 +399,33 @@ export const convertRawCommands = (autoPollConfig) => {
     };
   });
   return temp;
+};
+
+/**
+ * @brief
+ *  this is the function that convert raw modbus commands into table
+ */
+export const convertRawCommands = (serialConfig) => {
+  if (!serialConfig || !serialConfig.commands?.length) return [];
+  return serialConfig?.commands?.map((command) => {
+    const arr = command.split('-');
+    const cmd = arr[2]?.match(/.{1,2}/g).map((s) => (parseInt(s, 16))) || [];
+    const defaultCmd = {
+      id: arr[0],
+      tag: arr[1],
+      cmdStr: arr[2],
+    };
+    const cmdDetial = {
+      slaveId: cmd[0],
+      functionCode: cmd[1],
+      registerOffset: cmd[2] * 256 + cmd[3],
+      numberOfRegisters: cmd[4] * 256 + cmd[5],
+    };
+    const detail = getCommandDetail(cmdDetial);
+    return {
+      detail, ...cmdDetial, ...defaultCmd,
+    };
+  });
 };
 
 export const renderCommandDetail = ({
@@ -422,7 +486,6 @@ export const handleFormDataSubmit = (values) => {
     basicConfigs: {},
     serialConfigs: [],
     networkConfigs: [],
-    autoPollConfigs: [],
     networkSummary: {
       socket: [], aliyun: [], mqtt: [], http: [], azure: [],
     },
@@ -432,19 +495,32 @@ export const handleFormDataSubmit = (values) => {
   values.serialConfigs.forEach((ele) => {
     if (ele.enabled) config.serialConfigs.push(ele);
   });
-  values.autoPollConfigs.forEach((ele) => {
-    if (ele.enabled) config.autoPollConfigs.push(ele);
-  });
   values.networkConfigs.forEach((ele) => {
     if (ele.enabled) {
       const {
-        enabled, serialId, type, networkId,
+        enabled,
+        serialId,
+        type, networkId,
+        transmissionPeriod,
+        transmissionType,
+        transmissionDataType,
+        conversions,
+        commands,
       } = ele;
       const typeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
       const detail = ele[typeArr[type]];
       config.networkSummary[typeArr[type]].push(networkId);
       const temp = {
-        networkId, enabled, type, serialId, ...detail,
+        networkId,
+        enabled,
+        type,
+        serialId,
+        transmissionType,
+        transmissionPeriod,
+        transmissionDataType,
+        ...detail,
+        conversions,
+        commands,
       };
       Object.keys(temp).forEach((key) => temp[key] === undefined && delete temp[key]);
       config.networkConfigs.push(temp);
@@ -493,10 +569,10 @@ const castStringValueToOrigin = (value) => {
 
 export const simplifyConfig = (config, credential) => {
   const {
-    basicConfigs, serialConfigs, networkConfigs, autoPollConfigs, networkSummary, config_version,
+    basicConfigs, serialConfigs, networkConfigs, networkSummary, config_version,
   } = config;
   const rst = {
-    cred: [], net_sum: [], cfg_v: config_version, basic: [], serial: [], net: [], auto: [],
+    cred: [], net_sum: [], cfg_v: config_version, basic: [], serial: [], net: [],
   };
 
   Object.entries(credential).forEach(([, value]) => {
@@ -521,25 +597,34 @@ export const simplifyConfig = (config, credential) => {
 
   networkConfigs.forEach((cfg) => {
     const temp = [];
-    Object.entries(cfg).forEach(([, value]) => {
-      temp.push(castStringValueToOrigin(value));
-    });
-    rst.net.push(temp);
-  });
-
-  autoPollConfigs.forEach((cfg) => {
-    const temp = [];
-    Object.entries(cfg).forEach(([, value]) => {
-      switch (typeof value) {
-        case 'boolean':
-          temp.push(+value);
+    Object.entries(cfg).forEach(([key, value]) => {
+      switch (key) {
+        case 'transmissionDataType':
+          temp.push(value[cfg.serialId]);
+          break;
+        case 'conversions': {
+          if (cfg.transmissionDataType[cfg.serialId] === 0) break;
+          const fields = [];
+          value[cfg.serialId].forEach((obj) => {
+            const arr = [];
+            Object.entries(obj).forEach(([k, v]) => {
+              if (k !== 'id') arr.push(v);
+            });
+            fields.push(arr);
+          });
+          temp.push(fields);
+          break;
+        }
+        case 'commands':
+          if (cfg.transmissionDataType[cfg.serialId] === 1) break;
+          temp.push(value[cfg.serialId]);
           break;
         default:
-          temp.push(value);
+          temp.push(castStringValueToOrigin(value));
           break;
       }
     });
-    rst.auto.push(temp);
+    rst.net.push(temp);
   });
   return rst;
 };
@@ -570,15 +655,6 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
       period: 5,
       commands: [],
     });
-    rst.autoPollConfigs.push({
-      enabled: false,
-      delay: 1000,
-      serialId: i,
-      numberOfRetry: 3,
-      timeout: 1000,
-      period: 600,
-      commands: [],
-    });
   }
   for (let i = 0; i < 8; i++) {
     rst.networkConfigs.push({
@@ -586,8 +662,9 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
       enabled: false,
       type: 0,
       serialId: 0,
-      transmissionPeriod: 0,
       transmissionType: 0,
+      transmissionPeriod: 0,
+      transmissionDataType: [0, 0, 0],
       socket: {
         registerMessage: '',
         heartbeat: '',
@@ -636,7 +713,8 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
         basicPass: '',
       },
       azure: {},
-      conversions: [],
+      conversions: [[], [], []],
+      commands: [[], [], []],
     });
   }
 
@@ -721,29 +799,29 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
     }
   });
 
-  rst.autoPollConfigs.forEach((defaultCfg, idx) => {
-    const simpleCfg = simpleJson.auto.find((arr) => (arr[2] === idx));
-    if (simpleCfg) {
-      Object.entries(rst.autoPollConfigs[idx]).forEach(([k, v], index) => {
-        switch (typeof v) {
-          case 'boolean':
-            rst.autoPollConfigs[idx][k] = Boolean(simpleCfg[index]);
-            break;
-          case 'number':
-            rst.autoPollConfigs[idx][k] = Number(simpleCfg[index]);
-            break;
-          case 'string':
-          default:
-            rst.autoPollConfigs[idx][k] = simpleCfg[index];
-            break;
-        }
-      });
-    }
-  });
+  // rst.autoPollConfigs.forEach((defaultCfg, idx) => {
+  //   const simpleCfg = simpleJson.auto.find((arr) => (arr[2] === idx));
+  //   if (simpleCfg) {
+  //     Object.entries(rst.autoPollConfigs[idx]).forEach(([k, v], index) => {
+  //       switch (typeof v) {
+  //         case 'boolean':
+  //           rst.autoPollConfigs[idx][k] = Boolean(simpleCfg[index]);
+  //           break;
+  //         case 'number':
+  //           rst.autoPollConfigs[idx][k] = Number(simpleCfg[index]);
+  //           break;
+  //         case 'string':
+  //         default:
+  //           rst.autoPollConfigs[idx][k] = simpleCfg[index];
+  //           break;
+  //       }
+  //     });
+  //   }
+  // });
   return rst;
 };
 
-export const commandRowsToField = (rows) => {
+export const commandRowsToField_archived = (rows) => {
   const rst = [];
   rows?.forEach((row) => {
     const wrap = [row.id, row.detail.hex.join(''), +row.enableJson];
@@ -756,6 +834,12 @@ export const commandRowsToField = (rows) => {
   });
   return rst;
 };
+
+/**
+ * @brief
+ *  this is the function that convert table data into raw command data
+ */
+export const commandRowsToFields = (rows) => rows?.map((row) => (`${row.id}-${row.tag}-${row.detail.hex.join('')}`));
 
 export const renderNetworkFields = (formikProps) => {
   const { type, aliyun } = formikProps.values;

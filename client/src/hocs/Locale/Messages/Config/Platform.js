@@ -35,32 +35,76 @@ export default defineMessages({
     id: `${scope}.dataTransmissionFields`,
     defaultMessage: 'Data Transmission Fields',
   },
-  transmissionTypeLabel: {
-    id: `${scope}.transmissionTypeLabel`,
+  transmissionDataTypeLabel: {
+    id: `${scope}.transmissionDataTypeLabel`,
     defaultMessage: 'Transmission Data Type',
   },
-  transmissionTypeOptionModbus: {
-    id: `${scope}.transmissionTypeOptionModbus`,
+  transmissionDataTypeOptionModbus: {
+    id: `${scope}.transmissionDataTypeOptionModbus`,
     defaultMessage: 'Modbus Command',
   },
-  transmissionTypeOptionJson: {
-    id: `${scope}.transmissionTypeOptionJson`,
+  transmissionDataTypeOptionJson: {
+    id: `${scope}.transmissionDataTypeOptionJson`,
     defaultMessage: 'Json',
   },
-  transmissionPeriodRadioLabel: {
-    id: `${scope}.transmissionPeriodRadioLabel`,
+  transmissionTypeLabel: {
+    id: `${scope}.transmissionTypeLabel`,
     defaultMessage: 'When To Transmit',
   },
-  transmissionPeriodOptionChange: {
-    id: `${scope}.transmissionPeriodOptionChange`,
+  transmissionTypeOptionChange: {
+    id: `${scope}.transmissionTypeOptionChange`,
     defaultMessage: 'Transmit When Data Changes',
   },
-  transmissionPeriodOptionPeriod: {
-    id: `${scope}.transmissionPeriodOptionPeriod`,
+  transmissionTypeOptionPeriod: {
+    id: `${scope}.transmissionTypeOptionPeriod`,
     defaultMessage: 'Transmit Periodically',
   },
-  transmissionPeriodInputLabel: {
-    id: `${scope}.transmissionPeriodInputLabel`,
+  transmissionPeriodLabel: {
+    id: `${scope}.transmissionPeriodLabel`,
     defaultMessage: 'Transmit Period',
+  },
+  multiSelectLabel: {
+    id: `${scope}.multiSelectLabel`,
+    defaultMessage: 'Command Data',
+  },
+  multiSelectHelper: {
+    id: `${scope}.multiSelectHelper`,
+    defaultMessage: 'The returned data of these commands from sensors will be transmitted to cloud',
+  },
+  detailButton: {
+    id: `${scope}.detailButton`,
+    defaultMessage: 'Show Data Source',
+  },
+  dataSourceTitle: {
+    id: `${scope}.dataSourceTitle`,
+    defaultMessage: 'Data Source',
+  },
+  dataSourceHelper: {
+    id: `${scope}.dataSourceHelper`,
+    defaultMessage: 'The responses of the commands above are the data source, in this section, the data sources are supposed to be configured either in its original data form or into json, so that data can be uploaded into cloud',
+  },
+  addRecordButton: {
+    id: `${scope}.addRecordButton`,
+    defaultMessage: 'Add Record',
+  },
+  dataTypeHelperModbus: {
+    id: `${scope}.dataTypeHelperModbus`,
+    defaultMessage: 'The data will be transmitted in form of Modbus command byte array. e.g.[0x01, 0x03, 0x00, 0x00, 0x00, 0x0A, 0xC5, 0xCD]',
+  },
+  dataTypeHelperJson: {
+    id: `${scope}.dataTypeHelperJson`,
+    defaultMessage: 'The data will be transmitted in form of Json Object. e.g.{"temperature": 20.5, "humidity": 79.1}',
+  },
+  emptyCmdErr: {
+    id: `${scope}.emptyCmdErr`,
+    defaultMessage: 'Modbus command(data source) cannot be empty.',
+  },
+  emptyPropErr: {
+    id: `${scope}.emptyPropErr`,
+    defaultMessage: 'Property name cannot be empty.',
+  },
+  dupPropErr: {
+    id: `${scope}.dupPropErr`,
+    defaultMessage: 'Property name already exists.',
   },
 });

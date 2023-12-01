@@ -77,7 +77,7 @@ function CustomNoRowsOverlay() {
           </g>
         </g>
       </svg>
-      <Box sx={{ mt: 1 }}><FormattedMessage {...messages.message} /></Box>
+      <Box sx={{ my: 1 }}><FormattedMessage {...messages.message} /></Box>
     </StyledGridOverlay>
   );
 }

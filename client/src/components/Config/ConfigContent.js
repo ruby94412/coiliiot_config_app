@@ -16,11 +16,10 @@ import messages from 'hocs/Locale/Messages/Config/ConfigContent';
 import ConfirmDialog from 'components/common/ConfirmDialog';
 import TabPanel from 'components/common/TabPanel';
 import TransitionPanel from 'components/common/TransitionPanel';
-import { handleFormDataSubmit, retrieveFromSimpleConfig } from './utils';
+import { handleFormDataSubmit, retrieveFromSimpleConfig, simplifyConfig } from './utils';
 import Platform from './Platform';
 import Serial from './Serial';
 import Basic from './Basic';
-import AutoPoll from './AutoPoll';
 import ProductType from './ProductType';
 
 function Content({
@@ -39,7 +38,6 @@ function Content({
     basic: useRef(null),
     serial: useRef(null),
     network: useRef(null),
-    autoPoll: useRef(null),
   };
 
   const handleTabChange = (event, newValue) => {
@@ -53,24 +51,24 @@ function Content({
       .map((serialForm) => (serialForm.values));
     formValues.networkConfigs = formRef.network.current.form.current
       .map((networkForm) => (networkForm.values));
-    formValues.autoPollConfigs = formRef.autoPoll.current.form.current
-      .map((autoPollForm) => (autoPollForm.values));
     const { config, credential } = handleFormDataSubmit(formValues);
     setSaveLoading(true);
-    try {
-      await Promise.all([
-        update({ data: { ...config }, fileName: 'config' }),
-        update({ data: { ...credential }, fileName: 'credential' }),
-      ]);
-      loadData();
-      setSnackbar({
-        children: <FormattedMessage {...messages.snackBarSuccess} />, severity: 'success',
-      });
-    } catch (error) {
-      setSnackbar({
-        children: <FormattedMessage {...messages.snackBarError} />, severity: 'error',
-      });
-    }
+    // try {
+    //   await Promise.all([
+    //     update({ data: { ...config }, fileName: 'config' }),
+    //     update({ data: { ...credential }, fileName: 'credential' }),
+    //   ]);
+    //   loadData();
+    //   setSnackbar({
+    //     children: <FormattedMessage {...messages.snackBarSuccess} />, severity: 'success',
+    //   });
+    // } catch (error) {
+    //   setSnackbar({
+    //     children: <FormattedMessage {...messages.snackBarError} />, severity: 'error',
+    //   });
+    // }
+    console.log(config);
+    simplifyConfig(config, credential);
     setSaveLoading(false);
   };
 
@@ -100,6 +98,9 @@ function Content({
     for (let i = 0; i < formRef?.autoPoll?.current?.form?.current?.length; i++) {
       formRef.autoPoll.current.form.current[i].resetForm();
     }
+    setTimeout(() => {
+      formRef?.serial?.current?.initRows();
+    });
   };
 
   const applyDeviceConfig = () => {
@@ -144,7 +145,7 @@ function Content({
           <Tab label={<FormattedMessage {...messages.basicTabLabel} />} />
           <Tab label={<FormattedMessage {...messages.serialTabLabel} />} />
           <Tab label={<FormattedMessage {...messages.networkTabLabel} />} />
-          <Tab label={<FormattedMessage {...messages.autoPollLabel} />} />
+          {/* <Tab label={<FormattedMessage {...messages.autoPollLabel} />} /> */}
         </Tabs>
       </Box>
       <TransitionPanel index={tabIndex}>
@@ -167,13 +168,7 @@ function Content({
           <Platform
             initVals={initialValues?.networkConfigs}
             ref={(el) => { formRef.network.current = el; }}
-          />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={4}>
-          <AutoPoll
-            initVals={initialValues?.autoPollConfigs}
-            ref={(el) => { formRef.autoPoll.current = el; }}
-            networkForm={formRef.network.current}
+            serialForm={formRef.serial.current}
           />
         </TabPanel>
       </TransitionPanel>
@@ -181,7 +176,7 @@ function Content({
         <Button onClick={handleReset} variant="contained" sx={{ mr: 2 }}>
           <FormattedMessage {...messages.resetButton} />
         </Button>
-        <LoadingButton onClick={handleSubmit} loading={saveLoading} variant="contained">
+        <LoadingButton onClick={handleSubmit} variant="contained">
           <FormattedMessage {...messages.submitButton} />
         </LoadingButton>
       </Box>

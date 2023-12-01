@@ -12,7 +12,7 @@ import messages from 'hocs/Locale/Messages/Config/AutoPoll';
 import TableToolBar from 'components/common/TableToolBar';
 import NoRowsOverlay from 'components/common/NoRowsOverlay';
 import CommandGenerator from './CommandGenerator';
-import { renderFields, convertRawCommands, commandRowsToField } from './utils';
+import { renderFields, convertRawCommands, commandRowsToFields } from './utils';
 import { autoPollFields, getCommandTableColumns } from './constants';
 
 const serialIdOptions = [
@@ -63,7 +63,7 @@ const AutoPoll = forwardRef(({
   }, [serialId, initVals]);
 
   const setCommandsField = (tempRows) => {
-    const commands = commandRowsToField(tempRows);
+    const commands = commandRowsToFields(tempRows);
     formikRefs.current[serialId].setFieldValue('commands', commands);
   };
 

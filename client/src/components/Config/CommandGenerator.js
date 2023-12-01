@@ -37,18 +37,10 @@ function CommandGenerator({
   params,
   setParams,
   setCommandsField,
-  // networkOptions,
 }) {
-  const intl = useIntl();
   const handleClose = () => setParams(null);
   const [data, setData] = useState(params);
   const [command, setCommand] = useState(null);
-  // const [expanded, setExpanded] = useState('commandDetail');
-
-  // const enableOptions = [
-  //   { label: intl.formatMessage(messages.enable), value: true },
-  //   { label: intl.formatMessage(messages.disable), value: false },
-  // ];
 
   useEffect(() => {
     setData(params);
@@ -64,17 +56,6 @@ function CommandGenerator({
     setData(updatedData);
   };
 
-  // const handleNetworkSelect = (e) => {
-  //   const id = Number(e.target.name);
-  //   const networkIds = [...data.networkIds];
-  //   if (networkIds.includes(id)) networkIds.splice(networkIds.indexOf(id));
-  //   else networkIds.push(id);
-  //   networkIds.sort((a, b) => (a - b));
-  //   const updatedData = { ...data };
-  //   updatedData.networkIds = networkIds;
-  //   setData(updatedData);
-  // };
-
   const handleConfirm = () => {
     let temp;
     if (params?.id) {
@@ -82,23 +63,12 @@ function CommandGenerator({
       setRows(temp);
     } else {
       temp = [...rows];
-      temp.push({ ...data, id: getUid(), detail: command });
+      temp.push({ ...data, id: getUid('simple'), detail: command });
       setRows(temp);
     }
     setCommandsField(temp);
     handleClose();
   };
-
-  // const handleEnableJsonChange = (e) => {
-  //   const updatedData = { ...data };
-  //   updatedData.enableJson = (e.target.value === 'true');
-  //   setData(updatedData);
-  //   setExpanded(e.target.value === 'true' ? 'jsonFields' : 'commandDetail');
-  // };
-
-  // const handleExpandChange = (panel) => (event, isExpanded) => {
-  //   setExpanded(isExpanded ? panel : false);
-  // };
 
   return (
     <Dialog
@@ -129,83 +99,6 @@ function CommandGenerator({
           command
           && <Grid item xs={12} pt={4}><CommandDetail command={command} /></Grid>
         }
-        {/* <Accordion
-              expanded={expanded === 'commandDetail'}
-              onChange={handleExpandChange('commandDetail')}
-            >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <FormattedMessage {...messages.commandDetail} />
-          </AccordionSummary>
-          <AccordionDetails>
-          </AccordionDetails>
-        </Accordion> */}
-        {/* <Grid
-          container
-          spacing={2}
-          direction="row"
-          sx={{ my: 1 }}
-        >
-          {renderFields({
-            label: intl.formatMessage(messages.enableJson),
-            value: data?.enableJson,
-            name: 'enableJson',
-            handleChange: handleEnableJsonChange,
-            fieldType: 'radioGroup',
-            radioOptions: enableOptions,
-            layout: { xs: 12 },
-          })}
-        </Grid> */}
-        {/* <Collapse in={data.enableJson}>
-          <Accordion expanded={expanded === 'jsonFields'}
-            onChange={handleExpandChange('jsonFields')}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <FormattedMessage {...messages.convertDetail} />
-            </AccordionSummary>
-            <AccordionDetails>
-              <Grid
-                container
-                spacing={2}
-                direction="row"
-              >
-                <Grid item xs={12}>
-                  <FormControl sx={{ display: 'flex' }}>
-                    <FormLabel component="legend">
-                      <FormattedMessage {...messages.networkIdLabel} />
-                    </FormLabel>
-                    <FormGroup row>
-                      {
-                        networkOptions?.map((option) => (
-                          <FormControlLabel
-                            control={(
-                              <Checkbox
-                                checked={data?.networkIds?.includes(option.value)}
-                                onChange={handleNetworkSelect}
-                                name={option.value.toString()}
-                              />
-                            )}
-                            label={option.label}
-                            key={option.label}
-                          />
-                        ))
-                      }
-                    </FormGroup>
-                  </FormControl>
-                </Grid>
-                {dataMappingFields.map((field) => (
-                  <Fragment key={field.propertyName}>
-                    {renderFields({
-                      name: field.propertyName,
-                      value: data[field.propertyName],
-                      handleChange: handleDataChange(field.propertyName),
-                      layout: { xs: 12, md: 6 },
-                      ...field,
-                    })}
-                  </Fragment>
-                ))}
-              </Grid>
-            </AccordionDetails>
-          </Accordion>
-        </Collapse> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} variant="contained">

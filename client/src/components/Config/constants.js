@@ -2,10 +2,10 @@ import { FormattedMessage } from 'react-intl';
 import messages from 'hocs/Locale/Messages/Config/constants';
 import {
   DeleteForever as DeleteIcon,
-  Edit as EditIcon,
-  Add as AddIcon,
+  Add as AddIcon, Edit as EditIcon,
+  Save as SaveIcon, Close as CancelIcon,
 } from '@mui/icons-material';
-import { GridActionsCellItem } from '@mui/x-data-grid';
+import { GridActionsCellItem, GridRowModes } from '@mui/x-data-grid';
 import { Tooltip, InputAdornment } from '@mui/material';
 
 export const networkIds = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -643,6 +643,151 @@ export const getCustomTableColumns = ({
         );
       }
       return actions;
+    },
+  },
+];
+
+export const getCommandInfoTableColumns = ({
+  intl,
+}) => [
+  {
+    field: 'id',
+    headerName: 'ID',
+    flex: 1,
+  },
+  {
+    field: 'tag',
+    headerName: intl.formatMessage(messages.tag),
+    flex: 1,
+  },
+  {
+    field: 'cmdStr',
+    headerName: intl.formatMessage(messages.cmdStr),
+    flex: 1,
+    minWidth: 250,
+  },
+];
+
+export const getConversionTableColumns = ({
+  intl,
+  handleSaveClick,
+  handleCancelClick,
+  handleEditClick,
+  handleDeleteClick,
+  rowModesModel,
+  cmdRows,
+}) => [
+  {
+    field: 'command',
+    headerName: intl.formatMessage(messages.cmdStr),
+    align: 'center',
+    headerAlign: 'center',
+    editable: true,
+    type: 'singleSelect',
+    minWidth: 250,
+    flex: 1,
+    valueOptions: cmdRows?.map((row) => ({ label: `${row.tag}-${row.cmdStr}`, value: row.id })),
+  },
+  {
+    field: 'propertyName',
+    headerName: intl.formatMessage(messages.propertyName),
+    minWidth: 150,
+    flex: 1,
+    align: 'center',
+    headerAlign: 'center',
+    editable: true,
+  },
+  {
+    field: 'dataType',
+    headerName: intl.formatMessage(messages.dataType),
+    editable: true,
+    flex: 1,
+    type: 'singleSelect',
+    valueOptions: [
+      { label: 'SHORT', value: 0 },
+      { label: 'LONG', value: 1 },
+      { label: 'FLOAT', value: 2 },
+      { label: 'DOUBLE', value: 3 },
+    ],
+  },
+  {
+    field: 'order',
+    flex: 1,
+    headerName: intl.formatMessage(messages.order),
+    editable: true,
+    type: 'singleSelect',
+    valueOptions: [
+      { label: 'ABCD', value: 0 },
+      { label: 'DCBA', value: 1 },
+    ],
+  },
+  {
+    field: 'address',
+    headerName: intl.formatMessage(messages.address),
+    type: 'number',
+    align: 'right',
+    flex: 1,
+    headerAlign: 'right',
+    editable: true,
+  },
+  {
+    field: 'ratio',
+    flex: 1,
+    headerName: intl.formatMessage(messages.ratio),
+    type: 'number',
+    align: 'right',
+    headerAlign: 'right',
+    editable: true,
+  },
+  {
+    field: 'deviation',
+    flex: 1,
+    headerName: intl.formatMessage(messages.deviation),
+    type: 'number',
+    align: 'right',
+    headerAlign: 'right',
+    editable: true,
+  },
+  {
+    field: 'actions',
+    flex: 1,
+    type: 'actions',
+    headerName: intl.formatMessage(messages.actions),
+    cellClassName: 'actions',
+    getActions: ({ id }) => {
+      const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+      if (isInEditMode) {
+        return [
+          <GridActionsCellItem
+            icon={<SaveIcon />}
+            label="Save"
+            sx={{
+              color: 'primary.main',
+            }}
+            onClick={handleSaveClick(id)}
+          />,
+          <GridActionsCellItem
+            icon={<CancelIcon />}
+            label="Cancel"
+            onClick={handleCancelClick(id)}
+            color="inherit"
+          />,
+        ];
+      }
+      return [
+        <GridActionsCellItem
+          icon={<EditIcon />}
+          label="Edit"
+          onClick={handleEditClick(id)}
+          color="inherit"
+        />,
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={handleDeleteClick(id)}
+          color="inherit"
+        />,
+      ];
     },
   },
 ];
