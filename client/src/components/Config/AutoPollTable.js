@@ -2,7 +2,7 @@ import {
   useState,
 } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import messages from 'hocs/Locale/Messages/Config/Serial';
 import TableToolBar from 'components/common/TableToolBar';
 import NoRowsOverlay from 'components/common/NoRowsOverlay';

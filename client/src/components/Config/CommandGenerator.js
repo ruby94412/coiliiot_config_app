@@ -6,24 +6,12 @@ import {
   DialogTitle,
   Button,
   Grid,
-  Collapse,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  FormGroup,
-  Checkbox,
 } from '@mui/material';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-} from 'components/common/StyledAccordion';
-import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from 'hocs/Locale/Messages/Config/CommandGenerator';
 import CommandDetail from './CommandDetail';
 import { getCommandDetail, renderFields, getUid } from './utils';
-import { commandGeneratorFields, dataMappingFields } from './constants';
+import { commandGeneratorFields } from './constants';
 
 const dialogStyle = {
   backgroundColor: 'secondary.main',
