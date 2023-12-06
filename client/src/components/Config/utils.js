@@ -140,7 +140,7 @@ export const renderFields = ({
   }
 };
 
-export const getInitialValues = (originalConfig, originalCredential) => {
+export const getResetValues = () => {
   const rst = {
     basicConfigs: {}, serialConfigs: [], networkConfigs: [],
   };
@@ -228,6 +228,11 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       commands: [[], [], []],
     });
   }
+  return rst;
+};
+
+export const getInitialValues = (originalConfig, originalCredential) => {
+  const rst = getResetValues();
   if (originalConfig?.basicConfigs) {
     const origin = originalConfig.basicConfigs;
     const defaultConfig = rst.basicConfigs;
@@ -589,7 +594,8 @@ export const simplifyConfig = (config, credential) => {
 
   serialConfigs.forEach((cfg) => {
     const temp = [];
-    Object.entries(cfg).forEach(([, value]) => {
+    Object.entries(cfg).forEach(([, value], idx) => {
+      if (!cfg.autoPollEnabled && idx > 6) return;
       temp.push(castStringValueToOrigin(value));
     });
     rst.serial.push(temp);
@@ -630,93 +636,7 @@ export const simplifyConfig = (config, credential) => {
 };
 
 export const retrieveFromSimpleConfig = (simpleJson) => {
-  const rst = {
-    basicConfigs: {}, serialConfigs: [], networkConfigs: [], autoPollConfigs: [],
-  };
-  rst.basicConfigs = {
-    config_version: 0,
-    autoUpdateEnabled: true,
-    disconnectedRestart: 0,
-    restartSchedule: 720,
-    credential: { ssid: '', password: '' },
-  };
-  for (let i = 0; i < 3; i++) {
-    rst.serialConfigs.push({
-      serialId: i,
-      enabled: false,
-      baudrate: 9600,
-      dataBit: 8,
-      stopBit: 1,
-      parityMode: 2,
-      autoPollEnabled: false,
-      delay: 1000,
-      numberOfRetry: 3,
-      timeout: 1000,
-      period: 5,
-      commands: [],
-    });
-  }
-  for (let i = 0; i < 8; i++) {
-    rst.networkConfigs.push({
-      networkId: i,
-      enabled: false,
-      type: 0,
-      serialId: 0,
-      transmissionType: 0,
-      transmissionPeriod: 0,
-      transmissionDataType: [0, 0, 0],
-      socket: {
-        registerMessage: '',
-        heartbeat: '',
-        heartbeatInterval: 30,
-        host: '',
-        port: 8080,
-        socketType: 0,
-      },
-      aliyun: {
-        regionId: 'cn-shanghai',
-        productKey: '',
-        deviceSecret: '',
-        productSecret: '',
-        registerType: 0,
-        deviceName: '',
-        subscribeTopic: '',
-        publishTopic: '',
-        retain: 0,
-        lwtMessage: '',
-        qos: 0,
-        cleanSession: true,
-        keepalive: 300,
-      },
-      mqtt: {
-        host: '',
-        port: 8080,
-        username: '',
-        password: '',
-        clientId: '',
-        subscribeTopic: '',
-        publishTopic: '',
-        retain: 0,
-        lwtMessage: '',
-        qos: 0,
-        cleanSession: true,
-        keepalive: 300,
-        heartbeat: '',
-        heartbeatInterval: 30,
-      },
-      http: {
-        method: 0,
-        url: '',
-        contentType: 0,
-        header: '',
-        basicUser: '',
-        basicPass: '',
-      },
-      azure: {},
-      conversions: [[], [], []],
-      commands: [[], [], []],
-    });
-  }
+  const rst = getResetValues();
 
   Object.entries(rst.basicConfigs).forEach(([k, v], idx) => {
     if (k === 'credential') return;
@@ -743,6 +663,7 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
     const simpleCfg = simpleJson.serial.find((arr) => (arr[0] === idx));
     if (simpleCfg) {
       Object.entries(rst.serialConfigs[idx]).forEach(([k, v], index) => {
+        if (index >= simpleCfg.length) return;
         switch (typeof v) {
           case 'boolean':
             rst.serialConfigs[idx][k] = Boolean(simpleCfg[index]);
@@ -761,63 +682,91 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
 
   rst.networkConfigs.forEach((defaultCfg, idx) => {
     const simpleCfg = simpleJson.net.find((arr) => (arr[0] === idx));
-    if (simpleCfg) {
-      Object.entries(rst.networkConfigs[idx]).forEach(([k, v], index) => {
-        if (index < 4) {
-          switch (typeof v) {
-            case 'boolean':
-              rst.networkConfigs[idx][k] = Boolean(simpleCfg[index]);
-              break;
-            case 'number':
-              rst.networkConfigs[idx][k] = Number(simpleCfg[index]);
-              break;
-            case 'string':
-            default:
-              rst.networkConfigs[idx][k] = simpleCfg[index];
-              break;
-          }
-        } else {
-          const netTypeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
-          if (k === netTypeArr[simpleCfg[2]]) {
-            Object.entries(rst.networkConfigs[idx][k]).forEach(([k_type, v_type], idx_type) => {
-              switch (typeof v_type) {
-                case 'boolean':
-                  rst.networkConfigs[idx][k][k_type] = Boolean(simpleCfg[idx_type + 4]);
-                  break;
-                case 'number':
-                  rst.networkConfigs[idx][k][k_type] = Number(simpleCfg[idx_type + 4]);
-                  break;
-                case 'string':
-                default:
-                  rst.networkConfigs[idx][k][k_type] = simpleCfg[idx_type + 4];
-                  break;
-              }
-            });
-          }
+    const netTypeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
+    if (!simpleCfg) return;
+    Object.entries(rst.networkConfigs[idx]).forEach(([k, v], index) => {
+      if (netTypeArr.findIndex((type) => (type === k)) > -1) {
+        if (k === netTypeArr[simpleCfg[2]]) {
+          Object.entries(rst.networkConfigs[idx][k]).forEach(([k_type, v_type], idx_type) => {
+            switch (typeof v_type) {
+              case 'boolean':
+                rst.networkConfigs[idx][k][k_type] = Boolean(simpleCfg[idx_type + 7]);
+                break;
+              case 'number':
+                rst.networkConfigs[idx][k][k_type] = Number(simpleCfg[idx_type + 7]);
+                break;
+              case 'string':
+              default:
+                rst.networkConfigs[idx][k][k_type] = simpleCfg[idx_type + 7];
+                break;
+            }
+          });
         }
-      });
-    }
+      } else {
+        switch (k) {
+          case 'transmissionDataType': {
+            const arr = [0, 0, 0];
+            arr[Number(simpleCfg[3])] = Number(simpleCfg[index]);
+            rst.networkConfigs[idx][k] = arr;
+            break;
+          }
+          case 'conversions': {
+            if (Number(simpleCfg[6]) === 0) break;
+            const last_idx = simpleCfg.length - 1;
+            const arr = [[], [], []];
+            simpleCfg[last_idx]?.forEach((simpleArr) => {
+              const defaultConv = {
+                command: '',
+                propertyName: '',
+                address: 0,
+                dataType: 0,
+                order: 0,
+                ratio: 1,
+                deviation: 0,
+              };
+              Object.entries(defaultConv).forEach(([k_type, v_type], idx_type) => {
+                switch (typeof v_type) {
+                  case 'number':
+                    defaultConv[k_type] = Number(simpleArr[idx_type]);
+                    break;
+                  case 'string':
+                  default:
+                    defaultConv[k_type] = simpleArr[idx_type];
+                    break;
+                }
+              });
+              defaultConv.id = getUid('simple');
+              arr[Number(simpleCfg[3])].push(defaultConv);
+              rst.networkConfigs[idx][k] = arr;
+            });
+            break;
+          }
+          case 'commands': {
+            if (Number(simpleCfg[6]) === 1) break;
+            const last_idx = simpleCfg.length - 1;
+            const arr = [[], [], []];
+            arr[Number(simpleCfg[3])] = simpleCfg[last_idx];
+            rst.networkConfigs[idx][k] = arr;
+            break;
+          }
+          default:
+            switch (typeof v) {
+              case 'boolean':
+                rst.networkConfigs[idx][k] = Boolean(simpleCfg[index]);
+                break;
+              case 'number':
+                rst.networkConfigs[idx][k] = Number(simpleCfg[index]);
+                break;
+              case 'string':
+              default:
+                rst.networkConfigs[idx][k] = simpleCfg[index];
+                break;
+            }
+            break;
+        }
+      }
+    });
   });
-
-  // rst.autoPollConfigs.forEach((defaultCfg, idx) => {
-  //   const simpleCfg = simpleJson.auto.find((arr) => (arr[2] === idx));
-  //   if (simpleCfg) {
-  //     Object.entries(rst.autoPollConfigs[idx]).forEach(([k, v], index) => {
-  //       switch (typeof v) {
-  //         case 'boolean':
-  //           rst.autoPollConfigs[idx][k] = Boolean(simpleCfg[index]);
-  //           break;
-  //         case 'number':
-  //           rst.autoPollConfigs[idx][k] = Number(simpleCfg[index]);
-  //           break;
-  //         case 'string':
-  //         default:
-  //           rst.autoPollConfigs[idx][k] = simpleCfg[index];
-  //           break;
-  //       }
-  //     });
-  //   }
-  // });
   return rst;
 };
 

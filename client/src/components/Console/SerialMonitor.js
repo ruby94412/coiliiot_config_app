@@ -119,15 +119,14 @@ function SerialMonitor({
   const handleApply = () => {
     setLoadings((pre) => ({ ...pre, apply: true }));
     const sp = simplifyConfig(config, credential);
-    console.log(sp);
-    // sendMsgToPort({ type: 1, data: sp })
-    //   .then((res) => {
-    //     handleResponse(res);
-    //   }).finally(() => {
-    //     setTimeout(() => {
-    //       setLoadings((pre) => ({ ...pre, apply: false }));
-    //     }, 2000);
-    //   });
+    sendMsgToPort({ type: 1, data: sp })
+      .then((res) => {
+        handleResponse(res);
+      }).finally(() => {
+        setTimeout(() => {
+          setLoadings((pre) => ({ ...pre, apply: false }));
+        }, 2000);
+      });
   };
 
   const handleReset = () => {
@@ -203,9 +202,9 @@ function SerialMonitor({
             <LoadingButton
               variant="contained"
               sx={{ mr: 2, mb: 2 }}
-              // disabled={!connected || (
-              //   loadings.read || loadings.apply || loadings.reboot || loadings.reset
-              // )}
+              disabled={!connected || (
+                loadings.read || loadings.apply || loadings.reboot || loadings.reset
+              )}
               onClick={handleApply}
               loading={loadings.apply}
             >

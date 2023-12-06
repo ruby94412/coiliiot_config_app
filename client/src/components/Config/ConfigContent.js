@@ -16,7 +16,7 @@ import messages from 'hocs/Locale/Messages/Config/ConfigContent';
 import ConfirmDialog from 'components/common/ConfirmDialog';
 import TabPanel from 'components/common/TabPanel';
 import TransitionPanel from 'components/common/TransitionPanel';
-import { handleFormDataSubmit, retrieveFromSimpleConfig, simplifyConfig } from './utils';
+import { handleFormDataSubmit, retrieveFromSimpleConfig } from './utils';
 import Platform from './Platform';
 import Serial from './Serial';
 import Basic from './Basic';
@@ -53,22 +53,20 @@ function Content({
       .map((networkForm) => (networkForm.values));
     const { config, credential } = handleFormDataSubmit(formValues);
     setSaveLoading(true);
-    // try {
-    //   await Promise.all([
-    //     update({ data: { ...config }, fileName: 'config' }),
-    //     update({ data: { ...credential }, fileName: 'credential' }),
-    //   ]);
-    //   loadData();
-    //   setSnackbar({
-    //     children: <FormattedMessage {...messages.snackBarSuccess} />, severity: 'success',
-    //   });
-    // } catch (error) {
-    //   setSnackbar({
-    //     children: <FormattedMessage {...messages.snackBarError} />, severity: 'error',
-    //   });
-    // }
-    console.log(config);
-    simplifyConfig(config, credential);
+    try {
+      await Promise.all([
+        update({ data: { ...config }, fileName: 'config' }),
+        update({ data: { ...credential }, fileName: 'credential' }),
+      ]);
+      loadData();
+      setSnackbar({
+        children: <FormattedMessage {...messages.snackBarSuccess} />, severity: 'success',
+      });
+    } catch (error) {
+      setSnackbar({
+        children: <FormattedMessage {...messages.snackBarError} />, severity: 'error',
+      });
+    }
     setSaveLoading(false);
   };
 
@@ -145,7 +143,6 @@ function Content({
           <Tab label={<FormattedMessage {...messages.basicTabLabel} />} />
           <Tab label={<FormattedMessage {...messages.serialTabLabel} />} />
           <Tab label={<FormattedMessage {...messages.networkTabLabel} />} />
-          {/* <Tab label={<FormattedMessage {...messages.autoPollLabel} />} /> */}
         </Tabs>
       </Box>
       <TransitionPanel index={tabIndex}>
@@ -176,7 +173,7 @@ function Content({
         <Button onClick={handleReset} variant="contained" sx={{ mr: 2 }}>
           <FormattedMessage {...messages.resetButton} />
         </Button>
-        <LoadingButton onClick={handleSubmit} variant="contained">
+        <LoadingButton onClick={handleSubmit} variant="contained" loading={saveLoading}>
           <FormattedMessage {...messages.submitButton} />
         </LoadingButton>
       </Box>

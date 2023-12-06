@@ -213,7 +213,7 @@ function TransmissionTables({
               size="small"
               multiple
               value={selected}
-              sx={{ width: '50%' }}
+              sx={{ width: '80%' }}
               onChange={handleModbusCmdSelect}
               MenuProps={MenuProps}
               renderValue={(selected) => (
