@@ -223,7 +223,12 @@ export const getResetValues = () => {
         basicUser: '',
         basicPass: '',
       },
-      azure: {},
+      azure: {
+        idScope: '',
+        deviceId: '',
+        primaryKey: '',
+        secondaryKey: '',
+      },
       conversions: [[], [], []],
       commands: [[], [], []],
     });

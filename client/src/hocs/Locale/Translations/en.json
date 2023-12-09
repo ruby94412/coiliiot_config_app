@@ -169,6 +169,10 @@
   "coiliiot.app.config.constants.restartScheduleHelper": "Enter 0 to disable",
   "coiliiot.app.config.constants.tag": "Tag",
   "coiliiot.app.config.constants.cmdStr": "Modbus Command(Data Source)",
+  "coiliiot.app.config.constants.idScope": "ID Scope",
+  "coiliiot.app.config.constants.deviceId": "Device ID",
+  "coiliiot.app.config.constants.primaryKey": "Primary Key",
+  "coiliiot.app.config.constants.secondaryKey": "Secondary Key",
 
   "coiliiot.app.config.commandGenerator.title": "Command Generator",
   "coiliiot.app.config.commandGenerator.confirm": "Confirm",

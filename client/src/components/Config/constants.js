@@ -231,7 +231,17 @@ export const httpFields = [
   },
 ];
 
-export const azureFields = [];
+export const azureFields = [
+  { label: <FormattedMessage {...messages.idScope} />, propertyName: 'idScope', datatype: 'text' },
+  { label: <FormattedMessage {...messages.deviceId} />, propertyName: 'deviceId', datatype: 'text' },
+  {
+    label: <FormattedMessage {...messages.primaryKey} />, propertyName: 'primaryKey', datatype: 'text', layout: { xs: 12, md: 6 },
+  },
+  {
+    label: <FormattedMessage {...messages.secondaryKey} />, propertyName: 'secondaryKey', datatype: 'text', layout: { xs: 12, md: 6 },
+  },
+];
+
 export const serialFields = [
   {
     label: <FormattedMessage {...messages.baudrate} />,

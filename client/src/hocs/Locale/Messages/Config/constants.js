@@ -315,4 +315,20 @@ export default defineMessages({
     id: `${scope}.cmdStr`,
     defaultMessage: 'Modbus Command',
   },
+  idScope: {
+    id: `${scope}.idScope`,
+    defaultMessage: 'ID Scope',
+  },
+  deviceId: {
+    id: `${scope}.deviceId`,
+    defaultMessage: 'Device ID',
+  },
+  primaryKey: {
+    id: `${scope}.primaryKey`,
+    defaultMessage: 'Primary Key',
+  },
+  secondaryKey: {
+    id: `${scope}.secondaryKey`,
+    defaultMessage: 'Secondary Key',
+  },
 });
