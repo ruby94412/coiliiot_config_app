@@ -30,9 +30,10 @@
       "uninstallerIcon": "./img/icon.ico",
       "allowToChangeInstallationDirectory": true,
       "oneClick": false,
-      "license": "./build/license_en.txt",
+      "language": "0x0804",
+      "license": "./build/license_cn.txt",
       "installerLanguages": [
-        "en_US"
+        "zh_CN"
       ],
       "include": "./build/installer.nsh"
     }
