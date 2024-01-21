@@ -27,7 +27,7 @@
 
   "coiliiot.app.config.basic.wifiDivider": "WIFI 信息",
 
-  "coiliiot.app.config.serial.serialIdLabel": "串口通道ID",
+  "coiliiot.app.config.serial.serialIdLabel": "串口通道",
   "coiliiot.app.config.serial.statusLabel": "串口状态",
   "coiliiot.app.config.serial.statusOptionEnable": "启用",
   "coiliiot.app.config.serial.statusOptionDisable": "不启用",
@@ -41,7 +41,7 @@
 
   "coiliiot.app.config.platform.networkIdLabel": "网络通道ID",
   "coiliiot.app.config.platform.platformTypeLabel": "网络类型",
-  "coiliiot.app.config.platform.serialIdLabel": "串口ID",
+  "coiliiot.app.config.platform.serialIdLabel": "串口通道",
   "coiliiot.app.config.platform.statusLabel": "启用状态",
   "coiliiot.app.config.platform.statusOptionEnable": "启用",
   "coiliiot.app.config.platform.statusOptionDisable": "不启用",
@@ -79,7 +79,7 @@
   "coiliiot.app.config.configContent.resetButton": "重置配置",
   "coiliiot.app.config.configContent.unsavedConfirm": "有未保存的设置,确认重置配置吗?",
 
-  "coiliiot.app.config.autoPoll.serialIdLabel": "串口ID",
+  "coiliiot.app.config.autoPoll.serialIdLabel": "串口通道",
   "coiliiot.app.config.autoPoll.autoPollLabel": "自定义轮训",
   "coiliiot.app.config.autoPoll.autoPollOptionEnable": "启用",
   "coiliiot.app.config.autoPoll.autoPollOptionDisable": "不启用",

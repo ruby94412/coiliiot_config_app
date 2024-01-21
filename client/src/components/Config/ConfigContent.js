@@ -53,6 +53,7 @@ function Content({
       .map((networkForm) => (networkForm.values));
     const { config, credential } = handleFormDataSubmit(formValues);
     setSaveLoading(true);
+    console.log(config);
     try {
       await Promise.all([
         update({ data: { ...config }, fileName: 'config' }),

@@ -30,7 +30,7 @@ const Platform = forwardRef(({
   const [serialId, setSerialId] = useState(0);
   const [expanded, setExpanded] = useState('networkFields');
   const serialIdOptions = [
-    { label: '1', value: 0 }, { label: '2', value: 1 }, { label: '3', value: 2 },
+    { label: 'RS485', value: 0 }, { label: 'RS232', value: 1 },
   ];
 
   const enableOptions = [

@@ -27,7 +27,7 @@
 
   "coiliiot.app.config.basic.wifiDivider": "Wifi Credential",
 
-  "coiliiot.app.config.serial.serialIdLabel": "Serial Channel ID",
+  "coiliiot.app.config.serial.serialIdLabel": "Serial Channel",
   "coiliiot.app.config.serial.statusLabel": "Serial Status",
   "coiliiot.app.config.serial.statusOptionEnable": "Enable",
   "coiliiot.app.config.serial.statusOptionDisable": "Disable",
@@ -41,7 +41,7 @@
 
   "coiliiot.app.config.platform.networkIdLabel": "Network Channel ID",
   "coiliiot.app.config.platform.platformTypeLabel": "Platform Type",
-  "coiliiot.app.config.platform.serialIdLabel": "Serial Channel ID",
+  "coiliiot.app.config.platform.serialIdLabel": "Serial Channel",
   "coiliiot.app.config.platform.statusLabel": "Status",
   "coiliiot.app.config.platform.statusOptionEnable": "Enable",
   "coiliiot.app.config.platform.statusOptionDisable": "Disable",

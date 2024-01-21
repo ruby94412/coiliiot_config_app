@@ -5,7 +5,7 @@ export const scope = 'coiliiot.app.config.serial';
 export default defineMessages({
   serialIdLabel: {
     id: `${scope}.serialIdLabel`,
-    defaultMessage: 'Serial Channel ID',
+    defaultMessage: 'Serial Channel',
   },
   statusLabel: {
     id: `${scope}.statusLabel`,

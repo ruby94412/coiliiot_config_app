@@ -151,7 +151,7 @@ export const getResetValues = () => {
     restartSchedule: 720,
     credential: { ssid: '', password: '' },
   };
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     rst.serialConfigs.push({
       serialId: i,
       enabled: false,
@@ -172,7 +172,7 @@ export const getResetValues = () => {
       networkId: i,
       enabled: false,
       type: 0,
-      serialId: 0,
+      serialIds: [0],
       transmissionType: 0,
       transmissionPeriod: 30,
       transmissionDataType: [0, 0, 0],
@@ -229,8 +229,8 @@ export const getResetValues = () => {
         primaryKey: '',
         secondaryKey: '',
       },
-      conversions: [[], [], []],
-      commands: [[], [], []],
+      conversions: [],
+      commands: [],
     });
   }
   return rst;
@@ -254,7 +254,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
     const {
       networkId,
       type,
-      serialId,
+      serialIds,
       transmissionType,
       transmissionPeriod,
       transmissionDataType,
@@ -266,7 +266,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       ...defaultConfig,
       networkId,
       type,
-      serialId,
+      serialIds,
       enabled: true,
       transmissionType,
       transmissionPeriod,
@@ -509,7 +509,7 @@ export const handleFormDataSubmit = (values) => {
     if (ele.enabled) {
       const {
         enabled,
-        serialId,
+        serialIds,
         type, networkId,
         transmissionPeriod,
         transmissionType,
@@ -524,7 +524,7 @@ export const handleFormDataSubmit = (values) => {
         networkId,
         enabled,
         type,
-        serialId,
+        serialIds,
         transmissionType,
         transmissionPeriod,
         transmissionDataType,
@@ -610,13 +610,10 @@ export const simplifyConfig = (config, credential) => {
     const temp = [];
     Object.entries(cfg).forEach(([key, value]) => {
       switch (key) {
-        case 'transmissionDataType':
-          temp.push(value[cfg.serialId]);
-          break;
         case 'conversions': {
-          if (cfg.transmissionDataType[cfg.serialId] === 0) break;
+          if (cfg.transmissionDataType === 0) break;
           const fields = [];
-          value[cfg.serialId].forEach((obj) => {
+          value.forEach((obj) => {
             const arr = [];
             Object.entries(obj).forEach(([k, v]) => {
               if (k !== 'id') arr.push(v);
@@ -627,8 +624,8 @@ export const simplifyConfig = (config, credential) => {
           break;
         }
         case 'commands':
-          if (cfg.transmissionDataType[cfg.serialId] === 1) break;
-          temp.push(value[cfg.serialId]);
+          if (cfg.transmissionDataType === 1) break;
+          temp.push(value);
           break;
         default:
           temp.push(castStringValueToOrigin(value));
