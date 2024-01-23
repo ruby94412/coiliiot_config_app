@@ -37,7 +37,12 @@ export const renderFields = ({
   const layout = other.layout || { xs: 12, md: 4 };
   const style = other.style || { width: '80%' };
   const {
-    radioOptions, selectOptions, checkboxOptions, helperText, helperTooltip, ...rest
+    radioOptions,
+    selectOptions,
+    checkboxOptions,
+    helperText,
+    helperTooltip,
+    ...rest
   } = other;
   switch (fieldType) {
     case 'checkbox':
@@ -59,7 +64,7 @@ export const renderFields = ({
                   <FormControlLabel
                     key={idx}
                     control={
-                      <Checkbox checked={value[idx]} onChange={handleChange(idx)} />
+                      <Checkbox checked={value[idx] === 1} onChange={handleChange(idx)} />
                     }
                     label={option?.label || option}
                   />
@@ -528,9 +533,6 @@ export const handleFormDataSubmit = (values) => {
     basicConfigs: {},
     serialConfigs: [],
     networkConfigs: [],
-    networkSummary: {
-      socket: [], aliyun: [], mqtt: [], http: [], azure: [],
-    },
   };
   const { credential, ...otherBasics } = values.basicConfigs;
   config.basicConfigs = otherBasics;
@@ -551,7 +553,6 @@ export const handleFormDataSubmit = (values) => {
       } = ele;
       const typeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
       const detail = ele[typeArr[type]];
-      config.networkSummary[typeArr[type]].push(networkId);
       const temp = {
         networkId,
         enabled,
@@ -611,18 +612,14 @@ const castStringValueToOrigin = (value) => {
 
 export const simplifyConfig = (config, credential) => {
   const {
-    basicConfigs, serialConfigs, networkConfigs, networkSummary, config_version,
+    basicConfigs, serialConfigs, networkConfigs, config_version,
   } = config;
   const rst = {
-    cred: [], net_sum: [], cfg_v: config_version, basic: [], serial: [], net: [],
+    cred: [], cfg_v: config_version, basic: [], serial: [], net: [],
   };
 
   Object.entries(credential).forEach(([, value]) => {
     rst.cred.push(castStringValueToOrigin(value));
-  });
-
-  Object.entries(networkSummary).forEach(([, value]) => {
-    rst.net_sum.push(castStringValueToOrigin(value));
   });
 
   Object.entries(basicConfigs).forEach(([, value]) => {

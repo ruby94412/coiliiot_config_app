@@ -48,8 +48,9 @@ function CommandInfoTable({
 }
 
 function TransmissionAccordion({
+  enabled,
   expanded,
-  serialId,
+  serialIds,
   serialForm,
   formikProps,
   handleExpandChange,
@@ -58,12 +59,18 @@ function TransmissionAccordion({
   const [infoOpen, setInfoOpen] = useState(false);
 
   useEffect(() => {
+    if (!enabled) return;
     if (serialForm?.form?.current?.length) {
       const temp = serialForm.form?.current
         .map((formikForm) => ({ ...formikForm.values }));
-      setCmdRows(convertRawCommands(temp[serialId]) || []);
+      const rows = [];
+      serialIds.forEach((checked, idx) => {
+        if (checked) rows.push(...(convertRawCommands(temp[idx]) || []));
+      });
+      console.log(rows);
+      // setCmdRows(convertRawCommands(temp[serialId]) || []);
     }
-  }, [serialForm, serialId]);
+  }, [serialForm, serialIds, enabled]);
 
   const handleInfoOpen = (event) => {
     event.stopPropagation();
@@ -85,9 +92,9 @@ function TransmissionAccordion({
   };
 
   const handleTransmissionDataTypeChange = (e) => {
-    const temp = [...formikProps.values.transmissionDataType];
-    temp[serialId] = Number(e.target.value);
-    formikProps.setFieldValue('transmissionDataType', temp);
+    // const temp = [...formikProps.values.transmissionDataType];
+    // temp[serialId] = Number(e.target.value);
+    // formikProps.setFieldValue('transmissionDataType', temp);
   };
   return (
     <Accordion
@@ -110,7 +117,7 @@ function TransmissionAccordion({
           {
             renderFields({
               label: <FormattedMessage {...messages.transmissionDataTypeLabel} />,
-              value: formikProps.values.transmissionDataType[serialId],
+              // value: formikProps.values.transmissionDataType[serialId],
               name: 'transmissionDataType',
               handleChange: handleTransmissionDataTypeChange,
               fieldType: 'radioGroup',

@@ -49,7 +49,6 @@ const Platform = forwardRef(({
 
   const handleSerialIdsChange = (networkId) => (serialId) => (e) => {
     const val = e.target.checked;
-    console.log(formikRefs.current[networkId].values);
     const temp = [...formikRefs.current[networkId].values.serialIds];
     temp[serialId] = val ? 1 : 0;
     formikRefs.current[networkId].setFieldValue('serialIds', temp);
@@ -119,7 +118,7 @@ const Platform = forwardRef(({
                           >
                             {renderFields({
                               label: <FormattedMessage {...messages.serialIdLabel} />,
-                              value: Number(formikProps.values.serialIds),
+                              value: formikProps.values.serialIds,
                               handleChange: handleSerialIdsChange(index),
                               fieldType: 'checkbox',
                               checkboxOptions: serialIdsOptions,
@@ -129,8 +128,16 @@ const Platform = forwardRef(({
                         </Collapse>
                       </Grid>
                     </Grid>
-                    <Collapse in={formikProps.values.enabled} timeout={500} exit style={{ marginTop: '10px' }}>
-                      <Accordion expanded={expanded === 'networkFields'} onChange={handleExpandChange('networkFields')}>
+                    <Collapse
+                      in={formikProps.values.enabled}
+                      timeout={500}
+                      exit
+                      style={{ marginTop: '10px' }}
+                    >
+                      <Accordion
+                        expanded={expanded === 'networkFields'}
+                        onChange={handleExpandChange('networkFields')}
+                      >
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                           <FormattedMessage {...messages.networkFields} />
                         </AccordionSummary>
@@ -153,6 +160,7 @@ const Platform = forwardRef(({
                         </AccordionDetails>
                       </Accordion>
                       <TransmissionAccordion
+                        enabled={formikProps.values.enabled}
                         expanded={expanded}
                         serialIds={serialIds}
                         serialForm={serialForm}
