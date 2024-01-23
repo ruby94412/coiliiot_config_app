@@ -6,11 +6,13 @@ import {
   Grid,
   RadioGroup,
   Radio,
+  FormGroup,
   FormControl,
   FormControlLabel,
   FormHelperText,
   FormLabel,
   Select,
+  Checkbox,
   MenuItem,
   OutlinedInput,
   Tooltip,
@@ -35,9 +37,39 @@ export const renderFields = ({
   const layout = other.layout || { xs: 12, md: 4 };
   const style = other.style || { width: '80%' };
   const {
-    radioOptions, selectOptions, helperText, helperTooltip, ...rest
+    radioOptions, selectOptions, checkboxOptions, helperText, helperTooltip, ...rest
   } = other;
   switch (fieldType) {
+    case 'checkbox':
+      return (
+        <Grid item {...layout}>
+          <FormControl sx={{ display: 'flex' }}>
+            <FormLabel>
+              {label}
+              { helperTooltip
+                && (
+                  <Tooltip title={helperTooltip}>
+                    <HelperIcon sx={{ fontSize: '15px' }} />
+                  </Tooltip>
+                )}
+            </FormLabel>
+            <FormGroup row>
+              {
+                checkboxOptions.map((option, idx) => (
+                  <FormControlLabel
+                    key={idx}
+                    control={
+                      <Checkbox checked={value[idx]} onChange={handleChange(idx)} />
+                    }
+                    label={option?.label || option}
+                  />
+                ))
+              }
+            </FormGroup>
+            { helperText && <FormHelperText sx={{ marginLeft: 0 }}>{helperText}</FormHelperText>}
+          </FormControl>
+        </Grid>
+      );
     case 'radioGroup':
       return (
         <Grid item {...layout}>
@@ -172,10 +204,10 @@ export const getResetValues = () => {
       networkId: i,
       enabled: false,
       type: 0,
-      serialIds: [0],
+      serialIds: [1, 0],
       transmissionType: 0,
       transmissionPeriod: 30,
-      transmissionDataType: [0, 0, 0],
+      transmissionDataType: 0,
       socket: {
         registerMessage: '',
         heartbeat: '',

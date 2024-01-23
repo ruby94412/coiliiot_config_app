@@ -27,9 +27,9 @@ const Platform = forwardRef(({
 }, ref) => {
   const formikRefs = useRef([]);
   const [networkId, setNetworkId] = useState(0);
-  const [serialId, setSerialId] = useState(0);
+  const [serialIds, setSerialIds] = useState(0);
   const [expanded, setExpanded] = useState('networkFields');
-  const serialIdOptions = [
+  const serialIdsOptions = [
     { label: 'RS485', value: 0 }, { label: 'RS232', value: 1 },
   ];
 
@@ -47,10 +47,13 @@ const Platform = forwardRef(({
     if (enabled) setExpanded('networkFields');
   };
 
-  const handleSerialIdChange = (index) => (e) => {
-    const id = Number(e.target.value);
-    formikRefs.current[index].setFieldValue('serialId', id);
-    setSerialId(id);
+  const handleSerialIdsChange = (networkId) => (serialId) => (e) => {
+    const val = e.target.checked;
+    console.log(formikRefs.current[networkId].values);
+    const temp = [...formikRefs.current[networkId].values.serialIds];
+    temp[serialId] = val ? 1 : 0;
+    formikRefs.current[networkId].setFieldValue('serialIds', temp);
+    setSerialIds(temp);
     setExpanded('dataTransmissionFields');
   };
 
@@ -116,11 +119,10 @@ const Platform = forwardRef(({
                           >
                             {renderFields({
                               label: <FormattedMessage {...messages.serialIdLabel} />,
-                              value: Number(formikProps.values.serialId),
-                              name: 'serialId',
-                              handleChange: handleSerialIdChange(index),
-                              fieldType: 'radioGroup',
-                              radioOptions: serialIdOptions,
+                              value: Number(formikProps.values.serialIds),
+                              handleChange: handleSerialIdsChange(index),
+                              fieldType: 'checkbox',
+                              checkboxOptions: serialIdsOptions,
                               layout: { xs: 12 },
                             })}
                           </Grid>
@@ -152,7 +154,7 @@ const Platform = forwardRef(({
                       </Accordion>
                       <TransmissionAccordion
                         expanded={expanded}
-                        serialId={serialId}
+                        serialIds={serialIds}
                         serialForm={serialForm}
                         formikProps={formikProps}
                         handleExpandChange={handleExpandChange}

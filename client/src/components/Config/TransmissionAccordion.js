@@ -162,12 +162,12 @@ function TransmissionAccordion({
               </Grid>
             </Collapse>
           </Grid>
-          <TransmissionTables
+          {/* <TransmissionTables
             formikProps={formikProps}
             serialId={serialId}
             cmdRows={cmdRows}
             dataType={formikProps.values.transmissionDataType[serialId]}
-          />
+          /> */}
           <ConfirmDialog
             isOpen={infoOpen}
             onClose={() => { setInfoOpen(false); }}
