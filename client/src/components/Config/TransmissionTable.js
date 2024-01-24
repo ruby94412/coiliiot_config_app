@@ -77,7 +77,6 @@ function EditToolbar({
 
 function TransmissionTables({
   formikProps,
-  serialId,
   dataType,
   cmdRows,
 }) {
@@ -92,24 +91,22 @@ function TransmissionTables({
     if (!formVals) return;
     if (dataType === 0) {
       const temp = [];
-      formVals.commands[serialId].forEach((id) => {
-        const idx = cmdRows?.findIndex((cmd) => (cmd.id === id));
+      formVals.commands.forEach((serialIdAndId) => {
+        const idx = cmdRows?.findIndex((cmd) => (`${cmd.serialId}-${cmd.id}` === serialIdAndId));
         if (idx > -1) temp.push(cmdRows[idx]);
       });
       setSelected(temp);
       setConvRows([]);
     } else {
       setSelected([]);
-      setConvRows(formVals.conversions[serialId]);
+      setConvRows(formVals.conversions);
     }
-  }, [serialId, dataType, cmdRows]);
+  }, [dataType, cmdRows]);
 
   const handleModbusCmdSelect = (event) => {
     setSelected(event.target.value);
-    const fields = event.target.value.map((cmd) => (cmd.id));
-    const commands = [...formikProps.values.commands];
-    commands[serialId] = fields;
-    formikProps.setFieldValue('commands', commands);
+    const fields = event.target.value.map((cmd) => (`${cmd.serialId}-${cmd.id}`));
+    formikProps.setFieldValue('commands', fields);
   };
 
   const handleRowEditStop = (params, event) => {
@@ -148,10 +145,7 @@ function TransmissionTables({
   const handleDeleteClick = (id) => () => {
     const fields = convRows.filter((row) => row.id !== id);
     setConvRows(fields);
-    const conversions = [...formikProps.values.conversions];
-    conversions[serialId] = fields;
-    formikProps.setFieldValue('conversions', conversions);
-    // setConversionsField(index, fields);
+    formikProps.setFieldValue('conversions', fields);
   };
 
   const handleCancelClick = (id) => () => {
@@ -174,9 +168,7 @@ function TransmissionTables({
       delete obj.isNew;
       return obj;
     });
-    const conversions = [...formikProps.values.conversions];
-    conversions[serialId] = fields;
-    formikProps.setFieldValue('conversions', conversions);
+    formikProps.setFieldValue('conversions', fields);
     setConvRows(updateRows);
     return res;
   };

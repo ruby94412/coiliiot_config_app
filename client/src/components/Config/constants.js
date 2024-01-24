@@ -661,6 +661,11 @@ export const getCommandInfoTableColumns = ({
   intl,
 }) => [
   {
+    field: 'dataSource',
+    headerName: intl.formatMessage(messages.dataSource),
+    flex: 1,
+  },
+  {
     field: 'id',
     headerName: 'ID',
     flex: 1,
@@ -696,7 +701,7 @@ export const getConversionTableColumns = ({
     type: 'singleSelect',
     minWidth: 250,
     flex: 1,
-    valueOptions: cmdRows?.map((row) => ({ label: `${row.tag}-${row.cmdStr}`, value: row.id })),
+    valueOptions: cmdRows?.map((row) => ({ label: `${row.tag}-${row.cmdStr}`, value: `${row.serialId}-${row.id}` })),
   },
   {
     field: 'propertyName',

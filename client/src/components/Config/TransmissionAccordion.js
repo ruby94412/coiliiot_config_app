@@ -67,8 +67,7 @@ function TransmissionAccordion({
       serialIds.forEach((checked, idx) => {
         if (checked) rows.push(...(convertRawCommands(temp[idx]) || []));
       });
-      console.log(rows);
-      // setCmdRows(convertRawCommands(temp[serialId]) || []);
+      setCmdRows(rows);
     }
   }, [serialForm, serialIds, enabled]);
 
@@ -92,10 +91,9 @@ function TransmissionAccordion({
   };
 
   const handleTransmissionDataTypeChange = (e) => {
-    // const temp = [...formikProps.values.transmissionDataType];
-    // temp[serialId] = Number(e.target.value);
-    // formikProps.setFieldValue('transmissionDataType', temp);
+    formikProps.setFieldValue('transmissionDataType', Number(e.target.value));
   };
+
   return (
     <Accordion
       expanded={expanded === 'dataTransmissionFields'}
@@ -117,7 +115,7 @@ function TransmissionAccordion({
           {
             renderFields({
               label: <FormattedMessage {...messages.transmissionDataTypeLabel} />,
-              // value: formikProps.values.transmissionDataType[serialId],
+              value: formikProps.values.transmissionDataType,
               name: 'transmissionDataType',
               handleChange: handleTransmissionDataTypeChange,
               fieldType: 'radioGroup',
@@ -169,12 +167,12 @@ function TransmissionAccordion({
               </Grid>
             </Collapse>
           </Grid>
-          {/* <TransmissionTables
+          <TransmissionTables
             formikProps={formikProps}
-            serialId={serialId}
+            serialIds={serialIds}
             cmdRows={cmdRows}
-            dataType={formikProps.values.transmissionDataType[serialId]}
-          /> */}
+            dataType={formikProps.values.transmissionDataType}
+          />
           <ConfirmDialog
             isOpen={infoOpen}
             onClose={() => { setInfoOpen(false); }}

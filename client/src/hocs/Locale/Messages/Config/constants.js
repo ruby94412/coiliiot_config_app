@@ -191,6 +191,10 @@ export default defineMessages({
     id: `${scope}.deviation`,
     defaultMessage: 'Deviation',
   },
+  dataSource: {
+    id: `${scope}.dataSource`,
+    defaultMessage: 'Data Source',
+  },
   order: {
     id: `${scope}.order`,
     defaultMessage: 'Order',

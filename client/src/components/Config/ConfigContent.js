@@ -16,7 +16,7 @@ import messages from 'hocs/Locale/Messages/Config/ConfigContent';
 import ConfirmDialog from 'components/common/ConfirmDialog';
 import TabPanel from 'components/common/TabPanel';
 import TransitionPanel from 'components/common/TransitionPanel';
-import { handleFormDataSubmit, retrieveFromSimpleConfig } from './utils';
+import { handleFormDataSubmit, retrieveFromSimpleConfig, simplifyConfig } from './utils';
 import Platform from './Platform';
 import Serial from './Serial';
 import Basic from './Basic';
@@ -54,6 +54,9 @@ function Content({
     const { config, credential } = handleFormDataSubmit(formValues);
     setSaveLoading(true);
     console.log(config);
+    const sp = simplifyConfig(config, credential);
+    const rt = retrieveFromSimpleConfig(sp);
+    console.log(rt);
     try {
       await Promise.all([
         update({ data: { ...config }, fileName: 'config' }),

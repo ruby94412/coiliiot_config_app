@@ -1,5 +1,5 @@
 import {
-  useState, useRef, forwardRef, useImperativeHandle,
+  useState, useRef, forwardRef, useImperativeHandle, useEffect,
 } from 'react';
 import {
   Grid, Collapse,
@@ -27,8 +27,13 @@ const Platform = forwardRef(({
 }, ref) => {
   const formikRefs = useRef([]);
   const [networkId, setNetworkId] = useState(0);
-  const [serialIds, setSerialIds] = useState(0);
+  const [serialIds, setSerialIds] = useState([1, 0]);
   const [expanded, setExpanded] = useState('networkFields');
+
+  useEffect(() => {
+    setSerialIds(formikRefs.current[networkId].values.serialIds);
+  }, [networkId]);
+
   const serialIdsOptions = [
     { label: 'RS485', value: 0 }, { label: 'RS232', value: 1 },
   ];

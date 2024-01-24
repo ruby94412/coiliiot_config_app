@@ -165,11 +165,12 @@
   "coiliiot.app.config.constants.minute": "分钟",
   "coiliiot.app.config.constants.restartScheduleHelper": "输入0即为不启用",
   "coiliiot.app.config.constants.tag": "标签",
-  "coiliiot.app.config.constants.cmdStr": "Modbus命令(数据源)",
+  "coiliiot.app.config.constants.cmdStr": "Modbus命令",
   "coiliiot.app.config.constants.idScope": "ID范围",
   "coiliiot.app.config.constants.deviceId": "设备ID",
   "coiliiot.app.config.constants.primaryKey": "主键",
   "coiliiot.app.config.constants.secondaryKey": "辅助密钥",
+  "coiliiot.app.config.constants.dataSource": "数据源",
 
   "coiliiot.app.config.commandGenerator.title": "生成命令",
   "coiliiot.app.config.commandGenerator.confirm": "确认",

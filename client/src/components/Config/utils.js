@@ -469,8 +469,10 @@ export const convertRawCommands = (serialConfig) => {
       numberOfRegisters: cmd[4] * 256 + cmd[5],
     };
     const detail = getCommandDetail(cmdDetial);
+    const { serialId } = serialConfig;
+    const dataSource = ['RS485', 'RS232'][serialId];
     return {
-      detail, ...cmdDetial, ...defaultCmd,
+      detail, ...cmdDetial, ...defaultCmd, serialId, dataSource,
     };
   });
 };
@@ -663,6 +665,7 @@ export const simplifyConfig = (config, credential) => {
     });
     rst.net.push(temp);
   });
+  console.log(rst);
   return rst;
 };
 
@@ -735,16 +738,10 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
         }
       } else {
         switch (k) {
-          case 'transmissionDataType': {
-            const arr = [0, 0, 0];
-            arr[Number(simpleCfg[3])] = Number(simpleCfg[index]);
-            rst.networkConfigs[idx][k] = arr;
-            break;
-          }
           case 'conversions': {
             if (Number(simpleCfg[6]) === 0) break;
             const last_idx = simpleCfg.length - 1;
-            const arr = [[], [], []];
+            const arr = [];
             simpleCfg[last_idx]?.forEach((simpleArr) => {
               const defaultConv = {
                 command: '',
@@ -767,7 +764,7 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
                 }
               });
               defaultConv.id = getUid('simple');
-              arr[Number(simpleCfg[3])].push(defaultConv);
+              arr.push(defaultConv);
               rst.networkConfigs[idx][k] = arr;
             });
             break;
@@ -775,9 +772,7 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
           case 'commands': {
             if (Number(simpleCfg[6]) === 1) break;
             const last_idx = simpleCfg.length - 1;
-            const arr = [[], [], []];
-            arr[Number(simpleCfg[3])] = simpleCfg[last_idx];
-            rst.networkConfigs[idx][k] = arr;
+            rst.networkConfigs[idx][k] = simpleCfg[last_idx];
             break;
           }
           default:
