@@ -14,6 +14,45 @@ const getPortsForwardingInterval = (mainWindow) => (
   }, 2000)
 );
 
+const send_config_chuncks = async (activePort, args) => {
+  const { data } = args;
+  const data_str = JSON.stringify(data);
+  let idx = 0;
+  const chunks = [];
+  while (idx < data_str.length) {
+    chunks.push(data_str.substring(idx, Math.min(data_str.length, idx + 50)));
+    idx += 50;
+  }
+  // send first package: { type: 1, size: stringSize }
+  try {
+    await new Promise((res, rej) => {
+      console.log(JSON.stringify({ type: 1, size: chunks.length }));
+      activePort.write(JSON.stringify({ type: 1, size: chunks.length }) + '\n', (err) => {
+        if (err) rej(err);
+        else res('Command Sent');
+      });
+      delay(1000);
+    });
+  } catch (error) {
+    throw error;
+  }
+  // separate data into chunks and send respectively
+  for (const chunk of chunks) {
+    try {
+      await new Promise((res, rej) => {
+        setTimeout(() => {
+          activePort.write(chunk + '\n', (err) => {
+            if (err) rej(err);
+            else res('chunk Sent');
+          });
+        }, 150);
+      });
+    } catch (error) { 
+      throw error;
+    }
+  }
+};
+
 const portConnectionHandlers = (mainWindow) => {
   ipcMain.handle('connect_serial_port', async (evt, args) => {
     try {
@@ -58,16 +97,20 @@ const portConnectionHandlers = (mainWindow) => {
   });
 
   ipcMain.handle('send_msg_to_port', async (evt, args) => {
-    try {
-      await new Promise((res, rej) => {
-        activePort.write(JSON.stringify(args), (err) => {
-          if (err) rej(err);
-          else res('Command Sent');
+    if (args.type !== 1) {
+      try {
+        await new Promise((res, rej) => {
+          activePort.write(JSON.stringify(args) + '\n', (err) => {
+            if (err) rej(err);
+            else res('Command Sent');
+          });
         });
-      });
-      return { success: true };
-    } catch (error) {
-      throw error;
+        return { success: true };
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      await send_config_chuncks(activePort, args);
     }
   });
 
