@@ -335,4 +335,8 @@ export default defineMessages({
     id: `${scope}.secondaryKey`,
     defaultMessage: 'Secondary Key',
   },
+  accessToken: {
+    id: `${scope}.accessToken`,
+    defaultMessage: 'Access Token',
+  },
 });

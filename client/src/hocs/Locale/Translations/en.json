@@ -177,6 +177,7 @@
   "coiliiot.app.config.constants.primaryKey": "Primary Key",
   "coiliiot.app.config.constants.secondaryKey": "Secondary Key",
   "coiliiot.app.config.constants.dataSource": "Data Source",
+  "coiliiot.app.config.constants.accessToken": "Access Token",
 
   "coiliiot.app.config.commandGenerator.title": "Command Generator",
   "coiliiot.app.config.commandGenerator.confirm": "Confirm",

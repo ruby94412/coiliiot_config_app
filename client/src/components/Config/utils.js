@@ -21,7 +21,7 @@ import {
   HelpOutline as HelperIcon,
 } from '@mui/icons-material';
 import {
-  aliyunFields, mqttFields, socketFields, httpFields, azureFields,
+  aliyunFields, mqttFields, socketFields, httpFields, azureFields, thingsBoardFields,
 } from './constants';
 
 export const renderFields = ({
@@ -269,6 +269,12 @@ export const getResetValues = () => {
         primaryKey: '',
         secondaryKey: '',
       },
+      thingsBoard: {
+        host: 'mqtt.thingsboard.cloud',
+        port: 1883,
+        accessToken: '',
+        deviceId: '',
+      },
       conversions: [],
       commands: [],
     });
@@ -316,7 +322,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       conversions,
       commands,
     };
-    const typeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
+    const typeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure', 'thingsBoard'];
     rst.networkConfigs[index][typeArr[type]] = other;
   });
   return rst;
@@ -559,7 +565,7 @@ export const handleFormDataSubmit = (values) => {
         conversions,
         commands,
       } = ele;
-      const typeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
+      const typeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure', 'thingsBoard'];
       const detail = ele[typeArr[type]];
       const temp = {
         networkId,
@@ -739,7 +745,7 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
 
   rst.networkConfigs.forEach((defaultCfg, idx) => {
     const simpleCfg = simpleJson.net.find((arr) => (arr[0] === idx));
-    const netTypeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure'];
+    const netTypeArr = ['socket', 'aliyun', 'mqtt', 'http', 'azure', 'thingsBoard'];
     if (!simpleCfg) return;
     Object.entries(rst.networkConfigs[idx]).forEach(([k, v], index) => {
       if (netTypeArr.findIndex((type) => (type === k)) > -1) {
@@ -844,6 +850,10 @@ export const renderNetworkFields = (formikProps) => {
   let fields;
   let typeName;
   switch (type) {
+    case 5:
+      fields = thingsBoardFields;
+      typeName = 'thingsBoard';
+      break;
     case 4:
       fields = azureFields;
       typeName = 'azure';

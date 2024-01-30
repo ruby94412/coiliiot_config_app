@@ -15,6 +15,7 @@ export const networkOptions = [
   { label: 'MQTT', value: 2 },
   { label: 'HTTP', value: 3 },
   { label: 'Azure', value: 4 },
+  { label: 'ThingsBoard', value: 5 },
   { label: <FormattedMessage {...messages.aliyun} />, value: 1 },
 ];
 
@@ -183,12 +184,6 @@ export const httpFields = [
     label: <FormattedMessage {...messages.url} />,
     propertyName: 'url',
   },
-  // {
-  //   label: <FormattedMessage {...messages.requestType} />,
-  //   propertyName: 'requestType',
-  //   fieldType: 'radioGroup',
-  //   radioOptions: ['body', 'param'],
-  // },
   {
     label: <FormattedMessage {...messages.contentType} />,
     propertyName: 'contentType',
@@ -199,10 +194,6 @@ export const httpFields = [
       { label: 'octet-stream', value: 2 },
     ],
   },
-  // {
-  //   label: <FormattedMessage {...messages.header} />,
-  //   propertyName: 'header',
-  // },
   {
     label: <FormattedMessage {...messages.basicUser} />,
     propertyName: 'basicUser',
@@ -210,6 +201,17 @@ export const httpFields = [
   {
     label: <FormattedMessage {...messages.basicPass} />,
     propertyName: 'basicPass',
+  },
+];
+
+export const thingsBoardFields = [
+  { label: <FormattedMessage {...messages.host} />, propertyName: 'host', datatype: 'text' },
+  { label: <FormattedMessage {...messages.port} />, propertyName: 'port', datatype: 'number' },
+  {
+    label: <FormattedMessage {...messages.accessToken} />, propertyName: 'accessToken', datatype: 'text', layout: { xs: 12, md: 6 },
+  },
+  {
+    label: <FormattedMessage {...messages.deviceId} />, propertyName: 'deviceId', datatype: 'text', layout: { xs: 12, md: 6 },
   },
 ];
 
