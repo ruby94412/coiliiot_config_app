@@ -184,8 +184,10 @@ export const getResetValues = () => {
   rst.basicConfigs = {
     config_version: 0,
     autoUpdateEnabled: true,
-    disconnectedRestart: 0,
-    restartSchedule: 720,
+    disconnectedRestart: 1,
+    restartSchedule: 1,
+    delay: 30,
+    restartPeriod: 720,
     credential: { ssid: '', password: '' },
   };
   for (let i = 0; i < 2; i++) {
@@ -210,6 +212,7 @@ export const getResetValues = () => {
       enabled: false,
       type: 0,
       serialIds: [1, 0],
+      disconnectedRestart: true,
       transmissionType: 0,
       transmissionPeriod: 30,
       transmissionDataType: 0,
@@ -292,6 +295,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       networkId,
       type,
       serialIds,
+      disconnectedRestart,
       transmissionType,
       transmissionPeriod,
       transmissionDataType,
@@ -305,6 +309,7 @@ export const getInitialValues = (originalConfig, originalCredential) => {
       type,
       serialIds,
       enabled: true,
+      disconnectedRestart,
       transmissionType,
       transmissionPeriod,
       transmissionDataType,
@@ -549,6 +554,7 @@ export const handleFormDataSubmit = (values) => {
         type, networkId,
         transmissionPeriod,
         transmissionType,
+        disconnectedRestart,
         transmissionDataType,
         conversions,
         commands,
@@ -560,6 +566,7 @@ export const handleFormDataSubmit = (values) => {
         enabled,
         type,
         serialIds,
+        disconnectedRestart,
         transmissionType,
         transmissionPeriod,
         transmissionDataType,
@@ -620,11 +627,19 @@ export const simplifyConfig = (config, credential) => {
     cred: [], cfg_v: config_version, basic: [], serial: [], net: [],
   };
 
+  const basics = { ...basicConfigs };
+  basics.restartSchedule = basics.restartSchedule === 0
+    ? basics.restartSchedule : basics.restartPeriod;
+  basics.disconnectedRestart = basics.disconnectedRestart === 0
+    ? basics.disconnectedRestart : basics.delay;
+  delete basics.restartPeriod;
+  delete basics.delay;
+
   Object.entries(credential).forEach(([, value]) => {
     rst.cred.push(castStringValueToOrigin(value));
   });
 
-  Object.entries(basicConfigs).forEach(([, value]) => {
+  Object.entries(basics).forEach(([, value]) => {
     rst.basic.push(castStringValueToOrigin(value));
   });
 
@@ -665,7 +680,6 @@ export const simplifyConfig = (config, credential) => {
     });
     rst.net.push(temp);
   });
-  console.log(rst);
   return rst;
 };
 
@@ -674,6 +688,7 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
 
   Object.entries(rst.basicConfigs).forEach(([k, v], idx) => {
     if (k === 'credential') return;
+    if (idx > 3) return;
     switch (typeof v) {
       case 'boolean':
         rst.basicConfigs[k] = Boolean(simpleJson.basic[idx]);
@@ -687,6 +702,14 @@ export const retrieveFromSimpleConfig = (simpleJson) => {
         break;
     }
   });
+  if (rst.basicConfigs.disconnectedRestart > 0) {
+    rst.basicConfigs.delay = rst.basicConfigs.disconnectedRestart;
+    rst.basicConfigs.disconnectedRestart = 1;
+  }
+  if (rst.basicConfigs.restartSchedule > 0) {
+    rst.basicConfigs.restartPeriod = rst.basicConfigs.restartSchedule;
+    rst.basicConfigs.restartSchedule = 1;
+  }
 
   // eslint-disable-next-line no-unused-vars
   Object.entries(rst.basicConfigs.credential).forEach(([k, v], idx) => {

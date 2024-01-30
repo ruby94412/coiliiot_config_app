@@ -42,6 +42,7 @@ const Platform = forwardRef(({
     { label: <FormattedMessage {...messages.statusOptionEnable} />, value: true },
     { label: <FormattedMessage {...messages.statusOptionDisable} />, value: false },
   ];
+
   const handleNetworkIdChange = (event) => {
     setNetworkId(Number(event.target.value));
   };
@@ -50,6 +51,11 @@ const Platform = forwardRef(({
     const enabled = e.target.value === 'true';
     formikRefs.current[index].setFieldValue('enabled', enabled);
     if (enabled) setExpanded('networkFields');
+  };
+
+  const handleRestartChange = (index) => (e) => {
+    const enabled = e.target.value === 'true';
+    formikRefs.current[index].setFieldValue('disconnectedRestart', enabled);
   };
 
   const handleSerialIdsChange = (networkId) => (serialId) => (e) => {
@@ -114,7 +120,7 @@ const Platform = forwardRef(({
                           layout: { xs: 4 },
                         })
                       }
-                      <Grid item xs={4}>
+                      <Grid item xs={8}>
                         <Collapse in={formikProps.values.enabled} timeout={500} exit>
                           <Grid
                             container
@@ -127,8 +133,19 @@ const Platform = forwardRef(({
                               handleChange: handleSerialIdsChange(index),
                               fieldType: 'checkbox',
                               checkboxOptions: serialIdsOptions,
-                              layout: { xs: 12 },
+                              layout: { xs: 6 },
                             })}
+                            {
+                              renderFields({
+                                label: <FormattedMessage {...messages.disconnectedRestart} />,
+                                value: formikProps.values.disconnectedRestart,
+                                name: 'disconnectedRestart',
+                                handleChange: handleRestartChange(index),
+                                fieldType: 'radioGroup',
+                                radioOptions: enableOptions,
+                                layout: { xs: 4 },
+                              })
+                            }
                           </Grid>
                         </Collapse>
                       </Grid>

@@ -36,24 +36,6 @@ export const basicFields = [
     ],
     layout: { xs: 12, md: 6 },
   },
-  {
-    label: <FormattedMessage {...messages.periodicalRestart} />,
-    propertyName: 'restartSchedule',
-    datatype: 'number',
-    layout: { xs: 12, md: 6 },
-    helperText: <FormattedMessage {...messages.restartScheduleHelper} />,
-    endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.minute} /></InputAdornment>,
-    inputProps: { min: 0, max: 1440, step: 15 },
-  },
-  {
-    label: <FormattedMessage {...messages.disconnectedRestart} />,
-    propertyName: 'disconnectedRestart',
-    datatype: 'number',
-    helperText: <FormattedMessage {...messages.restartScheduleHelper} />,
-    endAdornment: <InputAdornment position="end"><FormattedMessage {...messages.minute} /></InputAdornment>,
-    layout: { xs: 12, md: 6 },
-    inputProps: { min: 0, max: 5, step: 0.5 },
-  },
 ];
 
 export const credentialFields = [

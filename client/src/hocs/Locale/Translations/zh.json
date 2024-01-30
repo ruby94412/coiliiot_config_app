@@ -26,6 +26,8 @@
   "coiliiot.app.common.noRowsOverlay.message": "没有数据",
 
   "coiliiot.app.config.basic.wifiDivider": "WIFI 信息",
+  "coiliiot.app.config.basic.period": "周期",
+  "coiliiot.app.config.basic.delay": "断网重启等待时间",
 
   "coiliiot.app.config.serial.serialIdLabel": "串口通道",
   "coiliiot.app.config.serial.statusLabel": "串口状态",
@@ -65,6 +67,7 @@
   "coiliiot.app.config.platform.emptyCmdErr": "Modbus命令(数据源)不能为空。",
   "coiliiot.app.config.platform.emptyPropErr": "参数名不能为空。",
   "coiliiot.app.config.platform.dupPropErr": "参数名不能重复。",
+  "coiliiot.app.config.platform.disconnectedRestart": "断网重启",
 
   "coiliiot.app.config.configContent.snackBarSuccess": "数据已更新",
   "coiliiot.app.config.configContent.snackBarError": "更新失败",

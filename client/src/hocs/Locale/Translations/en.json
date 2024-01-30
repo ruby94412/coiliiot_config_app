@@ -26,6 +26,8 @@
   "coiliiot.app.common.noRowsOverlay.message": "No Rows",
 
   "coiliiot.app.config.basic.wifiDivider": "Wifi Credential",
+  "coiliiot.app.config.basic.period": "Period",
+  "coiliiot.app.config.basic.delay": "Restart wait after disconnect",
 
   "coiliiot.app.config.serial.serialIdLabel": "Serial Channel",
   "coiliiot.app.config.serial.statusLabel": "Serial Status",
@@ -65,6 +67,7 @@
   "coiliiot.app.config.platform.emptyCmdErr": "Modbus command(data source) cannot be empty.",
   "coiliiot.app.config.platform.emptyPropErr": "Property name cannot be empty.",
   "coiliiot.app.config.platform.dupPropErr": "Property name already exists.",
+  "coiliiot.app.config.platform.disconnectedRestart": "Restart After Platform Disconnected",
 
   "coiliiot.app.config.configContent.snackBarSuccess": "Data Updated",
   "coiliiot.app.config.configContent.snackBarError": "Update Error",

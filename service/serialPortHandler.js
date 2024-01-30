@@ -31,7 +31,6 @@ const send_config_chuncks = async (activePort, args) => {
         if (err) rej(err);
         else res('Command Sent');
       });
-      delay(1000);
     });
   } catch (error) {
     throw error;

@@ -107,4 +107,8 @@ export default defineMessages({
     id: `${scope}.dupPropErr`,
     defaultMessage: 'Property name already exists.',
   },
+  disconnectedRestart: {
+    id: `${scope}.disconnectedRestart`,
+    defaultMessage: 'Restart After Platform Disconnected',
+  },
 });

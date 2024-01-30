@@ -7,4 +7,12 @@ export default defineMessages({
     id: `${scope}.wifiDivider`,
     defaultMessage: 'Wifi Credential',
   },
+  period: {
+    id: `${scope}.period`,
+    defaultMessage: 'Period',
+  },
+  delay: {
+    id: `${scope}.delay`,
+    defaultMessage: 'Restart wait after disconnect',
+  },
 });
