@@ -49,11 +49,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ruby94412/coiliiot_config_app.git"
+    "url": "git+https://github.com/coiliiot/serial_server_configuaration_app.git"
   },
   "publish": {
     "provider": "github",
-    "url": "https://github.com/ruby94412/coiliiot_config_app"
+    "url": "https://github.com/coiliiot/serial_server_configuaration_app",
+    "owner": "coiliiot",
+    "releaseType": "release"
   },
   "license": "ISC",
   "bugs": {
@@ -72,6 +74,7 @@
     "wait-on": "^7.0.1"
   },
   "dependencies": {
+    "axios": "^1.6.7",
     "electron-is-dev": "^2.0.0",
     "electron-store": "^8.1.0",
     "electron-updater": "^6.1.1",

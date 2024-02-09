@@ -19,4 +19,8 @@ export default defineMessages({
     id: `${scope}.actionHeader`,
     defaultMessage: 'Actions',
   },
+  customizeHeader: {
+    id: `${scope}.customizeHeader`,
+    defaultMessage: 'Custom Flash',
+  },
 });

@@ -17,9 +17,15 @@ import {
   Edit as EditIcon,
   Save as SaveIcon,
   Close as CancelIcon,
+  ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+} from 'components/common/StyledAccordion';
 import { MuiFileInput } from 'mui-file-input';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import NoRowsOverlay from 'components/common/NoRowsOverlay';
 import messages from 'hocs/Locale/Messages/Flash/FileTable';
 import Toolbar from './Toolbar';
@@ -157,7 +163,10 @@ const getColumns = ({
     },
   },
 ];
+
 function FileSelect({
+  expanded,
+  handleExpandChange,
   espProps,
   fileArray,
   setFileArray,
@@ -240,56 +249,68 @@ function FileSelect({
     handleFileChange,
   });
   return (
-    <>
-      <Grid container spacing={2} direction="row">
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Grid
-            container
-            spacing={2}
-            direction="row"
-            sx={{ width: '60%' }}
-            justifyContent="flex-start"
-          >
-            <Grid item xs={12}>
-              <DataGrid
-                sx={{
-                  boxShadow: 2,
-                  border: 2,
-                  borderColor: 'primary.dark',
-                  '& .custom-height': {
-                    minHeight: '45px',
-                    maxHeight: '45px',
-                    lineHeight: '45px',
-                  },
-                }}
-                autoHeight
-                rowHeight={45}
-                rows={fileArray}
-                columns={columns}
-                editMode="row"
-                disableColumnMenu
-                slots={{
-                  toolbar: Toolbar,
-                  noRowsOverlay: NoRowsOverlay,
-                }}
-                slotProps={{
-                  toolbar: {
-                    setFileArray, setRowModesModel, espProps, rowModesModel, fileArray,
-                  },
-                }}
-                rowModesModel={rowModesModel}
-                onRowModesModelChange={handleRowModesModelChange}
-                onRowEditStop={handleRowEditStop}
-                processRowUpdate={processRowUpdate}
-                hideFooterSelectedRowCount
-                hideFooter
-                hideFooterPagination
-              />
-            </Grid>
+
+    <Grid container spacing={2} direction="row">
+      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          sx={{ width: '75%' }}
+          justifyContent="flex-start"
+        >
+          <Grid item xs={12}>
+            <Accordion
+              expanded={expanded === 'custom'}
+              onChange={handleExpandChange('custom')}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>
+                  <FormattedMessage {...messages.customizeHeader} />
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <DataGrid
+                  sx={{
+                    boxShadow: 2,
+                    border: 2,
+                    borderColor: 'primary.dark',
+                    '& .custom-height': {
+                      minHeight: '45px',
+                      maxHeight: '45px',
+                      lineHeight: '45px',
+                    },
+                  }}
+                  autoHeight
+                  rowHeight={45}
+                  rows={fileArray}
+                  columns={columns}
+                  editMode="row"
+                  disableColumnMenu
+                  slots={{
+                    toolbar: Toolbar,
+                    noRowsOverlay: NoRowsOverlay,
+                  }}
+                  slotProps={{
+                    toolbar: {
+                      setFileArray, setRowModesModel, espProps, rowModesModel, fileArray,
+                    },
+                  }}
+                  rowModesModel={rowModesModel}
+                  onRowModesModelChange={handleRowModesModelChange}
+                  onRowEditStop={handleRowEditStop}
+                  processRowUpdate={processRowUpdate}
+                  hideFooterSelectedRowCount
+                  hideFooter
+                  hideFooterPagination
+                />
+              </AccordionDetails>
+            </Accordion>
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </Grid>
+
   );
 }
 

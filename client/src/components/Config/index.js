@@ -10,23 +10,26 @@ import { getInitialValues } from './utils';
 function Config({
   readLocalData,
   writeLocalData,
+  credential,
+  config,
 }) {
   const [initialValues, setInitialValues] = useState();
-  const loadData = () => {
-    Promise.all([
-      readLocalData({ fileName: 'config' }),
-      readLocalData({ fileName: 'credential' }),
-    ]).then((values) => {
-      const temp = getInitialValues(
-        values[0]?.payload || null,
-        values[1]?.payload || null,
-      );
-      setInitialValues(temp);
-    });
+  const loadData = async () => {
+    await readLocalData({ fileName: 'config' });
+    await readLocalData({ fileName: 'credential' });
   };
+
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    const temp = getInitialValues(
+      config || null,
+      credential || null,
+    );
+    setInitialValues(temp);
+  }, [credential, config]);
 
   return (
     initialValues ? (
@@ -40,7 +43,10 @@ function Config({
   );
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => {
+  const { credential, config } = state.credentialAndConfig;
+  return { credential, config };
+};
 
 export default connect(mapStateToProps, {
   readLocalData,

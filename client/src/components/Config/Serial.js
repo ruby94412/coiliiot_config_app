@@ -1,7 +1,7 @@
 import {
   useState, Fragment, useRef, forwardRef, useImperativeHandle, useEffect,
 } from 'react';
-import { Grid, Collapse } from '@mui/material';
+import { Grid, Collapse, Typography } from '@mui/material';
 import TransitionPanel from 'components/common/TransitionPanel';
 import TabPanel from 'components/common/TabPanel';
 import { FormattedMessage } from 'react-intl';
@@ -144,7 +144,9 @@ const Serial = forwardRef(({
                     <Collapse in={formikProps.values.enabled} timeout={500} exit style={{ marginTop: '10px' }}>
                       <Accordion expanded={expanded === 'serialFields'} onChange={handleExpandChange('serialFields')}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                          <FormattedMessage {...messages.serialFields} />
+                          <Typography>
+                            <FormattedMessage {...messages.serialFields} />
+                          </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                           <Grid
@@ -169,7 +171,9 @@ const Serial = forwardRef(({
                         formikProps.values.autoPollEnabled && (
                         <Accordion expanded={expanded === 'autoPollFields'} onChange={handleExpandChange('autoPollFields')}>
                           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <FormattedMessage {...messages.autoPollFields} />
+                            <Typography>
+                              <FormattedMessage {...messages.autoPollFields} />
+                            </Typography>
                           </AccordionSummary>
                           <AccordionDetails>
                             <Grid

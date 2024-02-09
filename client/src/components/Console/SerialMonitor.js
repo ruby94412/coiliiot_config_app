@@ -62,16 +62,14 @@ function SerialMonitor({
   useEffect(() => {
     serialDataListener((data) => {
       if (data.startsWith('read data response: ')) {
+        console.log(data);
         const jsonString = data.substring(20);
         try {
           const temp = JSON.parse(jsonString);
           setRawCfg(temp);
           setIsConfirmOpen(true);
         } catch (e) {
-          setErrorMsg(intl.formatMessage(messages.readConfigFailure));
-          setSnackbar({
-            children: <FormattedMessage {...otherMessages.snackBarSuccess} />, severity: 'success',
-          });
+          console.log(e);
         }
       }
       setLogs((pre) => (`${pre}${pre ? '\n' : ''}${data}`));
@@ -167,7 +165,7 @@ function SerialMonitor({
     <>
       <Grid container spacing={2} direction="row">
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
-          <Card sx={{ width: '60%' }}>
+          <Card sx={{ width: '75%' }}>
             <CardHeader
               subheader={(
                 <Typography sx={{ fontSize: 16 }} color={`text.${connected ? 'primary' : 'secondary'}`}>
@@ -187,7 +185,7 @@ function SerialMonitor({
           </Card>
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Box sx={{ width: '60%' }}>
+          <Box sx={{ width: '75%' }}>
             <LoadingButton
               variant="contained"
               sx={{ mr: 2, mb: 2 }}
@@ -265,8 +263,8 @@ function SerialMonitor({
 }
 
 const mapStateToProps = (state) => {
-  const { credential, ...other } = state.credentialAndConfig;
-  return { credential, config: other };
+  const { credential, config } = state.credentialAndConfig;
+  return { credential, config };
 };
 
 export default connect(mapStateToProps, {

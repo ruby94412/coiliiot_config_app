@@ -59,6 +59,22 @@ export const restartPort = createAsyncThunk(
   },
 );
 
+export const downloadFirmware = createAsyncThunk(
+  'data/downloadFirmware',
+  async (data) => {
+    const res = await dataService.downloadFirmware(data);
+    return res;
+  },
+);
+
+export const getFlashingFile = createAsyncThunk(
+  'data/getFlashingFile',
+  async (data) => {
+    const res = await dataService.getFlashingFile(data);
+    return res;
+  },
+);
+
 export const enableUpdate = createAsyncThunk(
   'data/enableUpdate',
   async () => {
@@ -67,10 +83,26 @@ export const enableUpdate = createAsyncThunk(
   },
 );
 
-export const downloadUpdate = createAsyncThunk(
+export const downloadAppUpdate = createAsyncThunk(
   'data/downloadUpdate',
   async () => {
-    const res = await dataService.downloadUpdate();
+    const res = await dataService.downloadAppUpdate();
+    return res;
+  },
+);
+
+export const fetchLatestFirmwareInfo = createAsyncThunk(
+  'data/fetchLatestFirmwareInfo',
+  async () => {
+    const res = await dataService.fetchLatestFirmwareInfo();
+    return res;
+  },
+);
+
+export const openExternalLink = createAsyncThunk(
+  'data/openExternalLink',
+  async (data) => {
+    const res = await dataService.openExternalLink(data);
     return res;
   },
 );
@@ -93,6 +125,13 @@ export const updateListener = createAsyncThunk(
   'data/updateListener',
   (cb) => {
     dataService.updateListener(cb);
+  },
+);
+
+export const firmwareDownloadListener = createAsyncThunk(
+  'data/firmwareDownloadListener',
+  (cb) => {
+    dataService.firmwareDownloadListener(cb);
   },
 );
 
@@ -127,7 +166,7 @@ const dataSlice = createSlice({
               return ({ ...state, credential: action?.payload || null });
             case 'config':
             default:
-              return ({ ...state, ...action?.payload });
+              return ({ ...state, config: action?.payload });
           }
         },
       )
@@ -142,7 +181,7 @@ const dataSlice = createSlice({
               return ({ ...state, credential: data });
             case 'config':
             default:
-              return ({ ...state, ...data });
+              return ({ ...state, config: data });
           }
         },
       )
@@ -157,6 +196,10 @@ const dataSlice = createSlice({
       .addCase(
         setDeviceConfig.fulfilled,
         (state, action) => ({ ...state, deviceConfig: { ...action.payload } }),
+      )
+      .addCase(
+        fetchLatestFirmwareInfo.fulfilled,
+        (state, action) => ({ ...state, latestFirmware: { ...action.payload } }),
       );
   },
 });

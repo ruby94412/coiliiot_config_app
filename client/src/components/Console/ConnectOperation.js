@@ -124,7 +124,7 @@ function ConnectOperation({
     <>
       <Grid container spacing={2} direction="row">
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
-          <FormControl sx={{ width: '60%' }}>
+          <FormControl sx={{ width: '75%' }}>
             <FormLabel><FormattedMessage {...messages.portSelectLabel} /></FormLabel>
             <div style={{ display: 'flex' }}>
               <Select

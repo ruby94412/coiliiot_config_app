@@ -145,8 +145,7 @@ const runHandlers = (mainWindow) => {
 };
 
 const destroyHandlers = () => {
-  if (!activePort) return;
-  if (activePort.isOpen) activePort.close();
+  if (activePort?.isOpen) activePort.close();
   const channels = ['connect_serial_port', 'disconnect_serial_port', 'send_msg_to_port', 'restart_port'];
   channels.forEach((channel) => { ipcMain.removeHandler(channel);});
   clearInterval(portsForwardingInterval);

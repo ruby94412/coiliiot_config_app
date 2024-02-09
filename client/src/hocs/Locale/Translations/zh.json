@@ -238,5 +238,21 @@
   "coiliiot.app.flash.fileTable.addressHeader": "地址",
   "coiliiot.app.flash.fileTable.fileHeader": "文件",
   "coiliiot.app.flash.fileTable.statusHeader": "烧录状态",
-  "coiliiot.app.flash.fileTable.actionHeader": "操作"
+  "coiliiot.app.flash.fileTable.actionHeader": "操作",
+  "coiliiot.app.flash.fileTable.customizeHeader": "自定义烧录",
+
+  "coiliiot.app.flash.updateFirmware.autoHeader": "更新固件",
+  "coiliiot.app.flash.updateFirmware.latestVersionLabel": "最新版本",
+  "coiliiot.app.flash.updateFirmware.learnMore": "详情",
+  "coiliiot.app.flash.updateFirmware.download": "下载",
+  "coiliiot.app.flash.updateFirmware.downloadAndInstall": "下载并安装",
+  "coiliiot.app.flash.updateFirmware.upToDate": "设备已更新至最新版本",
+  "coiliiot.app.flash.updateFirmware.install": "安装",
+  "coiliiot.app.flash.updateFirmware.downloaded": "已下载",
+  "coiliiot.app.flash.updateFirmware.currentVersion": "当前版本",
+  "coiliiot.app.flash.updateFirmware.snackBarSuccess": "操作成功",
+  "coiliiot.app.flash.updateFirmware.snackBarError": "操作失败",
+  "coiliiot.app.flash.updateFirmware.emptyFileArray": "文件为空",
+  "coiliiot.app.flash.updateFirmware.invalidInput": "文件地址或文件错误",
+  "coiliiot.app.flash.updateFirmware.duplicateAddresses": "重复的文件地址"
 }

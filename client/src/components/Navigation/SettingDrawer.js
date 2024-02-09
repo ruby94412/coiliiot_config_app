@@ -16,7 +16,7 @@ import {
   LightMode,
   DarkMode,
 } from '@mui/icons-material';
-import { writeLocalData, downloadUpdate } from 'slice/data';
+import { writeLocalData, downloadAppUpdate } from 'slice/data';
 import { FormattedMessage, useIntl } from 'react-intl';
 import ErrorModal from 'components/common/ErrorModal';
 import messages from '../../hocs/Locale/Messages/Navigation/SettingDrawer';
@@ -31,7 +31,7 @@ function SettingDrawer({
   themeMode,
   anchor,
   updateInfo,
-  downloadUpdate,
+  downloadAppUpdate,
 }) {
   const [appSetting, setAppSetting] = useState({});
   const [updateAvailable, setUpdateAvailable] = useState(false);
@@ -75,7 +75,7 @@ function SettingDrawer({
 
   const handleDownload = () => {
     setDownloading(true);
-    downloadUpdate()
+    downloadAppUpdate()
       .catch((err) => {
         setErrMsg(JSON.stringify(err));
       })
@@ -219,5 +219,5 @@ const mapStateToProps = () => ({});
 
 export default connect(mapStateToProps, {
   writeLocalData,
-  downloadUpdate,
+  downloadAppUpdate,
 })(SettingDrawer);

@@ -59,7 +59,7 @@ function SerialMonitor({
             container
             spacing={2}
             direction="row"
-            sx={{ width: '60%' }}
+            sx={{ width: '75%' }}
             justifyContent="flex-start"
           >
             <Grid item xs={12}>
@@ -100,8 +100,8 @@ function SerialMonitor({
 }
 
 const mapStateToProps = (state) => {
-  const { credential, ...other } = state.credentialAndConfig;
-  return { credential, config: other };
+  const { credential, config } = state.credentialAndConfig;
+  return { credential, config };
 };
 
 export default connect(mapStateToProps, {

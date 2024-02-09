@@ -236,6 +236,22 @@
   "coiliiot.app.flash.fileTable.addressHeader": "Address",
   "coiliiot.app.flash.fileTable.fileHeader": "File",
   "coiliiot.app.flash.fileTable.statusHeader": "Status",
-  "coiliiot.app.flash.fileTable.actionHeader": "Actions"
+  "coiliiot.app.flash.fileTable.actionHeader": "Actions",
+  "coiliiot.app.flash.fileTable.customizeHeader": "Custom Flash",
+
+  "coiliiot.app.flash.updateFirmware.autoHeader": "Update Firmware",
+  "coiliiot.app.flash.updateFirmware.latestVersionLabel": "The Latest Version",
+  "coiliiot.app.flash.updateFirmware.learnMore": "Learn More",
+  "coiliiot.app.flash.updateFirmware.download": "Download",
+  "coiliiot.app.flash.updateFirmware.downloadAndInstall": "Download And Install",
+  "coiliiot.app.flash.updateFirmware.upToDate": "The Device Is Up To Date",
+  "coiliiot.app.flash.updateFirmware.install": "Install",
+  "coiliiot.app.flash.updateFirmware.downloaded": "Downloaded",
+  "coiliiot.app.flash.updateFirmware.currentVersion": "Current version",
+  "coiliiot.app.flash.updateFirmware.snackBarSuccess": "Operation Success",
+  "coiliiot.app.flash.updateFirmware.snackBarError": "Operation Error",
+  "coiliiot.app.flash.updateFirmware.emptyFileArray": "Files to be flashed are empty",
+  "coiliiot.app.flash.updateFirmware.invalidInput": "Input is invalid",
+  "coiliiot.app.flash.updateFirmware.duplicateAddresses": "Duplicate addresses"
 }
 

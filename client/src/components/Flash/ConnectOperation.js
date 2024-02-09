@@ -7,11 +7,22 @@ import {
   FormLabel,
   MenuItem,
   Grid,
+  Card,
+  Box,
+  CardContent,
+  Typography,
+  Button,
+  CardActions,
 } from '@mui/material';
 import {
   flashConnect,
   serialPortsListener,
   emitFlashConnect,
+  serialDataListener,
+  sendMsgToPort,
+  connectPort,
+  disconnectPort,
+  restartPort,
 } from 'slice/data';
 import ConfirmDialog from 'components/common/ConfirmDialog';
 import { LoadingButton } from '@mui/lab';
@@ -27,6 +38,11 @@ function ConnectOperation({
   setTerminalData,
   emitFlashConnect,
   connectionStatus,
+  serialDataListener,
+  connectPort,
+  disconnectPort,
+  sendMsgToPort,
+  restartPort,
 }) {
   const intl = useIntl();
   const [ports, setPorts] = useState([]);
@@ -36,10 +52,18 @@ function ConnectOperation({
   const [connectLoading, setConnectLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [cslDstConfirming, setCslDstConfirming] = useState(false);
+  const [version, setVersion] = useState('');
 
   useEffect(() => {
     serialPortsListener((rawPorts) => {
       setPorts(rawPorts);
+    });
+    serialDataListener((data) => {
+      if (data.startsWith('firmware version: ')) {
+        const s = data.substring(18);
+        setVersion(s);
+        disconnectPort();
+      }
     });
   }, []);
 
@@ -71,7 +95,7 @@ function ConnectOperation({
 
   const clearUp = () => {
     setEspProps({
-      device: null, esploader: null, transport: null, chip: null,
+      device: null, esploader: null, transport: null, chip: null, version: '',
     });
   };
 
@@ -88,18 +112,32 @@ function ConnectOperation({
         setConnectLoading(false);
       }
     } else setConnected(false);
+    setVersion('');
+    await connectPort({ path: selectedPort.path });
+    await restartPort();
+    await disconnectPort();
   };
 
-  const handleConnect = async () => {
-    if (connectionStatus.isConsoleConnected) {
-      setCslDstConfirming(true);
-      return;
+  const fetchFirmwareVersion = async () => {
+    try {
+      await connectPort({ path: selectedPort.path });
+      await restartPort();
+      setTimeout(async () => {
+        await sendMsgToPort({ type: 3 });
+      }, 1500);
+    } catch (e) {
+      setConnectLoading(false);
+      setErrorMsg(e);
+      await restartPort();
+      disconnectPort();
     }
+  };
+
+  const initEspLoader = async () => {
     const filters = [{
       usbVendorId: parseInt(selectedPort.vendorId, 16),
       usbProductId: parseInt(selectedPort.productId, 16),
     }];
-    setConnectLoading(true);
     const timeout = new Promise((_, reject) => {
       setTimeout(() => {
         reject(new Error(intl.formatMessage(messages.timeout)));
@@ -117,7 +155,7 @@ function ConnectOperation({
         });
         const chip = await esploader.main_fn();
         setEspProps({
-          device, esploader, transport, chip,
+          device, esploader, transport, chip, version,
         });
         setConnected(true);
         res();
@@ -133,6 +171,20 @@ function ConnectOperation({
     } finally {
       setConnectLoading(false);
     }
+  };
+
+  useEffect(() => {
+    if (version.length === 0) return;
+    initEspLoader();
+  }, [version]);
+
+  const handleConnect = () => {
+    if (connectionStatus.isConsoleConnected) {
+      setCslDstConfirming(true);
+      return;
+    }
+    setConnectLoading(true);
+    fetchFirmwareVersion();
   };
 
   const handlePortPathChange = (e) => {
@@ -159,7 +211,7 @@ function ConnectOperation({
             container
             spacing={2}
             direction="row"
-            sx={{ width: '60%' }}
+            sx={{ width: '75%' }}
             justifyContent="flex-start"
           >
             <Grid item xs={6}>
@@ -206,6 +258,7 @@ function ConnectOperation({
           </Grid>
         </Grid>
       </Grid>
+      {/* <BasicCard /> */}
       <ErrorModal
         errorMessage={errorMsg}
         onClose={() => { setErrorMsg(null); }}
@@ -223,6 +276,7 @@ function ConnectOperation({
     </>
   );
 }
+
 const mapStateToProps = (state) => {
   const { connectionStatus } = state.credentialAndConfig;
   return { connectionStatus };
@@ -232,4 +286,9 @@ export default connect(mapStateToProps, {
   flashConnect,
   serialPortsListener,
   emitFlashConnect,
+  serialDataListener,
+  sendMsgToPort,
+  connectPort,
+  disconnectPort,
+  restartPort,
 })(ConnectOperation);

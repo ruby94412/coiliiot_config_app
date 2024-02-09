@@ -12,6 +12,8 @@ import { readLocalData, writeLocalData } from 'slice/data';
 import { FormattedMessage } from 'react-intl';
 import messages from 'hocs/Locale/Messages/Config/ProductType';
 import Test from 'img/blue_logo.png';
+import Metal from 'img/metal.png';
+import Plastic from 'img/plastic.png';
 
 const getBoxStyle = (origin, selected) => (selected ? {
   ...origin, border: 2, borderColor: 'primary.main', borderRadius: 2,
@@ -56,14 +58,14 @@ const cardInfo = [
   },
   {
     title: <FormattedMessage {...messages.espDTUTitle} />,
-    img: Test,
+    img: Metal,
     description: `Lizards are a widespread group of squamate reptiles, with over 6,000
     species, ranging across all continents except Antarctica`,
     id: 1,
   },
   {
     title: <FormattedMessage {...messages.espIOTitle} />,
-    img: Test,
+    img: Plastic,
     description: `Lizards are a widespread group of squamate reptiles, with over 6,000
     species, ranging across all continents except Antarctica`,
     id: 2,

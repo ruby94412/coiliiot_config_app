@@ -2,7 +2,7 @@ import {
   useState, useRef, forwardRef, useImperativeHandle, useEffect,
 } from 'react';
 import {
-  Grid, Collapse,
+  Grid, Collapse, Typography,
 } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
@@ -161,7 +161,9 @@ const Platform = forwardRef(({
                         onChange={handleExpandChange('networkFields')}
                       >
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                          <FormattedMessage {...messages.networkFields} />
+                          <Typography>
+                            <FormattedMessage {...messages.networkFields} />
+                          </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                           <Grid
