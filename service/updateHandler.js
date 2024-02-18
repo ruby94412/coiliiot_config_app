@@ -6,11 +6,7 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const info_url = 'https://api.github.com/repos/coiliiot/serial_server_firmware/releases/latest';
-const appDir = path.resolve(__dirname, '..');
-const downloadsDir = path.join(appDir, 'downloads');
-const assetsDir = path.join(appDir, 'assets');
-const bootLoaderPath = path.join(assetsDir, 'bootloader.bin');
-const partitionPath = path.join(assetsDir, 'partitions.bin');
+const downloadsDir =  path.join(__dirname, '../downloads');
 
 const runHandlers = (mainWindow) => {
   if (!mainWindow) return;
@@ -84,9 +80,6 @@ const runHandlers = (mainWindow) => {
       const fileName = temp[0].name;
       const file = { size, url: browser_download_url, fileName };
       let downloaded = false;
-      if (!fs.existsSync(downloadsDir)){
-        fs.mkdirSync(downloadsDir, { recursive: true });
-      }
       const filePath = path.join(downloadsDir, fileName);
       if (fs.existsSync(filePath)) {
         downloaded = true;
@@ -152,7 +145,7 @@ const destroyHandlers = () => {
   ipcMain.removeHandler('download_app_update');
   ipcMain.removeHandler('open_external_link');
   ipcMain.removeHandler('fetch_latest_firmware_info');
-  ipcMain.removeHandler('download_firmware');get_flashing_file
+  ipcMain.removeHandler('download_firmware');
   ipcMain.removeHandler('get_flashing_file');
 }
 

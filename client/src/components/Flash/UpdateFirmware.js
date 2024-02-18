@@ -215,7 +215,7 @@ function UpdateFirmware({
                         {latestFirmware?.name}
                       </Typography>
                       <Typography sx={{ fontSize: 14 }} color="text.secondary">
-                        {niceBytes(latestFirmware?.file.size)}
+                        {niceBytes(latestFirmware?.file?.size)}
                       </Typography>
                       <Typography sx={{ mb: 1.5, fontSize: 14 }} color="text.secondary">
                         Coiliiot LLC
@@ -224,7 +224,7 @@ function UpdateFirmware({
                         {latestFirmware?.body}
                       </Typography>
                       <Typography sx={{ mt: 1.5, fontSize: 14 }} color="text.secondary">
-                        {latestFirmware?.publishedAt.split('T')[0]}
+                        {latestFirmware?.publishedAt?.split('T')[0]}
                       </Typography>
                     </CardContent>
                     <CardActions>
