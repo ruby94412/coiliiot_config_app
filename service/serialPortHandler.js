@@ -52,65 +52,113 @@ const send_config_chuncks = async (activePort, args) => {
   }
 };
 
-const portConnectionHandlers = (mainWindow) => {
-  ipcMain.handle('connect_serial_port', async (evt, args) => {
+const connect_serial_port = async (path, cb) => {
+  try {
+    const baudRate = 115200;
+    const connectedPort = await new Promise((res, rej) => {
+      const port = new SerialPort(
+        { path, baudRate },
+        (err) => {
+          if (err) rej(err);
+          else res(port);
+        }
+      );
+    });
+    const parser = new ReadlineParser();
+    
+    connectedPort.pipe(parser);
+    parser.on('data', cb);
+    activePort = connectedPort;
+    return {
+      isOpen: connectedPort.isOpen
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+const disconnect_serial_port = async () => {
+  try {
+    await new Promise((res, rej) => {
+      activePort.close((err) => {
+        if (err) rej(err);
+        else res('disconnect Complete');
+      });
+    });
+    return { isDisconnected: true };
+  } catch (error) {
+    throw error;
+  }
+};
+
+const send_msg_to_port = async (args) => {
+  if (args.type !== 1) {
     try {
-      const { path } = args;
-      const baudRate = 115200;
-      const connectedPort = await new Promise((res, rej) => {
-        const port = new SerialPort(
-          { path, baudRate },
-          (err) => {
-            if (err) rej(err);
-            else res(port);
-          }
-        );
+      await new Promise((res, rej) => {
+        activePort.write(JSON.stringify(args) + '\n', (err) => {
+          if (err) rej(err);
+          else res('Command Sent');
+        });
       });
-      const parser = new ReadlineParser();
-      
-      connectedPort.pipe(parser);
-      parser.on('data', (data) => {
-        mainWindow.webContents.send('serial-data', data);
-      });
-      activePort = connectedPort;
-      return {
-        isOpen: connectedPort.isOpen
-      };
+      return { success: true };
     } catch (error) {
       throw error;
     }
+  } else {
+    await send_config_chuncks(activePort, args);
+  }
+};
+
+const portConnectionHandlers = (mainWindow) => {
+  ipcMain.handle('fetch_firmware_version', async (evt, args) => {
+    try {
+      const version = await new Promise(async (res, rej) => {
+        const { path } = args;
+        let timeoutId;
+        const cb = (data) => {
+          if (data.startsWith('firmware version: ')) {
+            const version = data.substring(18);
+            clearTimeout(timeoutId);
+            disconnect_serial_port();
+            res(version);
+          }
+        };
+        try {
+          await connect_serial_port(path, cb);
+        } catch (e) {
+          rej(e.message);
+        }
+        timeoutId = setTimeout(() => {
+          disconnect_serial_port();
+          rej('version not available');
+        }, 1500);
+        try {
+          await send_msg_to_port({ type: 3 });
+        } catch (e) {
+          rej(e.message);
+        }
+      });
+      return version;
+    } catch (e) {
+      return '';
+    }
+    
+  });
+
+  ipcMain.handle('connect_serial_port', async (evt, args) => {
+    const { path } = args;
+    const cb = (data) => {
+      mainWindow.webContents.send('serial-data', data);
+    };
+    connect_serial_port(path, cb);
   });
 
   ipcMain.handle('disconnect_serial_port', async (evt, args) => {
-    try {
-      await new Promise((res, rej) => {
-        activePort.close((err) => {
-          if (err) rej(err);
-          else res('disconnect Complete');
-        });
-      });
-      return { isDisconnected: true };
-    } catch (error) {
-      throw error;
-    }
+    disconnect_serial_port();
   });
 
   ipcMain.handle('send_msg_to_port', async (evt, args) => {
-    if (args.type !== 1) {
-      try {
-        await new Promise((res, rej) => {
-          activePort.write(JSON.stringify(args) + '\n', (err) => {
-            if (err) rej(err);
-            else res('Command Sent');
-          });
-        });
-        return { success: true };
-      } catch (error) {
-        throw error;
-      }
-    } else {
-      await send_config_chuncks(activePort, args);
-    }
+    send_msg_to_port(args);
   });
 
   ipcMain.handle('restart_port', async (evt, args) => {
@@ -146,7 +194,7 @@ const runHandlers = (mainWindow) => {
 
 const destroyHandlers = () => {
   if (activePort?.isOpen) activePort.close();
-  const channels = ['connect_serial_port', 'disconnect_serial_port', 'send_msg_to_port', 'restart_port'];
+  const channels = ['connect_serial_port', 'disconnect_serial_port', 'send_msg_to_port', 'restart_port', 'fetch_firmware_version'];
   channels.forEach((channel) => { ipcMain.removeHandler(channel);});
   clearInterval(portsForwardingInterval);
 };

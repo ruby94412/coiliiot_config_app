@@ -51,6 +51,7 @@ function UpdateFirmware({
   fetchLatestFirmwareInfo,
   firmwareDownloadListener,
   latestFirmware,
+  firmwareVersion,
   espProps,
   getFlashingFile,
 }) {
@@ -59,6 +60,7 @@ function UpdateFirmware({
   const [flashProgress, setFlashProgress] = useState(0);
   const [snackbar, setSnackbar] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [version, setVersion] = useState('');
   const [enables, setEnables] = useState({
     downloaded: false,
     install: false,
@@ -81,8 +83,9 @@ function UpdateFirmware({
   }, []);
 
   useEffect(() => {
-    if (espProps?.version) {
-      if (latestFirmware.name === espProps.version) {
+    if (espProps?.esploader) {
+      setVersion(firmwareVersion);
+      if (latestFirmware.name === firmwareVersion) {
         setEnables({ install: false, downloaded: false, downloadAndInstall: false });
       } else if (latestFirmware.downloaded) {
         setEnables({ install: true, downloaded: true, downloadAndInstall: false });
@@ -90,15 +93,15 @@ function UpdateFirmware({
         setEnables({ install: false, downloaded: false, downloadAndInstall: true });
       }
     } else {
+      setVersion('');
       setEnables({ install: false, downloaded: false, downloadAndInstall: false });
     }
   }, [espProps]);
 
-  const renderSumText = (eP, lF) => {
-    if (eP?.version) {
-      const { version } = eP;
+  const renderSumText = (lF) => {
+    if (version) {
       if (version === lF.name) return (` ${intl.formatMessage(messages.upToDate)}`);
-      return (` ${intl.formatMessage(messages.currentVersion)}: ${version}`);
+      return (` ${intl.formatMessage(messages.currentVersion)}: ${firmwareVersion}`);
     }
     return ('');
   };
@@ -198,7 +201,7 @@ function UpdateFirmware({
                   </Typography>
                   <Box flexGrow={1} />
                   <Typography color="text.secondary" align="center">
-                    { renderSumText(espProps, latestFirmware) }
+                    { renderSumText(latestFirmware) }
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -277,8 +280,8 @@ function UpdateFirmware({
 }
 
 const mapStateToProps = (state) => {
-  const { latestFirmware } = state.credentialAndConfig;
-  return { latestFirmware };
+  const { latestFirmware, firmwareVersion } = state.credentialAndConfig;
+  return { latestFirmware, firmwareVersion };
 };
 
 export default connect(mapStateToProps, {

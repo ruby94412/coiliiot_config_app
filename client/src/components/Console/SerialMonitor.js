@@ -62,14 +62,13 @@ function SerialMonitor({
   useEffect(() => {
     serialDataListener((data) => {
       if (data.startsWith('read data response: ')) {
-        console.log(data);
         const jsonString = data.substring(20);
         try {
           const temp = JSON.parse(jsonString);
           setRawCfg(temp);
           setIsConfirmOpen(true);
         } catch (e) {
-          console.log(e);
+          setErrorMsg(e?.message);
         }
       }
       setLogs((pre) => (`${pre}${pre ? '\n' : ''}${data}`));

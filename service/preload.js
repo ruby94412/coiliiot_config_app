@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('api', {
   readLocalData: (args) => ipcRenderer.invoke('read_local_data', args),
   writeLocalData:  (args) => ipcRenderer.invoke('write_data_to_local', args),
   connectPort: (args) => ipcRenderer.invoke('connect_serial_port', args),
+  fetchFirmwareVersion: (args) => ipcRenderer.invoke('fetch_firmware_version', args),
   disconnectPort: () => ipcRenderer.invoke('disconnect_serial_port'),
   sendMsgToPort: (args) => ipcRenderer.invoke('send_msg_to_port', args),
   flashConnect: (args) => ipcRenderer.invoke('connect_flash_port', args),

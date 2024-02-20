@@ -5,6 +5,7 @@ const dataService = {
   writeLocalData: (args) => api.writeLocalData(args),
   openExternalLink: (args) => api.openExternalLink(args),
   connectPort: (args) => api.connectPort(args),
+  fetchFirmwareVersion: (args) => api.fetchFirmwareVersion(args),
   flashConnect: (args) => api.flashConnect(args),
   disconnectPort: (args) => api.disconnectPort(args),
   sendMsgToPort: (args) => api.sendMsgToPort(args),

@@ -27,6 +27,14 @@ export const connectPort = createAsyncThunk(
   },
 );
 
+export const fetchFirmwareVersion = createAsyncThunk(
+  'data/fetchFirmwareVersion',
+  async (data) => {
+    const res = await dataService.fetchFirmwareVersion(data);
+    return res;
+  },
+);
+
 export const flashConnect = createAsyncThunk(
   'data/flashConnect',
   async (data) => {
@@ -200,6 +208,10 @@ const dataSlice = createSlice({
       .addCase(
         fetchLatestFirmwareInfo.fulfilled,
         (state, action) => ({ ...state, latestFirmware: { ...action.payload } }),
+      )
+      .addCase(
+        fetchFirmwareVersion.fulfilled,
+        (state, action) => ({ ...state, firmwareVersion: action.payload }),
       );
   },
 });

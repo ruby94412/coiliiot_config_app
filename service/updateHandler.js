@@ -95,7 +95,6 @@ const runHandlers = (mainWindow) => {
   
   ipcMain.handle('download_firmware', async (evt, args) => {
     const { url, fileName } = args;
-    console.log(url);
     try {
       const response = await axios({
         method: 'GET',
@@ -104,7 +103,6 @@ const runHandlers = (mainWindow) => {
       });
       const totalLength = response.headers['content-length'];
       const filePath = path.join(downloadsDir, fileName);
-      console.log(`Starting download: ${fileName}`);
       let downloadedLength = 0;
       response.data.on('data', (chunk) => {
           downloadedLength += chunk.length;

@@ -7,12 +7,6 @@ import {
   FormLabel,
   MenuItem,
   Grid,
-  Card,
-  Box,
-  CardContent,
-  Typography,
-  Button,
-  CardActions,
 } from '@mui/material';
 import {
   flashConnect,
@@ -23,6 +17,7 @@ import {
   connectPort,
   disconnectPort,
   restartPort,
+  fetchFirmwareVersion,
 } from 'slice/data';
 import ConfirmDialog from 'components/common/ConfirmDialog';
 import { LoadingButton } from '@mui/lab';
@@ -38,11 +33,10 @@ function ConnectOperation({
   setTerminalData,
   emitFlashConnect,
   connectionStatus,
-  serialDataListener,
   connectPort,
   disconnectPort,
-  sendMsgToPort,
   restartPort,
+  fetchFirmwareVersion,
 }) {
   const intl = useIntl();
   const [ports, setPorts] = useState([]);
@@ -52,18 +46,11 @@ function ConnectOperation({
   const [connectLoading, setConnectLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [cslDstConfirming, setCslDstConfirming] = useState(false);
-  const [version, setVersion] = useState('');
+  // const [version, setVersion] = useState('');
 
   useEffect(() => {
     serialPortsListener((rawPorts) => {
       setPorts(rawPorts);
-    });
-    serialDataListener((data) => {
-      if (data.startsWith('firmware version: ')) {
-        const s = data.substring(18);
-        setVersion(s);
-        disconnectPort();
-      }
     });
   }, []);
 
@@ -112,25 +99,11 @@ function ConnectOperation({
         setConnectLoading(false);
       }
     } else setConnected(false);
-    setVersion('');
     await connectPort({ path: selectedPort.path });
-    await restartPort();
-    await disconnectPort();
-  };
-
-  const fetchFirmwareVersion = async () => {
-    try {
-      await connectPort({ path: selectedPort.path });
+    setTimeout(async () => {
       await restartPort();
-      setTimeout(async () => {
-        await sendMsgToPort({ type: 3 });
-      }, 1500);
-    } catch (e) {
-      setConnectLoading(false);
-      setErrorMsg(e);
-      await restartPort();
-      disconnectPort();
-    }
+      await disconnectPort();
+    }, 500);
   };
 
   const initEspLoader = async () => {
@@ -155,7 +128,7 @@ function ConnectOperation({
         });
         const chip = await esploader.main_fn();
         setEspProps({
-          device, esploader, transport, chip, version,
+          device, esploader, transport, chip,
         });
         setConnected(true);
         res();
@@ -173,18 +146,14 @@ function ConnectOperation({
     }
   };
 
-  useEffect(() => {
-    if (version.length === 0) return;
-    initEspLoader();
-  }, [version]);
-
-  const handleConnect = () => {
+  const handleConnect = async () => {
     if (connectionStatus.isConsoleConnected) {
       setCslDstConfirming(true);
       return;
     }
     setConnectLoading(true);
-    fetchFirmwareVersion();
+    await fetchFirmwareVersion({ path: selectedPort.path });
+    initEspLoader();
   };
 
   const handlePortPathChange = (e) => {
@@ -291,4 +260,5 @@ export default connect(mapStateToProps, {
   connectPort,
   disconnectPort,
   restartPort,
+  fetchFirmwareVersion,
 })(ConnectOperation);
