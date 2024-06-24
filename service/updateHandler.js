@@ -8,6 +8,10 @@ const path = require('path');
 const info_url = 'https://api.github.com/repos/coiliiot/serial_server_firmware/releases/latest';
 const downloadsDir =  path.join(__dirname, '../downloads');
 
+if (!fs.existsSync(downloadsDir)) {
+  fs.mkdirSync(downloadsDir, { recursive: true });
+}
+
 const runHandlers = (mainWindow) => {
   if (!mainWindow) return;
   autoUpdater.autoDownload = false;

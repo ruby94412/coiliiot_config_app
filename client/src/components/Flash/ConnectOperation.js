@@ -114,9 +114,17 @@ function ConnectOperation({
     const timeout = new Promise((_, reject) => {
       setTimeout(() => {
         reject(new Error(intl.formatMessage(messages.timeout)));
-      }, 10000);
+      }, 3000);
     });
-    const device = await navigator.serial.requestPort({ filters });
+
+    let device;
+    try {
+      device = await navigator.serial.requestPort({ filters });
+    } catch (e) {
+      setErrorMsg(e.message);
+      setConnectLoading(false);
+      return;
+    }
     const transport = new Transport(device);
     // eslint-disable-next-line no-async-promise-executor
     const connection = new Promise(async (res, rej) => {
@@ -136,6 +144,7 @@ function ConnectOperation({
         rej(e);
       }
     });
+
     try {
       await Promise.race([connection, timeout]);
     } catch (e) {

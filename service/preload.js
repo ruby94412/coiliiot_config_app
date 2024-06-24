@@ -21,7 +21,7 @@ contextBridge.exposeInMainWorld('api', {
   serialDataListener: (cb) => ipcRenderer.on('serial-data', (e, data) => cb(data)),
   updateListener: (cb) => ipcRenderer.on('auto-update', (e, data) => cb(data)),
   firmwareDownloadListener: (cb) => ipcRenderer.on('downloading_firmware', (e, data) => cb(data)),
-  // Send Methods
+  // Send Method
   testSend: (args) => ipcRenderer.send('test-send', args),
   // Receive Methods
   testReceive: (callback) => ipcRenderer.on('test-receive', (event, data) => { callback(data) })
