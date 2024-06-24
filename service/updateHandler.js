@@ -1,12 +1,13 @@
 const { autoUpdater } = require('electron-updater');
 const shell = require('electron').shell;
 const ipcMain = require('electron').ipcMain;
+const app = require('electron').app;
 const isDev = require('electron-is-dev');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const info_url = 'https://api.github.com/repos/coiliiot/serial_server_firmware/releases/latest';
-const downloadsDir =  path.join(__dirname, '../downloads');
+const downloadsDir =  isDev ? path.join(__dirname, '../downloads') : path.join(app.getPath('userData'), 'downloads');
 
 if (!fs.existsSync(downloadsDir)) {
   fs.mkdirSync(downloadsDir, { recursive: true });
