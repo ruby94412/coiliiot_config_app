@@ -77,7 +77,7 @@ const Platform = forwardRef(({
 
   return (
     <>
-      <Grid
+      {/* <Grid
         container
         spacing={2}
         direction="row"
@@ -93,7 +93,7 @@ const Platform = forwardRef(({
             radioOptions: networkIds.map((id) => ({ label: id + 1, value: id })),
           })}
         </Grid>
-      </Grid>
+      </Grid> */}
       <TransitionPanel index={networkId}>
         {
           initVals.map((networkConfig, index) => (

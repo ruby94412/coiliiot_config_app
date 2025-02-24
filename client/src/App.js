@@ -51,23 +51,28 @@ function App({
     backgroundColor: theme.palette.darker.main,
     color: theme.palette.primary.spanColor,
   };
-  const [logoIn, setLogoIn] = useState(true);
+  // const [logoIn, setLogoIn] = useState(false);
   const mainContentProps = {
     setThemeMode,
     setLocale,
     themeMode,
     locale,
   };
-  useEffect(() => {
-    setTimeout(() => {
-      setLogoIn(false);
-    }, 4000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLogoIn(false);
+  //   }, 4000);
+  // }, []);
 
   return (
     <div className="App" style={contentStyle}>
-      <Collapse in={logoIn} sx={{ width: '100%' }}><Logo theme={theme} themeMode={themeMode} /></Collapse>
-      <Collapse in={!logoIn} sx={{ width: '100%' }}><MainContent {...mainContentProps} /></Collapse>
+      {/* <Collapse in={logoIn} sx={{ width: '100%' }}>
+        <Logo theme={theme} themeMode={themeMode} />
+      </Collapse>
+      <Collapse in={!logoIn} sx={{ width: '100%' }}>
+        <MainContent {...mainContentProps} />
+      </Collapse> */}
+      <MainContent {...mainContentProps} />
     </div>
   );
 }

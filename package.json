@@ -9,6 +9,7 @@
     "productName": "Coiliiot Config",
     "copyright": "Copyright © year Coiliiot",
     "mac": {
+      "identity": null,
       "target": [
         "dmg",
         "zip"

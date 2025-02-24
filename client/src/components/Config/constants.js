@@ -8,7 +8,7 @@ import {
 import { GridActionsCellItem, GridRowModes } from '@mui/x-data-grid';
 import { Tooltip, InputAdornment } from '@mui/material';
 
-export const networkIds = [0, 1, 2, 3, 4, 5, 6, 7];
+export const networkIds = [0];
 
 export const networkOptions = [
   { label: 'Socket', value: 0 },

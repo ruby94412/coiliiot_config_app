@@ -32,7 +32,7 @@ function Content({
   const [saveLoading, setSaveLoading] = useState(false);
   const [isConfigResetting, setIsConfigResetting] = useState(false);
   const [snackbar, setSnackbar] = useState(null);
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(1);
   const buttonStyle = { position: 'fixed', right: '5%', bottom: '5%' };
   const formRef = {
     basic: useRef(null),
@@ -139,14 +139,14 @@ function Content({
           onChange={handleTabChange}
           variant="scrollable"
         >
-          <Tab label={<FormattedMessage {...messages.productTabLabel} />} />
+          {/* <Tab label={<FormattedMessage {...messages.productTabLabel} />} /> */}
           <Tab label={<FormattedMessage {...messages.basicTabLabel} />} />
           <Tab label={<FormattedMessage {...messages.serialTabLabel} />} />
           <Tab label={<FormattedMessage {...messages.networkTabLabel} />} />
         </Tabs>
       </Box>
       <TransitionPanel index={tabIndex}>
-        <TabPanel value={tabIndex} index={0}>
+        {/* <TabPanel value={tabIndex} index={0}>
           <ProductType />
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
@@ -162,6 +162,25 @@ function Content({
           />
         </TabPanel>
         <TabPanel value={tabIndex} index={3}>
+          <Platform
+            initVals={initialValues?.networkConfigs}
+            ref={(el) => { formRef.network.current = el; }}
+            serialForm={formRef.serial.current}
+          />
+        </TabPanel> */}
+        <TabPanel value={tabIndex} index={0}>
+          <Basic
+            initVals={initialValues?.basicConfigs}
+            ref={(el) => { formRef.basic.current = el; }}
+          />
+        </TabPanel>
+        <TabPanel value={tabIndex} index={1}>
+          <Serial
+            initVals={initialValues?.serialConfigs}
+            ref={(el) => { formRef.serial.current = el; }}
+          />
+        </TabPanel>
+        <TabPanel value={tabIndex} index={2}>
           <Platform
             initVals={initialValues?.networkConfigs}
             ref={(el) => { formRef.network.current = el; }}

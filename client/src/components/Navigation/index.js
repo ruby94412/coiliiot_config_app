@@ -96,7 +96,11 @@ function Navigation({
           >
             <Tab value={0} sx={{ color: 'white' }} label={<FormattedMessage {...messages.configText} />} />
             <Tab value={1} sx={{ color: 'white' }} label={<FormattedMessage {...messages.consoleText} />} />
-            <Tab value={2} sx={{ color: 'white' }} label={<FormattedMessage {...messages.flashText} />} />
+            {/* <Tab
+              value={2}
+              sx={{ color: 'white' }}
+              label={<FormattedMessage {...messages.flashText} />}
+            /> */}
           </Tabs>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
